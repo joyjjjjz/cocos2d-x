@@ -54,15 +54,11 @@ static AppDelegate s_sharedApplication;
                                        multiSampling: NO
                                      numberOfSamples: 0 ];
 
-#if !defined(CC_TARGET_OS_TVOS)
     [eaglView setMultipleTouchEnabled:YES];
-#endif
 
     // Use RootViewController manage CCEAGLView
     viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
-#if !defined(CC_TARGET_OS_TVOS)
     viewController.wantsFullScreenLayout = YES;
-#endif
     viewController.view = eaglView;
 
     // Set RootViewController to window
@@ -79,9 +75,7 @@ static AppDelegate s_sharedApplication;
     
     [window makeKeyAndVisible];
 
-#if !defined(CC_TARGET_OS_TVOS)
     [[UIApplication sharedApplication] setStatusBarHidden: YES];
-#endif
 
 
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController

@@ -7,7 +7,6 @@
 #include "cocos2d.h"
 #include "PlayerMacros.h"
 #include "PlayerServiceProtocol.h"
-#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 
@@ -16,7 +15,7 @@ PLAYER_NS_BEGIN
 #define kPlayerCtrlModifyKey  "ctrl"
 #define kPlayerAltModifyKey   "alt"
 
-class CC_LIBSIM_DLL PlayerMenuItem : public cocos2d::Ref
+class PlayerMenuItem : public cocos2d::Ref
 {
 public:
     virtual ~PlayerMenuItem();

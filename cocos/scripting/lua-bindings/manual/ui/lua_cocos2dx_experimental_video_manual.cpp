@@ -1,12 +1,12 @@
-#include "scripting/lua-bindings/manual/ui/lua_cocos2dx_experimental_video_manual.hpp"
+#include "lua_cocos2dx_experimental_video_manual.hpp"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
-#include "ui/UIVideoPlayer.h"
-#include "scripting/lua-bindings/manual/tolua_fix.h"
-#include "scripting/lua-bindings/manual/LuaBasicConversions.h"
-#include "scripting/lua-bindings/manual/CCLuaValue.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
+#include "UIVideoPlayer.h"
+#include "tolua_fix.h"
+#include "LuaBasicConversions.h"
+#include "CCLuaValue.h"
+#include "CCLuaEngine.h"
 
 
 

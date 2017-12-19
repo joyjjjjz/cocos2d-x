@@ -15,10 +15,4 @@
 -- @param #cc.Scene scene
 -- @return TransitionRotoZoom#TransitionRotoZoom ret (return value: cc.TransitionRotoZoom)
         
---------------------------------
--- 
--- @function [parent=#TransitionRotoZoom] TransitionRotoZoom 
--- @param self
--- @return TransitionRotoZoom#TransitionRotoZoom self (return value: cc.TransitionRotoZoom)
-        
 return nil

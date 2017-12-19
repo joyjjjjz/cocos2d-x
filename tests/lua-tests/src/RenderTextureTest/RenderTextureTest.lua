@@ -2,7 +2,7 @@
 -- Test #3 by David Deaco (ddeaco)
 
 --/**
---    * Implementation of RenderTextureSave
+--    * Impelmentation of RenderTextureSave
 --*/
 local function RenderTextureSave()
     local ret = createTestLayer("Touch the screen",
@@ -53,7 +53,7 @@ local function RenderTextureSave()
     target:retain()
     target:setPosition(cc.p(s.width / 2, s.height / 2))
 
-    -- note that the render texture is a cc.Node, and contains a sprite of its texture for convenience,
+    -- note that the render texture is a cc.Node, and contains a sprite of its texture for convience,
     -- so we can just parent it to the scene like any other cc.Node
     ret:addChild(target, -1)
 
@@ -117,7 +117,7 @@ end
 
 
 --/**
---    * Implementation of RenderTextureIssue937
+--    * Impelmentation of RenderTextureIssue937
 --*/
 
 -- local function RenderTextureIssue937()
@@ -195,7 +195,7 @@ end
 -- end
 
 -- --/**
--- --    * Implementation of RenderTextureZbuffer
+-- --    * Impelmentation of RenderTextureZbuffer
 -- --*/
 
 -- local function RenderTextureZbuffer()
@@ -522,7 +522,7 @@ end
 -- int diff = offsetof( V3F_C4B_T2F, vertices)
 -- glVertexAttribPointer(kcc.VertexAttrib_Position, 3, GL_FLOAT, GL_FALSE, kQuadSize, (void*) (offset + diff))
 
--- -- texCoords
+-- -- texCoods
 -- diff = offsetof( V3F_C4B_T2F, texCoords)
 -- glVertexAttribPointer(kcc.VertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (void*)(offset + diff))
 
@@ -609,8 +609,6 @@ function RenderTextureTestMain()
         -- RenderTextureTargetNode,
         -- SpriteRenderTextureBug
     }
-    Helper.index = 1
-    
     scene:addChild(RenderTextureSave())
     scene:addChild(CreateBackMenuItem())
     return scene

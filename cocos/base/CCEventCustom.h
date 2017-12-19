@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -52,19 +52,19 @@ public:
      *
      * @param data The user data pointer, it's a void*.
      */
-    void setUserData(void* data) { _userData = data; }
+    inline void setUserData(void* data) { _userData = data; };
     
     /** Gets user data.
      *
      * @return The user data pointer, it's a void*.
      */
-    void* getUserData() const { return _userData; }
+    inline void* getUserData() const { return _userData; };
     
     /** Gets event name.
      *
      * @return The name of the event.
      */
-    const std::string& getEventName() const { return _eventName; }
+    inline const std::string& getEventName() const { return _eventName; };
 protected:
     void* _userData;       ///< User data
     std::string _eventName;

@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -26,12 +26,10 @@
 #ifndef __CC_PU_PARTICLE_3D_RENDER_H__
 #define __CC_PU_PARTICLE_3D_RENDER_H__
 
-#include <vector>
-
 #include "base/CCRef.h"
 #include "math/CCMath.h"
 #include "extensions/Particle3D/CCParticle3DRender.h"
-#include "renderer/CCRenderState.h"
+#include <vector>
 
 NS_CC_BEGIN
 
@@ -44,13 +42,13 @@ public:
 
     virtual void prepare(){};
     virtual void unPrepare(){};
-    virtual void updateRender(PUParticle3D* particle, float deltaTime, bool firstParticle);
+    virtual void updateRender(PUParticle3D *particle, float deltaTime, bool firstParticle){};
 
     const std::string& getRenderType(void) const {return _renderType;};
     void setRenderType(const std::string& observerType) {_renderType = observerType;};
 
     virtual PURender* clone() = 0;
-    void copyAttributesTo(PURender* render);
+    virtual void copyAttributesTo (PURender *render);
 
 public:
 
@@ -64,8 +62,12 @@ protected:
 class CC_DLL PUParticle3DEntityRender : public PURender
 {
 public:
-    void copyAttributesTo(PUParticle3DEntityRender *render);
-    virtual void reset()override;
+
+    virtual void setDepthTest(bool isDepthTest) override;
+    virtual void setDepthWrite(bool isDepthWrite) override;
+
+    virtual void copyAttributesTo (PURender *render) override;
+
 CC_CONSTRUCTOR_ACCESS:
     PUParticle3DEntityRender();
     virtual ~PUParticle3DEntityRender();
@@ -73,6 +75,7 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
 
     bool initRender(const std::string &texFile);
+
 protected:
 
     struct VertexInfo
@@ -82,7 +85,6 @@ protected:
         Vec4 color;
     };
     MeshCommand* _meshCommand;
-    RenderState::StateBlock* _stateBlock;
     Texture2D*             _texture;
     GLProgramState*        _glProgramState;
     IndexBuffer*           _indexBuffer; //index buffer
@@ -149,7 +151,7 @@ public:
     virtual void render(Renderer* renderer, const Mat4 &transform, ParticleSystem3D* particleSystem) override;
 
     virtual PUParticle3DQuadRender* clone() override;
-    void copyAttributesTo(PUParticle3DQuadRender *render);
+    virtual void copyAttributesTo (PURender *render) override;
     
 CC_CONSTRUCTOR_ACCESS:
     PUParticle3DQuadRender();
@@ -185,9 +187,8 @@ public:
     virtual void render(Renderer* renderer, const Mat4 &transform, ParticleSystem3D* particleSystem) override;
 
     virtual PUParticle3DModelRender* clone() override;
-    void copyAttributesTo(PUParticle3DModelRender *render);
+    virtual void copyAttributesTo (PURender *render) override;
 
-    virtual void reset()override;
 CC_CONSTRUCTOR_ACCESS:
     PUParticle3DModelRender();
     virtual ~PUParticle3DModelRender();
@@ -228,7 +229,7 @@ public:
     virtual void render(Renderer* renderer, const Mat4 &transform, ParticleSystem3D* particleSystem) override;
 
     virtual PUSphereRender* clone() override;
-    void copyAttributesTo(PUSphereRender *render);
+    virtual void copyAttributesTo (PURender *render) override;
 
 CC_CONSTRUCTOR_ACCESS:
     PUSphereRender();

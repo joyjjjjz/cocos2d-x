@@ -1,7 +1,7 @@
 #ifndef _CCB_CCMENUITEMIMAGELOADER_H_
 #define _CCB_CCMENUITEMIMAGELOADER_H_
 
-#include "editor-support/cocosbuilder/CCMenuItemLoader.h"
+#include "CCMenuItemLoader.h"
 
 namespace cocosbuilder {
 

@@ -5,14 +5,6 @@
 -- @parent_module cc
 
 --------------------------------
--- brief Initializes the action.<br>
--- return Return true when the initialization success, otherwise return false.
--- @function [parent=#ActionEase] initWithAction 
--- @param self
--- @param #cc.ActionInterval action
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- brief Get the pointer of the inner action.<br>
 -- return The pointer of the inner action.
 -- @function [parent=#ActionEase] getInnerAction 
@@ -28,9 +20,21 @@
         
 --------------------------------
 -- 
+-- @function [parent=#ActionEase] clone 
+-- @param self
+-- @return ActionEase#ActionEase ret (return value: cc.ActionEase)
+        
+--------------------------------
+-- 
 -- @function [parent=#ActionEase] stop 
 -- @param self
 -- @return ActionEase#ActionEase self (return value: cc.ActionEase)
+        
+--------------------------------
+-- 
+-- @function [parent=#ActionEase] reverse 
+-- @param self
+-- @return ActionEase#ActionEase ret (return value: cc.ActionEase)
         
 --------------------------------
 -- 

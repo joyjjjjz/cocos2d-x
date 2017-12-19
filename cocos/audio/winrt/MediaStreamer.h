@@ -28,13 +28,10 @@ private:
     WAVEFORMATEX      m_waveFormat;
     uint32            m_maxStreamLengthInBytes;
     std::vector<byte> m_data;
-    size_t            m_offset;
-    size_t            m_dataLen;
-    Platform::String^      m_filename;
-
-    Platform::Array<byte>^ ReadData(_In_ Platform::String^ filename);
-    Platform::Array<byte>^ ReadData(_In_ Platform::String^ filename, uint32 from, uint32 length);
-
+    UINT32            m_offset;
+	Platform::Array<byte>^ ReadData(
+    _In_ Platform::String^ filename
+    );
 internal:
     Windows::Storage::StorageFolder^ m_location;
     Platform::String^ m_locationPath;
@@ -50,13 +47,12 @@ internal:
         return m_waveFormat;
     }
 
-    size_t GetMaxStreamLengthInBytes()
+    UINT32 GetMaxStreamLengthInBytes()
     {
-		return m_dataLen;
+		return m_data.size();
     }
 
-    void Initialize(_In_ const WCHAR* url, bool lazy = false); 
-    void ReadAll(uint8* buffer, uint32 maxBufferSize, uint32* bufferLength);
-    void ReadChunk(uint8* buffer, uint32 from, uint32 length, uint32* bytesRead);
+    void Initialize(_In_ const WCHAR* url); 
+    void ReadAll(uint8* buffer, uint32 maxBufferSize, uint32* bufferLength); 
     void Restart();
 };

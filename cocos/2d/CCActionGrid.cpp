@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2009      On-Core
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
  
 http://www.cocos2d-x.org
 
@@ -50,18 +50,20 @@ void GridAction::startWithTarget(Node *target)
     ActionInterval::startWithTarget(target);
     cacheTargetAsGridNode();
 
+    GridBase *newgrid = this->getGrid();
+
     GridBase *targetGrid = _gridNodeTarget->getGrid();
 
     if (targetGrid && targetGrid->getReuseGrid() > 0)
     {
         if (targetGrid->isActive() && targetGrid->getGridSize().width == _gridSize.width
-            && targetGrid->getGridSize().height == _gridSize.height)
+            && targetGrid->getGridSize().height == _gridSize.height /*&& dynamic_cast<GridBase*>(targetGrid) != nullptr*/)
         {
             targetGrid->reuse();
         }
         else
         {
-            CCASSERT(0, "Invalid grid parameters!");
+            CCASSERT(0, "");
         }
     }
     else
@@ -71,7 +73,6 @@ void GridAction::startWithTarget(Node *target)
             targetGrid->setActive(false);
         }
 
-        auto newgrid = this->getGrid();
         _gridNodeTarget->setGrid(newgrid);
         _gridNodeTarget->getGrid()->setActive(true);
     }
@@ -92,7 +93,7 @@ GridAction* GridAction::reverse() const
 GridBase* GridAction::getGrid()
 {
     // Abstract class needs implementation
-    CCASSERT(0, "Subclass should implement this method!");
+    CCASSERT(0, "");
 
     return nullptr;
 }
@@ -101,7 +102,7 @@ GridBase* GridAction::getGrid()
 
 GridBase* Grid3DAction::getGrid()
 {
-    return Grid3D::create(_gridSize, _gridNodeTarget->getGridRect());
+    return Grid3D::create(_gridSize);
 }
 
 Vec3 Grid3DAction::getVertex(const Vec2& position) const
@@ -122,17 +123,11 @@ void Grid3DAction::setVertex(const Vec2& position, const Vec3& vertex)
     g->setVertex(position, vertex);
 }
 
-Rect Grid3DAction::getGridRect() const
-{
-    Grid3D *g = (Grid3D*)_gridNodeTarget->getGrid();
-    return g->getGridRect();
-}
-
 // implementation of TiledGrid3DAction
 
 GridBase* TiledGrid3DAction::getGrid(void)
 {
-    return TiledGrid3D::create(_gridSize, _gridNodeTarget->getGridRect());
+    return TiledGrid3D::create(_gridSize);
 }
 
 Quad3 TiledGrid3DAction::getTile(const Vec2& pos) const
@@ -158,14 +153,19 @@ void TiledGrid3DAction::setTile(const Vec2& pos, const Quad3& coords)
 AccelDeccelAmplitude* AccelDeccelAmplitude::create(Action *action, float duration)
 {
     AccelDeccelAmplitude *ret = new (std::nothrow) AccelDeccelAmplitude();
-    if (ret && ret->initWithAction(action, duration))
+    if (ret)
     {
-        ret->autorelease();
-        return ret;
+        if (ret->initWithAction(action, duration))
+        {
+            ret->autorelease();
+        }
+        else
+        {
+            CC_SAFE_DELETE(ret);
+        }
     }
 
-    delete ret;
-    return nullptr;
+    return ret;
 }
 
 bool AccelDeccelAmplitude::initWithAction(Action *action, float duration)
@@ -185,10 +185,10 @@ bool AccelDeccelAmplitude::initWithAction(Action *action, float duration)
 AccelDeccelAmplitude* AccelDeccelAmplitude::clone() const
 {
     // no copy constructor
-    if (_other)
-        return AccelDeccelAmplitude::create(_other->clone(), _rate);
-    
-    return nullptr;
+    auto a = new (std::nothrow) AccelDeccelAmplitude();
+    a->initWithAction(_other->clone(), _rate);
+    a->autorelease();
+    return a;
 }
 
 AccelDeccelAmplitude::~AccelDeccelAmplitude()
@@ -217,10 +217,7 @@ void AccelDeccelAmplitude::update(float time)
 
 AccelDeccelAmplitude* AccelDeccelAmplitude::reverse() const
 {
-    if (_other)
-        return AccelDeccelAmplitude::create(_other->reverse(), _duration);
-    
-    return nullptr;
+    return AccelDeccelAmplitude::create(_other->reverse(), _duration);
 }
 
 // implementation of AccelAmplitude
@@ -228,14 +225,19 @@ AccelDeccelAmplitude* AccelDeccelAmplitude::reverse() const
 AccelAmplitude* AccelAmplitude::create(Action *action, float duration)
 {
     AccelAmplitude *ret = new (std::nothrow) AccelAmplitude();
-    if (ret && ret->initWithAction(action, duration))
+    if (ret)
     {
-        ret->autorelease();
-        return ret;
+        if (ret->initWithAction(action, duration))
+        {
+            ret->autorelease();
+        }
+        else
+        {
+            CC_SAFE_DELETE(ret);
+        }
     }
 
-    delete ret;
-    return nullptr;
+    return ret;
 }
 
 bool AccelAmplitude::initWithAction(Action *action, float duration)
@@ -255,10 +257,10 @@ bool AccelAmplitude::initWithAction(Action *action, float duration)
 AccelAmplitude* AccelAmplitude::clone() const
 {
     // no copy constructor
-    if (_other)
-        return AccelAmplitude::create(_other->clone(), _duration);
-    
-    return nullptr;
+    auto a = new (std::nothrow) AccelAmplitude();
+    a->initWithAction(_other->clone(), _duration);
+    a->autorelease();
+    return a;
 }
 
 AccelAmplitude::~AccelAmplitude()
@@ -280,10 +282,7 @@ void AccelAmplitude::update(float time)
 
 AccelAmplitude* AccelAmplitude::reverse() const
 {
-    if (_other)
-        return AccelAmplitude::create(_other->reverse(), _duration);
-    
-    return nullptr;
+    return AccelAmplitude::create(_other->reverse(), _duration);
 }
 
 // DeccelAmplitude
@@ -291,14 +290,19 @@ AccelAmplitude* AccelAmplitude::reverse() const
 DeccelAmplitude* DeccelAmplitude::create(Action *action, float duration)
 {
     DeccelAmplitude *ret = new (std::nothrow) DeccelAmplitude();
-    if (ret && ret->initWithAction(action, duration))
+    if (ret)
     {
-        ret->autorelease();
-        return ret;
+        if (ret->initWithAction(action, duration))
+        {
+            ret->autorelease();
+        }
+        else
+        {
+            CC_SAFE_DELETE(ret);
+        }
     }
 
-    delete ret;
-    return nullptr;
+    return ret;
 }
 
 bool DeccelAmplitude::initWithAction(Action *action, float duration)
@@ -334,11 +338,11 @@ void DeccelAmplitude::update(float time)
 
 DeccelAmplitude* DeccelAmplitude::clone() const
 {
-    // no copy constructor
-    if (_other)
-        return DeccelAmplitude::create(_other->clone(), _duration);
-    
-    return nullptr;
+    // no copy constructor    
+    auto a = new (std::nothrow) DeccelAmplitude();
+    a->initWithAction(_other->clone(), _duration);
+    a->autorelease();
+    return a;
 }
 
 DeccelAmplitude* DeccelAmplitude::reverse() const
@@ -367,15 +371,10 @@ void StopGrid::cacheTargetAsGridNode()
 
 StopGrid* StopGrid::create()
 {
-    StopGrid* action = new (std::nothrow) StopGrid();
-    if (action)
-    {
-        action->autorelease();
-        return action;
-    }
+    StopGrid* pAction = new (std::nothrow) StopGrid();
+    pAction->autorelease();
 
-    delete action;
-    return nullptr;
+    return pAction;
 }
 
 StopGrid* StopGrid::clone() const
@@ -394,14 +393,19 @@ StopGrid* StopGrid::reverse() const
 ReuseGrid* ReuseGrid::create(int times)
 {
     ReuseGrid *action = new (std::nothrow) ReuseGrid();
-    if (action && action->initWithTimes(times))
+    if (action)
     {
-        action->autorelease();
-        return action;
+        if (action->initWithTimes(times))
+        {
+            action->autorelease();
+        }
+        else
+        {
+            CC_SAFE_DELETE(action);
+        }
     }
 
-    delete action;
-    return nullptr;
+    return action;
 }
 
 bool ReuseGrid::initWithTimes(int times)

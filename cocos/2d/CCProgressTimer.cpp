@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2010      Lam Pham
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc
+Copyright (c) 2013-2014 Chukong Technologies Inc
 
 http://www.cocos2d-x.org
 
@@ -54,14 +54,17 @@ ProgressTimer::ProgressTimer()
 ProgressTimer* ProgressTimer::create(Sprite* sp)
 {
     ProgressTimer *progressTimer = new (std::nothrow) ProgressTimer();
-    if (progressTimer && progressTimer->initWithSprite(sp))
+    if (progressTimer->initWithSprite(sp))
     {
         progressTimer->autorelease();
-        return progressTimer;
     }
-    
-    delete progressTimer;
-    return nullptr;
+    else
+    {
+        delete progressTimer;
+        progressTimer = nullptr;
+    }        
+
+    return progressTimer;
 }
 
 bool ProgressTimer::initWithSprite(Sprite* sp)
@@ -78,7 +81,7 @@ bool ProgressTimer::initWithSprite(Sprite* sp)
     setSprite(sp);
 
     // shader state
-    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR, sp->getTexture()));
+    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));
     return true;
 }
 
@@ -101,16 +104,6 @@ void ProgressTimer::setSprite(Sprite *sprite)
 {
     if (_sprite != sprite)
     {
-#if CC_ENABLE_GC_FOR_NATIVE_OBJECTS
-        auto sEngine = ScriptEngineManager::getInstance()->getScriptEngine();
-        if (sEngine)
-        {
-            if (_sprite)
-                sEngine->releaseScriptObject(this, _sprite);
-            if (sprite)
-                sEngine->retainScriptObject(this, sprite);
-        }
-#endif // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
         CC_SAFE_RETAIN(sprite);
         CC_SAFE_RELEASE(_sprite);
         _sprite = sprite;
@@ -121,7 +114,6 @@ void ProgressTimer::setSprite(Sprite *sprite)
         {
             CC_SAFE_FREE(_vertexData);
             _vertexDataCount = 0;
-            updateProgress();
         }
     }        
 }
@@ -142,7 +134,7 @@ void ProgressTimer::setType(Type type)
     }
 }
 
-void ProgressTimer::setReverseDirection(bool reverse)
+void ProgressTimer::setReverseProgress(bool reverse)
 {
     if( _reverseDirection != reverse ) {
         _reverseDirection = reverse;
@@ -502,7 +494,7 @@ Vec2 ProgressTimer::boundaryTexCoord(char index)
     return Vec2::ZERO;
 }
 
-void ProgressTimer::onDraw(const Mat4 &transform, uint32_t /*flags*/)
+void ProgressTimer::onDraw(const Mat4 &transform, uint32_t flags)
 {
 
     getGLProgram()->use();
@@ -512,7 +504,7 @@ void ProgressTimer::onDraw(const Mat4 &transform, uint32_t /*flags*/)
 
     GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POS_COLOR_TEX );
 
-    GL::bindTexture2D( _sprite->getTexture() );
+    GL::bindTexture2D( _sprite->getTexture()->getName() );
 
     glVertexAttribPointer( GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(_vertexData[0]) , &_vertexData[0].vertices);
     glVertexAttribPointer( GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(_vertexData[0]), &_vertexData[0].texCoords);

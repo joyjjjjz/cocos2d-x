@@ -2,7 +2,6 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := cocos3d_static
-LOCAL_ARM_MODE := arm
 
 LOCAL_MODULE_FILENAME := libcocos3d
 
@@ -19,13 +18,13 @@ CCBundleReader.cpp \
 CCMesh.cpp \
 CCMeshSkin.cpp \
 CCMeshVertexIndexData.cpp \
-CCMotionStreak3D.cpp \
 CCSprite3DMaterial.cpp \
 CCObjLoader.cpp \
 CCSkeleton3D.cpp \
 CCSprite3D.cpp \
 CCTerrain.cpp \
-CCSkybox.cpp
+CCSkybox.cpp  \
+CCTextureCube.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

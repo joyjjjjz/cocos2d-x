@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2015 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -64,8 +64,6 @@ public:
 private:
     TestController();
 
-    void traverseThreadFunc();
-
     void traverseTestList(TestList* testList);
     void traverseTestSuite(TestSuite* testSuite);
     bool checkTest(TestCase* testCase);
@@ -80,8 +78,9 @@ private:
 
     std::thread _autoTestThread;
 
+    std::mutex _sleepMutex;
     std::condition_variable _sleepCondition;
-    std::unique_lock<std::mutex>* _sleepUniqueLock;
+    std::unique_lock<std::mutex> _sleepUniqueLock;
 
     cocos2d::Director* _director;
     cocos2d::EventListenerTouchOneByOne* _touchListener;

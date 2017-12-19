@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2009      Jason Booth
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -113,9 +113,12 @@ public:
      */
     virtual void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue);
 
-    /** Ends grabbing.
-     * @lua endToLua
+    /** End is key word of lua, use other name to export to lua.
+     * @js NA
      */
+    inline void endToLua(){ end();};
+
+    /** Ends grabbing. */
     virtual void end();
 
     /** Clears the texture with a color. 
@@ -162,7 +165,7 @@ public:
 
     /** saves the texture into a file. The format could be JPG or PNG. The file will be saved in the Documents folder.
         Returns true if the operation is successful.
-     * Notes: since v3.x, saveToFile will generate a custom command, which will be called in the following render->render().
+     * Notes: since v3.x, saveToFile will generate a custum command, which will be called in the following render->render().
      * So if this function is called in a event handler, the actual save file will be called in the next frame. If we switch to a different scene, the game will crash.
      * To solve this, add Director::getInstance()->getRenderer()->render(); after this function.
      *
@@ -192,74 +195,78 @@ public:
      *
      * @return Clear flags.
      */
-    unsigned int getClearFlags() const { return _clearFlags; }
+    inline unsigned int getClearFlags() const { return _clearFlags; };
     
     /** Set flags.
      *
      * @param clearFlags Valid flags: GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_STENCIL_BUFFER_BIT.
      */
-    void setClearFlags(unsigned int clearFlags) { _clearFlags = clearFlags; }
+    inline void setClearFlags(unsigned int clearFlags) { _clearFlags = clearFlags; };
     
     /** Clear color value. Valid only when "autoDraw" is true. 
      *
      * @return Color value.
      */
-    const Color4F& getClearColor() const { return _clearColor; }
+    inline const Color4F& getClearColor() const { return _clearColor; };
     
     /** Set color value. 
      *
      * @param clearColor Color value.
      */
-    void setClearColor(const Color4F &clearColor) { _clearColor = clearColor; }
+    inline void setClearColor(const Color4F &clearColor) { _clearColor = clearColor; };
     
     /** Value for clearDepth. Valid only when "autoDraw" is true. 
      *
      * @return Value for clearDepth.
      */
-    float getClearDepth() const { return _clearDepth; }
+    inline float getClearDepth() const { return _clearDepth; };
     
     /** Set Value for clearDepth.
      *
      * @param clearDepth Value for clearDepth.
      */
-    void setClearDepth(float clearDepth) { _clearDepth = clearDepth; }
+    inline void setClearDepth(float clearDepth) { _clearDepth = clearDepth; };
     
     /** Value for clear Stencil. Valid only when "autoDraw" is true.
      *
      * @return Value for clear Stencil.
      */
-    int getClearStencil() const { return _clearStencil; }
+    inline int getClearStencil() const { return _clearStencil; };
     
     /** Set Value for clear Stencil.
      *
      * @param clearStencil Value for clear Stencil.
      */
-    void setClearStencil(int clearStencil) { _clearStencil = clearStencil; }
+    inline void setClearStencil(int clearStencil) { _clearStencil = clearStencil; };
     
-    /** When enabled, it will render its children into the texture automatically. Disabled by default for compatibility reasons.
+    /** When enabled, it will render its children into the texture automatically. Disabled by default for compatiblity reasons.
      * Will be enabled in the future.
      *
      * @return Return the autoDraw value.
      */
-    bool isAutoDraw() const { return _autoDraw; }
+    inline bool isAutoDraw() const { return _autoDraw; };
     
     /** Set a valve to control whether or not render its children into the texture automatically. 
      *
      * @param isAutoDraw Whether or not render its children into the texture automatically.
      */
-    void setAutoDraw(bool isAutoDraw) { _autoDraw = isAutoDraw; }
+    inline void setAutoDraw(bool isAutoDraw) { _autoDraw = isAutoDraw; };
 
     /** Gets the Sprite being used. 
      *
      * @return A Sprite.
      */
-    Sprite* getSprite() const { return _sprite; }
+    inline Sprite* getSprite() const { return _sprite; };
     
     /** Sets the Sprite being used. 
      *
      * @param sprite A Sprite.
      */
-    void setSprite(Sprite* sprite);
+    inline void setSprite(Sprite* sprite) {
+        CC_SAFE_RETAIN(sprite);
+        CC_SAFE_RELEASE(_sprite);
+        _sprite = sprite;
+    };
     
     // Overrides
     virtual void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
@@ -267,7 +274,7 @@ public:
 
     /** Flag: Use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.
      *
-     * @param keepMatrix Whether or not use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.
+     * @param keepMatrix Wether or not use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.
      * @js NA
      */
     void setKeepMatrix(bool keepMatrix);
@@ -279,7 +286,7 @@ public:
     void setVirtualViewport(const Vec2& rtBegin, const Rect& fullRect, const Rect& fullViewport);
 
 public:
-    /** FIXME: should be protected.
+    /** FIXME: should be procted.
      * but due to a bug in PowerVR + Android,
      * the constructor is public again.
      * @js ctor
@@ -296,7 +303,7 @@ public:
      * @param w The RenderTexture object width.
      * @param h The RenderTexture object height.
      * @param format In Points and a pixel format( only RGB and RGBA formats are valid ).
-     * @return If succeed, it will return true.
+     * @return If successed,it will return true.
      */
     bool initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat format);
     /** Initializes a RenderTexture object with width and height in Points and a pixel format( only RGB and RGBA formats are valid ) and depthStencil format. 
@@ -305,7 +312,7 @@ public:
      * @param h The RenderTexture object height.
      * @param format In Points and a pixel format( only RGB and RGBA formats are valid ).
      * @param depthStencilFormat The depthStencil format.
-     * @return If succeed, it will return true.
+     * @return If successed,it will return true.
      */
     bool initWithWidthAndHeight(int w, int h, Texture2D::PixelFormat format, GLuint depthStencilFormat);
 
@@ -319,8 +326,7 @@ protected:
     Rect         _fullviewPort;
     
     GLuint       _FBO;
-    GLuint       _depthRenderBuffer;
-    GLuint       _stencilRenderBuffer;
+    GLuint       _depthRenderBufffer;
     GLint        _oldFBO;
     Texture2D* _texture;
     Texture2D* _textureCopy;    // a copy of _texture

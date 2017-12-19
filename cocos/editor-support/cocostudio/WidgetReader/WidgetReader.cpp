@@ -1,19 +1,17 @@
 
 
-#include "editor-support/cocostudio/WidgetReader/WidgetReader.h"
+#include "WidgetReader.h"
 
-#include "editor-support/cocostudio/CocoLoader.h"
+#include "cocostudio/CocoLoader.h"
 #include "ui/UIButton.h"
-#include "editor-support/cocostudio/ActionTimeline/CCActionTimeline.h"
-#include "editor-support/cocostudio/CCComExtensionData.h"
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
+#include "../ActionTimeline/CCActionTimeline.h"
+#include "cocostudio/CCObjectExtensionData.h"
+#include "cocostudio/CSParseBinary_generated.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
 #include "ui/UILayoutComponent.h"
-#include "editor-support/cocostudio/ActionTimeline/CSLoader.h"
-#include "base/ccUtils.h"
-#include "base/CCDirector.h"
+#include "cocostudio/ActionTimeline/CSLoader.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -162,22 +160,12 @@ namespace cocostudio
         
         /* adapt screen */
         float w = 0, h = 0;
-        bool adaptScrennExsit = DICTOOL->checkObjectExist_json(options, P_AdaptScreen);
-        if (adaptScrennExsit)
+        bool adaptScrenn = DICTOOL->getBooleanValue_json(options, P_AdaptScreen);
+        if (adaptScrenn)
         {
-            bool adaptScrenn = DICTOOL->getBooleanValue_json(options, P_AdaptScreen);
-            if (adaptScrenn)
-            {
-                Size screenSize = Director::getInstance()->getWinSize();
-                w = screenSize.width;
-                h = screenSize.height;
-            }
-            else
-            {
-                w = DICTOOL->getFloatValue_json(options, P_Width);
-                h = DICTOOL->getFloatValue_json(options, P_Height);
-            }
-
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            w = screenSize.width;
+            h = screenSize.height;
         }
         else
         {
@@ -807,14 +795,10 @@ namespace cocostudio
         
         std::string customProperty = options->customProperty()->c_str();
         
-        ComExtensionData* extensionData = ComExtensionData::create();
+        ObjectExtensionData* extensionData = ObjectExtensionData::create();
         extensionData->setCustomProperty(customProperty);
         extensionData->setActionTag(actionTag);
-        if (node->getComponent(ComExtensionData::COMPONENT_NAME))
-        {
-            node->removeComponent(ComExtensionData::COMPONENT_NAME);
-        }
-        node->addComponent(extensionData);
+        node->setUserObject(extensionData);
         
         bool touchEnabled = options->touchEnabled() != 0;
         widget->setTouchEnabled(touchEnabled);

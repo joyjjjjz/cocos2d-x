@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -28,7 +28,6 @@
 #include "renderer/CCGLProgramState.h"
 #include "xxhash.h"
 #include "renderer/CCRenderer.h"
-#include "renderer/CCTexture2D.h"
 
 NS_CC_BEGIN
 
@@ -37,7 +36,6 @@ TrianglesCommand::TrianglesCommand()
 ,_textureID(0)
 ,_glProgramState(nullptr)
 ,_blendType(BlendFunc::DISABLE)
-,_alphaTextureID(0)
 {
     _type = RenderCommand::Type::TRIANGLES_COMMAND;
 }
@@ -46,25 +44,24 @@ void TrianglesCommand::init(float globalOrder, GLuint textureID, GLProgramState*
 {
     CCASSERT(glProgramState, "Invalid GLProgramState");
     CCASSERT(glProgramState->getVertexAttribsFlags() == 0, "No custom attributes are supported in QuadCommand");
-
+    
     RenderCommand::init(globalOrder, mv, flags);
-
+    
     _triangles = triangles;
     if(_triangles.indexCount % 3 != 0)
     {
-        int count = _triangles.indexCount;
+        ssize_t count = _triangles.indexCount;
         _triangles.indexCount = count / 3 * 3;
         CCLOGERROR("Resize indexCount from %zd to %zd, size must be multiple times of 3", count, _triangles.indexCount);
     }
     _mv = mv;
     
-    if( _textureID != textureID || _blendType.src != blendType.src || _blendType.dst != blendType.dst ||
-       _glProgramState != glProgramState)
-    {
+    if( _textureID != textureID || _blendType.src != blendType.src || _blendType.dst != blendType.dst || _glProgramState != glProgramState) {
+        
         _textureID = textureID;
         _blendType = blendType;
         _glProgramState = glProgramState;
-
+        
         generateMaterialID();
     }
 }
@@ -74,37 +71,24 @@ void TrianglesCommand::init(float globalOrder, GLuint textureID, GLProgramState*
     init(globalOrder, textureID, glProgramState, blendType, triangles, mv, 0);
 }
 
-void TrianglesCommand::init(float globalOrder, Texture2D* texture, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles, const Mat4& mv, uint32_t flags)
-{
-    init(globalOrder, texture->getName(), glProgramState, blendType, triangles, mv, flags);
-    _alphaTextureID = texture->getAlphaTextureName();
-}
-
 TrianglesCommand::~TrianglesCommand()
 {
 }
 
 void TrianglesCommand::generateMaterialID()
 {
-    // glProgramState is hashed because it contains:
-    //  *  uniforms/values
-    //  *  glProgram
-    //
-    // we safely can when the same glProgramState is being used then they share those states
-    // if they don't have the same glProgramState, they might still have the same
-    // uniforms/values and glProgram, but it would be too expensive to check the uniforms.
-    struct {
-        GLuint textureId;
-        GLenum blendSrc;
-        GLenum blendDst;
-        void* glProgramState;
-    } hashMe;
-
-    hashMe.textureId = _textureID;
-    hashMe.blendSrc = _blendType.src;
-    hashMe.blendDst = _blendType.dst;
-    hashMe.glProgramState = _glProgramState;
-    _materialID = XXH32((const void*)&hashMe, sizeof(hashMe), 0);
+    
+    if(_glProgramState->getUniformCount() > 0)
+    {
+        _materialID = Renderer::MATERIAL_ID_DO_NOT_BATCH;
+    }
+    else
+    {
+        int glProgram = (int)_glProgramState->getGLProgram()->getProgram();
+        int intArray[4] = { glProgram, (int)_textureID, (int)_blendType.src, (int)_blendType.dst};
+        
+        _materialID = XXH32((const void*)intArray, sizeof(intArray), 0);
+    }
 }
 
 void TrianglesCommand::useMaterial() const
@@ -112,10 +96,6 @@ void TrianglesCommand::useMaterial() const
     //Set texture
     GL::bindTexture2D(_textureID);
     
-    if (_alphaTextureID > 0)
-    { // ANDROID ETC1 ALPHA supports.
-        GL::bindTexture2DN(1, _alphaTextureID);
-    }
     //set blend mode
     GL::blendFunc(_blendType.src, _blendType.dst);
     

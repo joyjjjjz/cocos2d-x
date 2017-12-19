@@ -89,7 +89,7 @@
 -- @param self
 -- @param #cc.Sprite sprite
 -- @param #vec2_table pos
--- @param #unsigned int gid
+-- @param #int gid
 -- @return experimental::TMXLayer#experimental::TMXLayer self (return value: cc.experimental::TMXLayer)
         
 --------------------------------
@@ -165,7 +165,7 @@
 -- param tilesetInfo An tileset info.<br>
 -- param layerInfo A layer info.<br>
 -- param mapInfo A map info.<br>
--- return Return an autorelease object.
+-- return Reruen an autorelease object.
 -- @function [parent=#TMXLayer] create 
 -- @param self
 -- @param #cc.TMXTilesetInfo tilesetInfo

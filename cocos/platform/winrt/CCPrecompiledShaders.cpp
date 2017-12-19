@@ -22,10 +22,17 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#include "platform/winrt/CCPrecompiledShaders.h"
-#include "platform/winrt/CCWinRTUtils.h"
+#include "CCPrecompiledShaders.h"
+#include "CCWinRTUtils.h"
 #include "renderer/CCGLProgram.h"
-#include "platform/winrt/sha1.h"
+#include "sha1.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#include "platform/winrt/shaders/precompiledshaders.h"
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
+#include "platform/wp8/shaders/precompiledshaders.h"
+#endif
+
 
 using namespace Windows::Graphics::Display;
 using namespace Windows::Storage;
@@ -38,7 +45,7 @@ using namespace concurrency;
 NS_CC_BEGIN
 
 // singleton stuff
-static CCPrecompiledShaders *s_pPrecompiledShaders = nullptr;
+static CCPrecompiledShaders *s_pPrecompiledShaders = NULL;
 
 #define SHADER_NAME_PREFIX "s_"
 
@@ -64,7 +71,7 @@ void CCPrecompiledShaders::Init(void)
     m_programs.clear();
     m_precompiledPrograms.clear();
 
-    // add existing precompiled programs to dictionary
+    // add existing precomiled programs to dictionary
     loadPrecompiledPrograms();
 }
 
@@ -83,16 +90,16 @@ static std::string computeHash(const GLchar* vShaderByteArray, const GLchar* fSh
 
     if(!err)
     {
-        err = SHA1Input(&sha,(const unsigned char *) vShaderByteArray,static_cast<unsigned int>(strlen(vShaderByteArray)));
+        err = SHA1Input(&sha,(const unsigned char *) vShaderByteArray,strlen(vShaderByteArray));
     }
     if(!err)
     {
-        err = SHA1Input(&sha,(const unsigned char *) fShaderByteArray, static_cast<unsigned int>(strlen(fShaderByteArray)));
+        err = SHA1Input(&sha,(const unsigned char *) fShaderByteArray,strlen(fShaderByteArray));
     }
     if(!err)
     {
         char* shader_version = (char*) glGetString(GL_SHADING_LANGUAGE_VERSION);
-        err = SHA1Input(&sha,(const unsigned char *) shader_version, static_cast<unsigned int>(strlen(shader_version)));
+        err = SHA1Input(&sha,(const unsigned char *) shader_version,strlen(shader_version));
     }
     if(!err)
     {
@@ -185,7 +192,7 @@ bool CCPrecompiledShaders::addProgram(GLuint program, const std::string& id)
     return true;
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) && defined(WP8_SHADER_COMPILER)
 
 void CCPrecompiledShaders::savePrecompiledPrograms(Windows::Storage::StorageFolder^ folder)
 {
@@ -207,10 +214,10 @@ void CCPrecompiledShaders::savePrecompiledPrograms(Windows::Storage::StorageFold
         dataWriter->WriteString(L"#define PRECOMPILED_SHADERS\n\n");
 
 
-        for (auto& iter : m_programs)
+        for (auto iter = m_programs.begin(); iter != m_programs.end(); ++iter) 
         {
-            CompiledProgram* p = (CompiledProgram*)iter.second;
-            Platform::String^ keyName = PlatformStringFromString(p->key);
+            CompiledProgram* p = (CompiledProgram*)iter->second;
+            Platform::String^ keyName =  ref new Platform::String(CCUtf8ToUnicode(p->key.c_str()).c_str());
             Platform::String^ programName = SHADER_NAME_PREFIX + keyName;
 
             dataWriter->WriteString("const unsigned char ");
@@ -225,12 +232,12 @@ void CCPrecompiledShaders::savePrecompiledPrograms(Windows::Storage::StorageFold
                 if(i % 8 == 0)
                     dataWriter->WriteString("\n");
                 sprintf_s(temp, "%3i, ", buffer[i]);
-                dataWriter->WriteString(PlatformStringFromString(temp));
+                dataWriter->WriteString(ref new Platform::String(CCUtf8ToUnicode(temp).c_str()));
             }
             if((p->length - 1) % 8 == 0)
                 dataWriter->WriteString("\n");
             sprintf_s(temp, "%3i, ", buffer[p->length - 1]);
-            dataWriter->WriteString(PlatformStringFromString(temp));
+            dataWriter->WriteString(ref new Platform::String(CCUtf8ToUnicode(temp).c_str()));
             dataWriter->WriteString("\n};\n\n");
 
             if(numPrograms != 0)

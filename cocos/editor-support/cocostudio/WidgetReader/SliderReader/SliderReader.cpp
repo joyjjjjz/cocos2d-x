@@ -1,14 +1,11 @@
 
 
-#include "editor-support/cocostudio/WidgetReader/SliderReader/SliderReader.h"
+#include "SliderReader.h"
 
 #include "ui/UISlider.h"
-#include "2d/CCSpriteFrameCache.h"
-#include "platform/CCFileUtils.h"
-
-#include "editor-support/cocostudio/CocoLoader.h"
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
+#include "cocostudio/CocoLoader.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/FlatBuffersSerialize.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -83,7 +80,7 @@ namespace cocostudio
                 percent = valueToInt(value);
             }else if(key == P_BarFileNameData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -95,7 +92,7 @@ namespace cocostudio
                 barLength = valueToFloat(value);
             }else if(key == P_BallNormalData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -105,7 +102,7 @@ namespace cocostudio
 
             }else if(key == P_BallPressedData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -115,7 +112,7 @@ namespace cocostudio
                 
             }else if(key == P_BallDisabledData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -125,7 +122,7 @@ namespace cocostudio
                 
             }else if(key == P_ProgressBarData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -185,7 +182,7 @@ namespace cocostudio
         std::string pressedFileName = this->getResourcePath(pressedDic, P_Path, (Widget::TextureResType)pressedType);
         slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
         
-        //loading slider ball disable texture
+        //loading silder ball disable texture
         const rapidjson::Value& disabledDic = DICTOOL->getSubDictionary_json(options, P_BallDisabledData);
         int disabledType = DICTOOL->getIntValue_json(disabledDic, P_ResourceType);
         std::string disabledFileName = this->getResourcePath(disabledDic, P_Path, (Widget::TextureResType)disabledType);
@@ -469,7 +466,7 @@ namespace cocostudio
         auto options = (SliderOptions*)sliderOptions;
         
         int percent = options->percent();
-        //slider->setPercent(percent);
+        slider->setPercent(percent);
         
         bool imageFileExist = false;
         std::string imageErrorFilePath = "";
@@ -483,11 +480,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(imageFileName))
                 {
                     imageFileExist = true;
-                }
-                else if(SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName))
-                {
-                    imageFileExist = true;
-                    imageFileNameType = 1;
                 }
                 else
                 {
@@ -533,12 +525,12 @@ namespace cocostudio
         {
             slider->loadBarTexture(imageFileName, (Widget::TextureResType)imageFileNameType);
         }
-        //else
-        //{
-        //    auto label = Label::create();
-        //    label->setString(__String::createWithFormat("%s missed", imageErrorFilePath.c_str())->getCString());
-        //    slider->addChild(label);
-        //}
+        else
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", imageErrorFilePath.c_str())->getCString());
+            slider->addChild(label);
+        }
         
         //loading normal slider ball texture
         bool normalFileExist = false;
@@ -553,11 +545,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(normalFileName))
                 {
                     normalFileExist = true;
-                }
-                else if(SpriteFrameCache::getInstance()->getSpriteFrameByName(normalFileName))
-                {
-                    normalFileExist = true;
-                    normalType = 1;
                 }
                 else
                 {
@@ -603,12 +590,12 @@ namespace cocostudio
         {
             slider->loadSlidBallTextureNormal(normalFileName, (Widget::TextureResType)normalType);
         }
-        //else
-        //{
-        //    auto label = Label::create();
-        //    label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
-        //    slider->addChild(label);
-        //}
+        else
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
+            slider->addChild(label);
+        }
         
         //loading slider ball press texture
         bool pressedFileExist = false;
@@ -623,11 +610,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(pressedFileName))
                 {
                     pressedFileExist = true;
-                }
-                else if(SpriteFrameCache::getInstance()->getSpriteFrameByName(pressedFileName))
-                {
-                    pressedFileExist = true;
-                    pressedType = 1;
                 }
                 else
                 {
@@ -673,14 +655,14 @@ namespace cocostudio
         {
             slider->loadSlidBallTexturePressed(pressedFileName, (Widget::TextureResType)pressedType);
         }
-        //else
-        //{
-        //    auto label = Label::create();
-        //    label->setString(__String::createWithFormat("%s missed", pressedErrorFilePath.c_str())->getCString());
-        //    slider->addChild(label);
-        //}
+        else
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", pressedErrorFilePath.c_str())->getCString());
+            slider->addChild(label);
+        }
         
-        //loading slider ball disable texture
+        //loading silder ball disable texture
         bool disabledFileExist = false;
         std::string disabledErrorFilePath = "";
         auto disabledDic = options->ballDisabledData();
@@ -693,11 +675,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(disabledFileName))
                 {
                     disabledFileExist = true;
-                }
-                else if(SpriteFrameCache::getInstance()->getSpriteFrameByName(disabledFileName))
-                {
-                    disabledFileExist = true;
-                    disabledType = 1;
                 }
                 else
                 {
@@ -743,12 +720,12 @@ namespace cocostudio
         {
             slider->loadSlidBallTextureDisabled(disabledFileName, (Widget::TextureResType)disabledType);
         }
-        //else
-        //{
-        //    auto label = Label::create();
-        //    label->setString(__String::createWithFormat("%s missed", disabledErrorFilePath.c_str())->getCString());
-        //    slider->addChild(label);
-        //}
+        else
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", disabledErrorFilePath.c_str())->getCString());
+            slider->addChild(label);
+        }
         
         //load slider progress texture
         bool progressFileExist = false;
@@ -763,11 +740,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(progressBarFileName))
                 {
                     progressFileExist = true;
-                }
-                else if(SpriteFrameCache::getInstance()->getSpriteFrameByName(progressBarFileName))
-                {
-                    progressFileExist = true;
-                    progressBarType = 1;
                 }
                 else
                 {
@@ -813,12 +785,12 @@ namespace cocostudio
         {
             slider->loadProgressBarTexture(progressBarFileName, (Widget::TextureResType)progressBarType);
         }
-        //else
-        //{
-        //    auto label = Label::create();
-        //    label->setString(__String::createWithFormat("%s missed", progressErrorFilePath.c_str())->getCString());
-        //    slider->addChild(label);
-        //}
+        else
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", progressErrorFilePath.c_str())->getCString());
+            slider->addChild(label);
+        }
         
         bool displaystate = options->displaystate() != 0;
         slider->setBright(displaystate);
@@ -826,7 +798,7 @@ namespace cocostudio
         
         auto widgetReader = WidgetReader::getInstance();
         widgetReader->setPropsWithFlatBuffers(node, (Table*)options->widgetOptions());
-        slider->setPercent(percent);
+        
     }
     
     Node* SliderReader::createNodeWithFlatBuffers(const flatbuffers::Table *sliderOptions)

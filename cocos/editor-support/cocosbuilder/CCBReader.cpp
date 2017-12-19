@@ -7,15 +7,15 @@
 #include "2d/CCSpriteFrameCache.h"
 #include "renderer/CCTextureCache.h"
 
-#include "editor-support/cocosbuilder/CCBReader.h"
-#include "editor-support/cocosbuilder/CCNodeLoader.h"
-#include "editor-support/cocosbuilder/CCNodeLoaderLibrary.h"
-#include "editor-support/cocosbuilder/CCNodeLoaderListener.h"
-#include "editor-support/cocosbuilder/CCBMemberVariableAssigner.h"
-#include "editor-support/cocosbuilder/CCBSelectorResolver.h"
-#include "editor-support/cocosbuilder/CCBAnimationManager.h"
-#include "editor-support/cocosbuilder/CCBSequenceProperty.h"
-#include "editor-support/cocosbuilder/CCBKeyframe.h"
+#include "CCBReader.h"
+#include "CCNodeLoader.h"
+#include "CCNodeLoaderLibrary.h"
+#include "CCNodeLoaderListener.h"
+#include "CCBMemberVariableAssigner.h"
+#include "CCBSelectorResolver.h"
+#include "CCBAnimationManager.h"
+#include "CCBSequenceProperty.h"
+#include "CCBKeyframe.h"
 #include <sstream>
 
 using namespace cocos2d;
@@ -128,7 +128,7 @@ CCBReader::~CCBReader()
 
 void CCBReader::setCCBRootPath(const char* ccbRootPath)
 {
-    CCASSERT(ccbRootPath != nullptr, "ccbRootPath can't be nullptr!");
+    CCASSERT(ccbRootPath != nullptr, "");
     _CCBRootPath = ccbRootPath;
 }
 
@@ -220,7 +220,7 @@ Node* CCBReader::readNodeGraphFromFile(const char *pCCBFileName, Ref *pOwner, co
         strCCBFileName += strSuffix;
     }
 
-    std::string strPath = FileUtils::getInstance()->fullPathForFilename(strCCBFileName);
+    std::string strPath = FileUtils::getInstance()->fullPathForFilename(strCCBFileName.c_str());
 
     auto dataPtr = std::make_shared<Data>(FileUtils::getInstance()->getDataFromFile(strPath));
     
@@ -604,7 +604,7 @@ Node * CCBReader::readNodeGraph(Node * pParent)
         embeddedNode->setScaleY(ccbFileNode->getScaleY());
         embeddedNode->setTag(ccbFileNode->getTag());
         embeddedNode->setVisible(true);
-        //embeddedNode->setIgnoreAnchorPointForPosition(ccbFileNode->isIgnoreAnchorPointForPosition());
+        //embeddedNode->ignoreAnchorPointForPosition(ccbFileNode->isIgnoreAnchorPointForPosition());
         
         _animationManager->moveAnimationsFromNode(ccbFileNode, embeddedNode);
 
@@ -613,6 +613,13 @@ Node * CCBReader::readNodeGraph(Node * pParent)
         node = embeddedNode;
     }
 
+#ifdef CCB_ENABLE_JAVASCRIPT
+    /*
+     if (memberVarAssignmentType && memberVarAssignmentName && ![memberVarAssignmentName isEqualToString:@""])
+     {
+     [[JSCocoa sharedController] setObject:node withName:memberVarAssignmentName];
+     }*/
+#else
     if (memberVarAssignmentType != TargetType::NONE)
     {
         if(!_jsControlled)
@@ -689,6 +696,8 @@ Node * CCBReader::readNodeGraph(Node * pParent)
             }
         }
     }
+
+#endif // CCB_ENABLE_JAVASCRIPT
     
     delete _animatedProps;
     _animatedProps = nullptr;
@@ -787,11 +796,11 @@ CCBKeyframe* CCBReader::readKeyframe(PropertyType type)
         
         SpriteFrame* spriteFrame;
 
-        if (spriteSheet.empty())
+        if (spriteSheet.length() == 0)
         {
             spriteFile = _CCBRootPath + spriteFile;
 
-            Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(spriteFile);
+            Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(spriteFile.c_str());
             Rect bounds = Rect(0, 0, texture->getContentSize().width, texture->getContentSize().height);
             
             spriteFrame = SpriteFrame::createWithTexture(texture, bounds);
@@ -804,11 +813,11 @@ CCBKeyframe* CCBReader::readKeyframe(PropertyType type)
             // Load the sprite sheet only if it is not loaded            
             if (_loadedSpriteSheets.find(spriteSheet) == _loadedSpriteSheets.end())
             {
-                frameCache->addSpriteFramesWithFile(spriteSheet);
+                frameCache->addSpriteFramesWithFile(spriteSheet.c_str());
                 _loadedSpriteSheets.insert(spriteSheet);
             }
             
-            spriteFrame = frameCache->getSpriteFrameByName(spriteFile);
+            spriteFrame = frameCache->getSpriteFrameByName(spriteFile.c_str());
         }
         
         keyframe->setObject(spriteFrame);

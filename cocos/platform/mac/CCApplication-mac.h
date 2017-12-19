@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -47,23 +47,26 @@ public:
      * @lua NA
      */
     virtual ~Application();
-    
+        
     /**
-    @brief  Callback by Director for limit FPS.
+    @brief	Callback by Director for limit FPS.
     @param interval The time, which expressed in second in second, between current frame and next.
     */
-    virtual void setAnimationInterval(float interval) override;
-    virtual void setAnimationInterval(float interval, SetIntervalReason reason) override;
-
+    virtual void setAnimationInterval(double interval);
+        
     /**
-    @brief  Run the message loop.
+    @brief	Get status bar rectangle in GLView window.
+    */
+        
+    /**
+    @brief	Run the message loop.
     * @js NA
     * @lua NA
     */
     int run();
-    
+        
     /**
-    @brief  Get current application instance.
+    @brief	Get current applicaiton instance.
     @return Current application instance pointer.
     */
     static Application* getInstance();
@@ -75,30 +78,25 @@ public:
     @brief Get current language config
     @return Current language config
     */
-    virtual LanguageType getCurrentLanguage() override;
-    
+    virtual LanguageType getCurrentLanguage();
+		
     /**
     @brief Get current language iso 639-1 code
     @return Current language iso 639-1 code
     */
-    virtual const char * getCurrentLanguageCode() override;
-    
+    virtual const char * getCurrentLanguageCode();
+			
     /**
      @brief Get target platform
      */
-    virtual Platform getTargetPlatform() override;
+    virtual Platform getTargetPlatform();
     
-    /**
-     @brief Get application version.
-     */
-    virtual std::string getVersion() override;
-
     /**
      @brief Open url in default browser
      @param String with url to open.
      @return true if the resource located by the URL was successfully opened; otherwise false.
      */
-    virtual bool openURL(const std::string &url) override;
+    virtual bool openURL(const std::string &url);
 
     /**
      *  Sets the Resource root path.
@@ -128,4 +126,4 @@ NS_CC_END
 
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 
-#endif  // end of __CC_APPLICATION_MAC_H__;
+#endif	// end of __CC_APPLICATION_MAC_H__;

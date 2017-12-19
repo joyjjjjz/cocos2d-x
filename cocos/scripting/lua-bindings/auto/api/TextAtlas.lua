@@ -11,7 +11,7 @@
 -- return  string length.
 -- @function [parent=#TextAtlas] getStringLength 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return long#long ret (return value: long)
         
 --------------------------------
 -- 
@@ -25,12 +25,6 @@
 -- @param self
 -- @param #string value
 -- @return TextAtlas#TextAtlas self (return value: ccui.TextAtlas)
-        
---------------------------------
--- 
--- @function [parent=#TextAtlas] getRenderFile 
--- @param self
--- @return ResourceData#ResourceData ret (return value: cc.ResourceData)
         
 --------------------------------
 --  Initializes the LabelAtlas with a string, a char map file(the atlas), the width and height of each element and the starting char of the atlas.<br>

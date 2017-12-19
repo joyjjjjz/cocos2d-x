@@ -18,11 +18,11 @@
  This file was modified to fit the cocos2d-x project
  */
 
-#include "math/Quaternion.h"
+#include "Quaternion.h"
 
 NS_CC_MATH_BEGIN
 
-inline Quaternion Quaternion::operator*(const Quaternion& q) const
+inline const Quaternion Quaternion::operator*(const Quaternion& q) const
 {
     Quaternion result(*this);
     result.multiply(q);

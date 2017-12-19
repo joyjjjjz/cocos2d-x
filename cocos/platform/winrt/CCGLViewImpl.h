@@ -29,11 +29,12 @@ THE SOFTWARE.
 #include "platform/CCPlatformConfig.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 
-#include "platform/winrt/CCStdC.h"
-#include "platform/winrt/CCGL.h"
+#include "CCStdC.h"
+#include "CCGL.h"
 #include "platform/CCCommon.h"
-#include "platform/winrt/InputEvent.h"
+#include "InputEvent.h"
 #include "platform/CCGLView.h"
+#include <agile.h>
 
 #include <wrl/client.h>
 

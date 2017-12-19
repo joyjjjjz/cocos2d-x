@@ -22,18 +22,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "2d/CCLight.h"
-#include "3d/CCSprite3D.h"
-#include "3d/CCAnimate3D.h"
-#include "3d/CCAnimation3D.h"
-#include "platform/CCFileUtils.h"
-#include "editor-support/cocostudio/WidgetReader/Sprite3DReader/Sprite3DReader.h"
+#include "Sprite3DReader.h"
 
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/CSParse3DBinary_generated.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/CSParse3DBinary_generated.h"
 
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
-#include "editor-support/cocostudio/WidgetReader/Node3DReader/Node3DReader.h"
+#include "cocostudio/FlatBuffersSerialize.h"
+#include "cocostudio/WidgetReader/Node3DReader/Node3DReader.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -61,7 +56,7 @@ namespace cocostudio
     {
         if (!_instanceSprite3DReader)
         {
-            _instanceSprite3DReader = new (std::nothrow) Sprite3DReader();
+            _instanceSprite3DReader = new Sprite3DReader();
         }
         
         return _instanceSprite3DReader;
@@ -90,11 +85,11 @@ namespace cocostudio
             attriname = attribute->Name();
             std::string value = attribute->Value();
             
-            if (attriname == "X")
+            if (attriname == "ValueX")
             {
                 ret.x = atof(value.c_str());
             }
-            else if (attriname == "Y")
+            else if (attriname == "ValueY")
             {
                 ret.y = atof(value.c_str());
             }
@@ -114,8 +109,6 @@ namespace cocostudio
         bool runAction = false;
         std::string path;
         int resourceType = 0;
-        bool isFlipped = false;
-        int lightFlag = 0;
         
         std::string attriname;
         const tinyxml2::XMLAttribute* attribute = objectData->FirstAttribute();
@@ -127,26 +120,7 @@ namespace cocostudio
             if(attriname == "RunAction3D")
             {
                 runAction = value == "True" ? true : false;
-            }
-            else if (attriname == "IsFlipped")
-            {
-                isFlipped = value == "True" ? true : false;
-            }
-            else if (attriname == "LightFlag")
-            {
-                if (value == "LIGHT0")  lightFlag = (int)LightFlag::LIGHT0;
-                else if (value == "LIGHT1") lightFlag = (int)LightFlag::LIGHT1;
-                else if (value == "LIGHT2") lightFlag = (int)LightFlag::LIGHT2;
-                else if (value == "LIGHT3") lightFlag = (int)LightFlag::LIGHT3;
-                else if (value == "LIGHT4") lightFlag = (int)LightFlag::LIGHT4;
-                else if (value == "LIGHT5") lightFlag = (int)LightFlag::LIGHT5;
-                else if (value == "LIGHT6") lightFlag = (int)LightFlag::LIGHT6;
-                else if (value == "LIGHT7") lightFlag = (int)LightFlag::LIGHT7;
-                else if (value == "LIGHT8") lightFlag = (int)LightFlag::LIGHT8;
-                else if (value == "LIGHT9") lightFlag = (int)LightFlag::LIGHT9;
-                else if (value == "LIGHT10") lightFlag = (int)LightFlag::LIGHT10;
-                else if (value == "LIGHT11") lightFlag = (int)LightFlag::LIGHT11;
-                else if (value == "LIGHT12") lightFlag = (int)LightFlag::LIGHT12;
+                break;
             }
             
             attribute = attribute->Next();
@@ -196,9 +170,7 @@ namespace cocostudio
                                                                 builder->CreateString(path),
                                                                 builder->CreateString(""),
                                                                 resourceType),
-                                             runAction,
-                                             isFlipped,
-                                             lightFlag
+                                             runAction
                                              );
         
         return *(Offset<Table>*)(&options);
@@ -211,9 +183,7 @@ namespace cocostudio
         
         auto options = (Sprite3DOptions*)sprite3DOptions;
         
-        int lightFlag = options->lightFlag();
         bool runAction = options->runAction() != 0;
-        bool isFlipped = options->isFlipped() != 0;
         auto fileData = options->fileData();
         std::string path = fileData->path()->c_str();
 
@@ -243,17 +213,6 @@ namespace cocostudio
         {
             sprite3D->setColor(Color3B(red, green, blue));
         }
-        if (isFlipped)
-        {
-            sprite3D->setCullFaceEnabled(true);
-            sprite3D->setCullFace(GL_FRONT);
-        }
-
-        if (lightFlag <= 0)
-        {
-            lightFlag = 1;
-        }
-        sprite3D->setLightMask(lightFlag);
         
         auto node3DReader = Node3DReader::getInstance();
         node3DReader->setPropsWithFlatBuffers(sprite3D, (Table*)(options->node3DOption()));
@@ -266,10 +225,14 @@ namespace cocostudio
         auto fileData = options->fileData();
         std::string path = fileData->path()->c_str();
         
-        Sprite3D* ret = Sprite3D::create();
-        if(FileUtils::getInstance()->isFileExist(path))
+        Sprite3D* ret = NULL;
+        if(!FileUtils::getInstance()->isFileExist(path))
         {
-            ret->initWithFile(path);
+            ret = Sprite3D::create();
+        }
+        else
+        {
+            ret = Sprite3D::create(path);
         }
         
         setPropsWithFlatBuffers(ret, sprite3DOptions);

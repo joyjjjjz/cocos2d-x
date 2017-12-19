@@ -60,22 +60,11 @@ public:
     virtual std::string subtitle() const override;
 };
 
-class TestIsDirectoryExist : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestIsDirectoryExist);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
 class TestFileFuncs : public FileUtilsDemo
 {
 public:
     CREATE_FUNC(TestFileFuncs);
-
+    
     virtual void onEnter() override;
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
@@ -85,7 +74,7 @@ class TestDirectoryFuncs : public FileUtilsDemo
 {
 public:
     CREATE_FUNC(TestDirectoryFuncs);
-
+    
     virtual void onEnter() override;
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
@@ -96,138 +85,6 @@ class TextWritePlist : public FileUtilsDemo
 public:
     CREATE_FUNC(TextWritePlist);
 
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestWriteString : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteString);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestGetContents : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestGetContents);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-private:
-    std::string _generatedFile;
-};
-
-class TestWriteData : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteData);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestWriteValueMap : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteValueMap);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestWriteValueVector : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteValueVector);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestUnicodePath : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestUnicodePath);
-
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestIsFileExistAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestIsFileExistAsync);
-    
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestIsDirectoryExistAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestIsDirectoryExistAsync);
-    
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestFileFuncsAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestFileFuncsAsync);
-    
-    virtual void onEnter() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestDirectoryFuncsAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestDirectoryFuncsAsync);
-    
-    virtual void onEnter() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestWriteStringAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteStringAsync);
-    
-    virtual void onEnter() override;
-    virtual void onExit() override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
-class TestWriteDataAsync : public FileUtilsDemo
-{
-public:
-    CREATE_FUNC(TestWriteDataAsync);
-    
     virtual void onEnter() override;
     virtual void onExit() override;
     virtual std::string title() const override;

@@ -22,16 +22,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "editor-support/cocostudio/WidgetReader/SpriteReader/SpriteReader.h"
+#include "SpriteReader.h"
 
-#include "2d/CCSprite.h"
-#include "2d/CCSpriteFrameCache.h"
-#include "platform/CCFileUtils.h"
-
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
-#include "editor-support/cocostudio/WidgetReader/NodeReader/NodeReader.h"
-
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/FlatBuffersSerialize.h"
+#include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -59,7 +54,7 @@ namespace cocostudio
     {
         if (!_instanceSpriteReader)
         {
-            _instanceSpriteReader = new (std::nothrow) SpriteReader();
+            _instanceSpriteReader = new SpriteReader();
         }
         
         return _instanceSpriteReader;
@@ -172,14 +167,13 @@ namespace cocostudio
         Sprite *sprite = static_cast<Sprite*>(node);
         auto options = (SpriteOptions*)spriteOptions;
         
-        auto nodeReader = NodeReader::getInstance();
-        nodeReader->setPropsWithFlatBuffers(node, (Table*)(options->nodeOptions()));
         
         auto fileNameData = options->fileNameData();
         
         int resourceType = fileNameData->resourceType();
         std::string path = fileNameData->path()->c_str();
         
+        bool fileExist = false;
         std::string errorFilePath = "";
         
         switch (resourceType)
@@ -189,10 +183,12 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(path))
                 {
                     sprite->setTexture(path);
+                    fileExist = true;
                 }
                 else
                 {
                     errorFilePath = path;
+                    fileExist = false;
                 }
                 break;
             }
@@ -204,6 +200,7 @@ namespace cocostudio
                 if (spriteFrame)
                 {
                     sprite->setSpriteFrame(spriteFrame);
+                    fileExist = true;
                 }
                 else
                 {
@@ -221,12 +218,19 @@ namespace cocostudio
                     {
                         errorFilePath = plist;
                     }
+                    fileExist = false;
                 }
                 break;
             }
                 
             default:
                 break;
+        }
+        if (!fileExist)
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+            sprite->addChild(label);
         }
         
         auto f_blendFunc = options->blendFunc();
@@ -237,6 +241,11 @@ namespace cocostudio
             blendFunc.dst = f_blendFunc->dst();
             sprite->setBlendFunc(blendFunc);
         }
+        
+        
+        auto nodeReader = NodeReader::getInstance();
+        nodeReader->setPropsWithFlatBuffers(node, (Table*)(options->nodeOptions()));
+        
         
         auto nodeOptions = options->nodeOptions();
         

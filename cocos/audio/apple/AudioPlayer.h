@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2014-2017 Chukong Technologies Inc.
+ Copyright (c) 2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -22,19 +22,18 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#pragma once
-
 #include "platform/CCPlatformConfig.h"
 #if CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC
 
-#include "platform/CCPlatformMacros.h"
-#include "audio/apple/AudioMacros.h"
+#ifndef __AUDIO_PLAYER_H_
+#define __AUDIO_PLAYER_H_
 
 #include <condition_variable>
 #include <mutex>
 #include <string>
 #include <thread>
-#include <OpenAL/al.h>
+#import <OpenAL/al.h>
+#include "CCPlatformMacros.h"
 
 NS_CC_BEGIN
 namespace experimental{
@@ -47,50 +46,40 @@ class AudioPlayer
 public:
     AudioPlayer();
     ~AudioPlayer();
-
-    void destroy();
-
+    
     //queue buffer related stuff
     bool setTime(float time);
     float getTime() { return _currTime;}
     bool setLoop(bool loop);
-
+    
 protected:
-    void setCache(AudioCache* cache);
     void rotateBufferThread(int offsetFrame);
-    bool play2d();
-    void wakeupRotateThread();
-
+    bool play2d(AudioCache* cache);
+    
     AudioCache* _audioCache;
-
+    
     float _volume;
     bool _loop;
     std::function<void (int, const std::string &)> _finishCallbak;
-
-    bool _isDestroyed;
-    bool _removeByAudioEngine;
+    
     bool _ready;
     ALuint _alSource;
-
+    
     //play by circular buffer
     float _currTime;
     bool _streamingSource;
-    ALuint _bufferIds[QUEUEBUFFER_NUM];
-    std::thread* _rotateBufferThread;
+    ALuint _bufferIds[3];
+    std::thread _rotateBufferThread;
     std::condition_variable _sleepCondition;
     std::mutex _sleepMutex;
+    bool _exitThread;
     bool _timeDirty;
-    bool _isRotateThreadExited;
-    std::atomic_bool _needWakeupRotateThread;
-
-    std::mutex _play2dMutex;
-
-    unsigned int _id;
-
+    
     friend class AudioEngineImpl;
 };
 
 }
 NS_CC_END
-
+#endif // __AUDIO_PLAYER_H_
 #endif
+

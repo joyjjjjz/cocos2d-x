@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2012      cocos2d-x.org
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
  
@@ -23,16 +23,16 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "deprecated/CCDictionary.h"
-#include <type_traits>
-#include "base/ccUTF8.h"
+#include "CCDictionary.h"
+#include "deprecated/CCString.h"
+#include "CCInteger.h"
 #include "platform/CCFileUtils.h"
 #include "deprecated/CCString.h"
-#include "deprecated/CCBool.h"
-#include "deprecated/CCInteger.h"
-#include "deprecated/CCFloat.h"
-#include "deprecated/CCDouble.h"
-#include "deprecated/CCArray.h"
+#include "CCBool.h"
+#include "CCInteger.h"
+#include "CCFloat.h"
+#include "CCDouble.h"
+#include "CCArray.h"
 
 using namespace std;
 
@@ -106,7 +106,7 @@ __Array* __Dictionary::allKeys()
     {
         HASH_ITER(hh, _elements, pElement, tmp) 
         {
-            __String* pOneKey = new (std::nothrow) __String(pElement->_strKey);
+            __String* pOneKey = new __String(pElement->_strKey);
             array->addObject(pOneKey);
             CC_SAFE_RELEASE(pOneKey);
         }
@@ -115,7 +115,7 @@ __Array* __Dictionary::allKeys()
     {
         HASH_ITER(hh, _elements, pElement, tmp) 
         {
-            __Integer* pOneKey = new (std::nothrow) __Integer(static_cast<int>(pElement->_intKey));
+            __Integer* pOneKey = new __Integer(static_cast<int>(pElement->_intKey));
             array->addObject(pOneKey);
             CC_SAFE_RELEASE(pOneKey);
         }
@@ -138,7 +138,7 @@ __Array* __Dictionary::allKeysForObject(Ref* object)
         {
             if (object == pElement->_object)
             {
-                __String* pOneKey = new (std::nothrow) __String(pElement->_strKey);
+                __String* pOneKey = new __String(pElement->_strKey);
                 array->addObject(pOneKey);
                 CC_SAFE_RELEASE(pOneKey);
             }
@@ -150,7 +150,7 @@ __Array* __Dictionary::allKeysForObject(Ref* object)
         {
             if (object == pElement->_object)
             {
-                __Integer* pOneKey = new (std::nothrow) __Integer(static_cast<int>(pElement->_intKey));
+                __Integer* pOneKey = new __Integer(static_cast<int>(pElement->_intKey));
                 array->addObject(pOneKey);
                 CC_SAFE_RELEASE(pOneKey);
             }
@@ -217,7 +217,7 @@ const __String* __Dictionary::valueForKey(intptr_t key)
 
 void __Dictionary::setObject(Ref* pObject, const std::string& key)
 {
-    CCASSERT(!key.empty() && pObject != nullptr, "Invalid Argument!");
+    CCASSERT(key.length() > 0 && pObject != nullptr, "Invalid Argument!");
     if (_dictType == kDictUnknown)
     {
         _dictType = kDictStr;
@@ -276,7 +276,7 @@ void __Dictionary::removeObjectForKey(const std::string& key)
     }
     
     CCASSERT(_dictType == kDictStr, "this dictionary doesn't use string as its key");
-    CCASSERT(!key.empty(), "Invalid Argument!");
+    CCASSERT(key.length() > 0, "Invalid Argument!");
     DictElement *pElement = nullptr;
     HASH_FIND_STR(_elements, key.c_str(), pElement);
     removeObjectForElememt(pElement);
@@ -366,7 +366,7 @@ Ref* __Dictionary::randomObject()
 
 __Dictionary* __Dictionary::create()
 {
-    __Dictionary* ret = new (std::nothrow) __Dictionary();
+    __Dictionary* ret = new __Dictionary();
     if (ret && ret->init() )
     {
         ret->autorelease();
@@ -388,7 +388,7 @@ static __Array* visitArray(const ValueVector& array);
 
 static __Dictionary* visitDict(const ValueMap& dict)
 {
-    __Dictionary* ret = new (std::nothrow) __Dictionary();
+    __Dictionary* ret = new __Dictionary();
     ret->init();
     
     for (auto iter = dict.begin(); iter != dict.end(); ++iter)
@@ -409,7 +409,7 @@ static __Dictionary* visitDict(const ValueMap& dict)
         }
         else
         {
-            auto str = new (std::nothrow) __String(iter->second.asString());
+            auto str = new __String(iter->second.asString());
             ret->setObject(str, iter->first);
             str->release();
         }
@@ -419,7 +419,7 @@ static __Dictionary* visitDict(const ValueMap& dict)
 
 static __Array* visitArray(const ValueVector& array)
 {
-    __Array* ret = new (std::nothrow) __Array();
+    __Array* ret = new __Array();
     ret->init();
 
     for(const auto &value : array) {
@@ -439,7 +439,7 @@ static __Array* visitArray(const ValueVector& array)
         }
         else
         {
-            auto str = new (std::nothrow) __String(value.asString());
+            auto str = new __String(value.asString());
             ret->addObject(str);
             str->release();
         }
@@ -502,7 +502,7 @@ static ValueVector ccarray_to_valuevector(__Array* arr)
         }  else if ((boolVal = dynamic_cast<__Bool*>(obj))) {
             arrElement = boolVal->getValue() ? Value(true) : Value(false);
         } else {
-            CCASSERT(false, "the type isn't supported.");
+            CCASSERT(false, "the type isn't suppored.");
         }
 
         ret.push_back(arrElement);
@@ -543,7 +543,7 @@ static ValueMap ccdictionary_to_valuemap(__Dictionary* dict)
         } else if ((boolVal = dynamic_cast<__Bool*>(obj))) {
             dictElement = boolVal->getValue() ? Value(true) : Value(false);
         } else {
-            CCASSERT(false, "the type isn't supported.");
+            CCASSERT(false, "the type isn't suppored.");
         }
 
         const char* key = pElement->getStrKey();
@@ -571,8 +571,7 @@ __Dictionary* __Dictionary::clone() const
     Clonable* obj = nullptr;
     if (_dictType == kDictInt)
     {
-        DictElement* tmp = nullptr;
-        HASH_ITER(hh, _elements, element, tmp)
+        CCDICT_FOREACH(this, element)
         {
             obj = dynamic_cast<Clonable*>(element->getObject());
             if (obj)
@@ -585,14 +584,13 @@ __Dictionary* __Dictionary::clone() const
             }
             else
             {
-                CCLOGWARN("%s isn't clonable.", typeid(std::remove_pointer<decltype(element->getObject())>::type).name());
+                CCLOGWARN("%s isn't clonable.", typeid(*element->getObject()).name());
             }
         }
     }
     else if (_dictType == kDictStr)
     {
-        DictElement* tmp = nullptr;
-        HASH_ITER(hh, _elements, element, tmp)
+        CCDICT_FOREACH(this, element)
         {
             obj = dynamic_cast<Clonable*>(element->getObject());
             if (obj)
@@ -605,7 +603,7 @@ __Dictionary* __Dictionary::clone() const
             }
             else
             {
-                CCLOGWARN("%s isn't clonable.", typeid(std::remove_pointer<decltype(element->getObject())>::type).name());
+                CCLOGWARN("%s isn't clonable.", typeid(*element->getObject()).name());
             }
         }
     }

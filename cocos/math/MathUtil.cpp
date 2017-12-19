@@ -18,7 +18,7 @@ Original file from GamePlay3D: http://gameplay3d.org
 This file was modified to fit the cocos2d-x project
 */
 
-#include "math/MathUtil.h"
+#include "MathUtil.h"
 #include "base/ccMacros.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -59,18 +59,18 @@ This file was modified to fit the cocos2d-x project
 #endif
 
 #ifdef INCLUDE_NEON32
-#include "math/MathUtilNeon.inl"
+#include "MathUtilNeon.inl"
 #endif
 
 #ifdef INCLUDE_NEON64
-#include "math/MathUtilNeon64.inl"
+#include "MathUtilNeon64.inl"
 #endif
 
 #ifdef INCLUDE_SSE
-#include "math/MathUtilSSE.inl"
+#include "MathUtilSSE.inl"
 #endif
 
-#include "math/MathUtil.inl"
+#include "MathUtil.inl"
 
 NS_CC_MATH_BEGIN
 

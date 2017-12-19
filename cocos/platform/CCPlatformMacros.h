@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies
+Copyright (c) 2013-2015 Chukong Technologies
  
  http://www.cocos2d-x.org
  
@@ -50,8 +50,8 @@ static __TYPE__* create() \
     else \
     { \
         delete pRet; \
-        pRet = nullptr; \
-        return nullptr; \
+        pRet = NULL; \
+        return NULL; \
     } \
 }
 
@@ -85,7 +85,7 @@ CC_DEPRECATED_ATTRIBUTE static __TYPE__* node() \
  * 
  * @since v0.99.5
  */
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) 
     #define CC_ENABLE_CACHE_TEXTURE_DATA       1
 #else
     #define CC_ENABLE_CACHE_TEXTURE_DATA       0
@@ -108,7 +108,7 @@ CC_DEPRECATED_ATTRIBUTE static __TYPE__* node() \
     #define NS_CC_BEGIN                     namespace cocos2d {
     #define NS_CC_END                       }
     #define USING_NS_CC                     using namespace cocos2d
-    #define NS_CC                           ::cocos2d
+	#define NS_CC                           ::cocos2d
 #else
     #define NS_CC_BEGIN 
     #define NS_CC_END 
@@ -129,10 +129,12 @@ CC_DEPRECATED_ATTRIBUTE static __TYPE__* node() \
  *            If you need protected or private, please declare.
  */
 #define CC_PROPERTY_READONLY(varType, varName, funName)\
-protected: varType varName; public: virtual varType get##funName(void) const;
+protected: varType varName;\
+public: virtual varType get##funName(void) const;
 
 #define CC_PROPERTY_READONLY_PASS_BY_REF(varType, varName, funName)\
-protected: varType varName; public: virtual const varType& get##funName(void) const;
+protected: varType varName;\
+public: virtual const varType& get##funName(void) const;
 
 /** @def CC_PROPERTY 
  * It is used to declare a protected variable.
@@ -147,10 +149,14 @@ protected: varType varName; public: virtual const varType& get##funName(void) co
  *            If you need protected or private, please declare.
  */
 #define CC_PROPERTY(varType, varName, funName)\
-protected: varType varName; public: virtual varType get##funName(void) const; virtual void set##funName(varType var);
+protected: varType varName;\
+public: virtual varType get##funName(void);\
+public: virtual void set##funName(varType var);
 
 #define CC_PROPERTY_PASS_BY_REF(varType, varName, funName)\
-protected: varType varName; public: virtual const varType& get##funName(void) const; virtual void set##funName(const varType& var);
+protected: varType varName;\
+public: virtual const varType& get##funName(void) const;\
+public: virtual void set##funName(const varType& var);
 
 /** @def CC_SYNTHESIZE_READONLY 
  * It is used to declare a protected variable. We can use getter to read the variable.
@@ -163,10 +169,12 @@ protected: varType varName; public: virtual const varType& get##funName(void) co
  *            If you need protected or private, please declare.
  */
 #define CC_SYNTHESIZE_READONLY(varType, varName, funName)\
-protected: varType varName; public: virtual inline varType get##funName(void) const { return varName; }
+protected: varType varName;\
+public: virtual varType get##funName(void) const { return varName; }
 
 #define CC_SYNTHESIZE_READONLY_PASS_BY_REF(varType, varName, funName)\
-protected: varType varName; public: virtual inline const varType& get##funName(void) const { return varName; }
+protected: varType varName;\
+public: virtual const varType& get##funName(void) const { return varName; }
 
 /** @def CC_SYNTHESIZE 
  * It is used to declare a protected variable.
@@ -181,13 +189,19 @@ protected: varType varName; public: virtual inline const varType& get##funName(v
  *            If you need protected or private, please declare.
  */
 #define CC_SYNTHESIZE(varType, varName, funName)\
-protected: varType varName; public: virtual inline varType get##funName(void) const { return varName; } virtual inline void set##funName(varType var){ varName = var; }
+protected: varType varName;\
+public: virtual varType get##funName(void) const { return varName; }\
+public: virtual void set##funName(varType var){ varName = var; }
 
 #define CC_SYNTHESIZE_PASS_BY_REF(varType, varName, funName)\
-protected: varType varName; public: virtual inline const varType& get##funName(void) const { return varName; } virtual inline void set##funName(const varType& var){ varName = var; }
+protected: varType varName;\
+public: virtual const varType& get##funName(void) const { return varName; }\
+public: virtual void set##funName(const varType& var){ varName = var; }
 
 #define CC_SYNTHESIZE_RETAIN(varType, varName, funName)    \
-private: varType varName; public: virtual inline varType get##funName(void) const { return varName; } virtual inline void set##funName(varType var) \
+private: varType varName; \
+public: virtual varType get##funName(void) const { return varName; } \
+public: virtual void set##funName(varType var)   \
 { \
     if (varName != var) \
     { \
@@ -206,7 +220,7 @@ private: varType varName; public: virtual inline varType get##funName(void) cons
 #define CC_BREAK_IF(cond)           if(cond) break
 
 #define __CCLOGWITHFUNCTION(s, ...) \
-    cocos2d::log("%s : %s",__FUNCTION__, cocos2d::StringUtils::format(s, ##__VA_ARGS__).c_str())
+    log("%s : %s",__FUNCTION__, StringUtils::format(s, ##__VA_ARGS__).c_str())
 
 /// @name Cocos2d debug
 /// @{
@@ -244,7 +258,7 @@ private: varType varName; public: virtual inline varType get##funName(void) cons
  * This should be used in the private: declarations for a class
  */
 #if defined(__GNUC__) && ((__GNUC__ >= 5) || ((__GNUG__ == 4) && (__GNUC_MINOR__ >= 4))) \
-    || (defined(__clang__) && (__clang_major__ >= 3)) || (_MSC_VER >= 1800)
+	|| (defined(__clang__) && (__clang_major__ >= 3)) || (_MSC_VER >= 1800)
 #define CC_DISALLOW_COPY_AND_ASSIGN(TypeName) \
     TypeName(const TypeName &) = delete; \
     TypeName &operator =(const TypeName &) = delete;
@@ -279,7 +293,7 @@ private: varType varName; public: virtual inline varType get##funName(void) cons
 
 /** @def CC_DEPRECATED(...)
  * Macro to mark things deprecated as of a particular version
- * can be used with arbitrary parameters which are thrown away.
+ * can be used with artibrary parameters which are thrown away.
  * e.g. CC_DEPRECATED(4.0) or CC_DEPRECATED(4.0, "not going to need this anymore") etc.
  */
 #define CC_DEPRECATED(...) CC_DEPRECATED_ATTRIBUTE

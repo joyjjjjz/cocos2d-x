@@ -25,6 +25,7 @@
 #ifndef _BILLBOARD_TEST_H_
 #define _BILLBOARD_TEST_H_
 
+#include "../testBasic.h"
 #include "../BaseTest.h"
 #include <string>
 
@@ -54,8 +55,8 @@ public:
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
     virtual void update(float dt) override;
-    void addNewBillBoardWithCoords(cocos2d::Vec3 p);
-    void addNewAniBillBoardWithCoords(cocos2d::Vec3 p);
+    void addNewBillBoradWithCoords(cocos2d::Vec3 p);
+    void addNewAniBillBoradWithCoords(cocos2d::Vec3 p);
     void rotateCameraCallback(cocos2d::Ref* sender,float value);
     void onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event);
     
@@ -64,7 +65,7 @@ public:
     
 protected:
     cocos2d::Camera*           _camera;
-    cocos2d::Layer*            _layerBillBoard;
+    cocos2d::Layer*            _layerBillBorad;
 
     std::vector<cocos2d::BillBoard*> _billboards;
 };

@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -29,7 +29,6 @@ THE SOFTWARE.
 #include "ui/UILayoutParameter.h"
 #include "ui/GUIDefine.h"
 #include "ui/GUIExport.h"
-#include "ui/UIWidget.h"
 #include "base/CCMap.h"
 
 /**
@@ -39,7 +38,7 @@ THE SOFTWARE.
 NS_CC_BEGIN
 
 class EventListenerTouchOneByOne;
-class Camera;
+
 
 namespace ui {
     class LayoutComponent;
@@ -64,7 +63,7 @@ typedef void (Ref::*SEL_TouchEvent)(Ref*,TouchEventType);
 #define toucheventselector(_SELECTOR) (SEL_TouchEvent)(&_SELECTOR)
 
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #ifdef ABSOLUTE
 #undef ABSOLUTE
 #endif
@@ -235,18 +234,18 @@ public:
     /**
      * Determines if the widget is highlighted
      *
-     * @return true if the widget is highlighted, false if the widget is not highlighted.
+     * @return true if the widget is highlighted, false if the widget is not hignlighted .
      */
     bool isHighlighted() const;
 
     /**
-     * Sets whether the widget is highlighted
+     * Sets whether the widget is hilighted
      *
-     * The default value is false, a widget is default to not highlighted
+     * The default value is false, a widget is default to not hilighted
      *
-     * @param highlight   true if the widget is highlighted, false if the widget is not highlighted.
+     * @param hilight   true if the widget is hilighted, false if the widget is not hilighted.
      */
-    void setHighlighted(bool highlight);
+    void setHighlighted(bool hilight);
 
     /**
      * Gets the left boundary position of this widget in parent's coordination system.
@@ -372,7 +371,7 @@ public:
     /**
      * Sets whether the widget should be flipped horizontally or not.
      *
-     * @param flippedX true if the widget should be flipped horizontally, false otherwise.
+     * @param flippedX true if the widget should be flipped horizaontally, false otherwise.
      */
     virtual void setFlippedX(bool flippedX);
 
@@ -383,14 +382,14 @@ public:
      * Also, flipping relies on widget's anchor point.
      * Internally, it just use setScaleX(-1) to flip the widget.
      *
-     * @return true if the widget is flipped horizontally, false otherwise.
+     * @return true if the widget is flipped horizaontally, false otherwise.
      */
     virtual bool isFlippedX()const{return _flippedX;};
 
     /**
      * Sets whether the widget should be flipped vertically or not.
      *
-     * @param flippedY true if the widget should be flipped vertically, false otherwise.
+     * @param flippedY true if the widget should be flipped vertically, flase otherwise.
      */
     virtual void setFlippedY(bool flippedY);
 
@@ -401,7 +400,7 @@ public:
      * Also, flipping relies on widget's anchor point.
      * Internally, it just use setScaleY(-1) to flip the widget.
      *
-     * @return true if the widget is flipped vertically, false otherwise.
+     * @return true if the widget is flipped vertically, flase otherwise.
      */
     virtual bool isFlippedY()const{return _flippedY;};
 
@@ -430,7 +429,7 @@ public:
      *
      * @param pt A point in `Vec2`.
      * @deprecated  use `isClippingParentContainsPoint` instead.
-     * @return true if the point is in parent's area, false otherwise.
+     * @return true if the point is in parent's area, flase otherwise.
      */
     CC_DEPRECATED_ATTRIBUTE bool clippingParentAreaContainPoint(const Vec2 &pt){return this->isClippingParentContainsPoint(pt);}
 
@@ -438,7 +437,7 @@ public:
      * Checks a point if in parent's area.
      *
      * @param pt A point in `Vec2`.
-     * @return true if the point is in parent's area, false otherwise.
+     * @return true if the point is in parent's area, flase otherwise.
      */
     bool isClippingParentContainsPoint(const Vec2& pt);
 
@@ -544,12 +543,10 @@ public:
      * Checks a point is in widget's content space.
      * This function is used for determining touch area of widget.
      *
-     * @param pt        The point in `Vec2`.
-     * @param camera    The camera look at widget, used to convert GL screen point to near/far plane.
-     * @param p         Point to a Vec3 for store the intersect point, if don't need them set to nullptr.
-     * @return true if the point is in widget's content space, false otherwise.
+     * @param pt The point in `Vec2`.
+     * @return true if the point is in widget's content space, flase otherwise.
      */
-    virtual bool hitTest(const Vec2 &pt, const Camera* camera, Vec3 *p) const;
+    virtual bool hitTest(const Vec2 &pt);
 
     /**
      * A callback which will be called when touch began event is issued.
@@ -611,12 +608,12 @@ public:
      * Set true will ignore user defined content size which means 
      * the widget size is always equal to the return value of `getVirtualRendererSize`.
      *
-     * @param ignore set member variable _ignoreSize to ignore
+     * @param ignore set member variabl _ignoreSize to ignore
      */
     virtual void ignoreContentAdaptWithSize(bool ignore);
 
     /**
-     * Query whether the widget ignores user defined content size or not
+     * Query whether the widget ignores user deinfed content size or not
      *
      * @return True means ignore user defined content size, false otherwise.
      */
@@ -729,6 +726,7 @@ public:
     /**
      * Toggle widget focus status.
      *@param focus  pass true to let the widget get focus or pass false to let the widget lose focus
+     *@return void
      */
     void setFocused(bool focus);
     
@@ -741,6 +739,7 @@ public:
     /**
      * Allow widget to accept focus.
      *@param enable pass true/false to enable/disable the focus ability of a widget
+     *@return void
      */
     void setFocusEnabled(bool enable);
     
@@ -765,13 +764,16 @@ public:
      *                  otherwise, it will return a widget or a layout.
      * @deprecated use `getCurrentFocusedWidget` instead.
      */
-    CC_DEPRECATED_ATTRIBUTE Widget* getCurrentFocusedWidget(bool isWidget);
+    CC_DEPRECATED_ATTRIBUTE Widget* getCurrentFocusedWidget(bool isWidget){
+        CC_UNUSED_PARAM(isWidget);
+        return getCurrentFocusedWidget();
+    }
 
     /**
      * Return a current focused widget in your UI scene.
      * No matter what widget object you call this method on , it will return you the exact one focused widget.
      */
-    static Widget* getCurrentFocusedWidget();
+    Widget* getCurrentFocusedWidget()const;
 
     /*
      *  Call this method with parameter true to enable the Android Dpad focus navigation feature
@@ -793,6 +795,7 @@ public:
     /**
      *Toggle use unify size.
      *@param enable True to use unify size, false otherwise.
+     *@return void
      */
     void setUnifySizeEnabled(bool enable);
 
@@ -830,6 +833,7 @@ public:
     /**
      * Toggle layout component enable.
      *@param enable Layout Component of a widget
+     *@return void
      */
     void setLayoutComponentEnabled(bool enable);
 
@@ -846,7 +850,7 @@ CC_CONSTRUCTOR_ACCESS:
 
     /*
      * @brief Sends the touch event to widget's parent, if a widget wants to handle touch event under another widget, 
-     *        it must override this function.
+     *        it must overide this function.
      * @param  event  the touch event type, it could be BEGAN/MOVED/CANCELED/ENDED
      * @param parent
      * @param point
@@ -862,14 +866,16 @@ CC_CONSTRUCTOR_ACCESS:
     /**
      * This method is called when a focus change event happens
      *@param widgetLostFocus  The widget which lose its focus
-     *@param widgetGetFocus  The widget which get its focus
+     *@param widgetGetFocus  The widget whihc get its focus
+     *@return void
      */
     void onFocusChange(Widget* widgetLostFocus, Widget* widgetGetFocus);
     
     /**
      * Dispatch a EventFocus through a EventDispatcher
      *@param widgetLoseFocus  The widget which lose its focus
-     *@param widgetGetFocus he widget which get its focus
+     *@param widgetGetFocus he widget whihc get its focus
+     *@return void
      */
     void  dispatchFocusEvent(Widget* widgetLoseFocus, Widget* widgetGetFocus);
     
@@ -879,13 +885,13 @@ protected:
      *@since v3.4
      */
     
-    GLProgramState* getNormalGLProgramState(Texture2D* texture)const;
+    GLProgramState* getNormalGLProgramState()const;
     
     /**
      * Get a disabled state GLProgramState
      *@since v3.4
      */
-    GLProgramState* getGrayGLProgramState(Texture2D* texture)const;
+    GLProgramState* getGrayGLProgramState()const;
      
     
     //call back function called when size changed.
@@ -920,11 +926,8 @@ protected:
     void updateContentSizeWithTextureSize(const Size& size);
     
     bool isAncestorsEnabled();
-    Widget* getAncestorWidget(Node* node);
+    Widget* getAncensterWidget(Node* node);
     bool isAncestorsVisible(Node* node);
-
-    /** @deprecated Use getAncestorWidget instead. */
-    CC_DEPRECATED_ATTRIBUTE Widget* getAncensterWidget(Node* node);
 
     void cleanupWidget();
     LayoutComponent* getOrCreateLayoutComponent();
@@ -953,9 +956,6 @@ protected:
     Vec2 _positionPercent;
 
     bool _hitted;
-    // weak reference of the camera which made the widget passed the hit test when response touch begin event
-    // it's useful in the next touch move/end events
-    const Camera *_hittedByCamera;
     EventListenerTouchOneByOne* _touchListener;
     Vec2 _touchBeganPosition;
     Vec2 _touchMovePosition;
@@ -964,14 +964,14 @@ protected:
     bool _flippedX;
     bool _flippedY;
 
-    //use map to enable switch back and forth for user layout parameters
+    //use map to enble switch back and forth for user layout parameters
     Map<int,LayoutParameter*> _layoutParameterDictionary;
     LayoutParameter::Type _layoutParameterType;
 
     bool _focused;
     bool _focusEnabled;
     /**
-     * store the only one focused widget
+     * store the only one focued widget
      */
     static Widget *_focusedWidget;  //both layout & widget will be stored in this variable
 

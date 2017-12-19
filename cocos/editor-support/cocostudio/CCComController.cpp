@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -22,21 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "editor-support/cocostudio/CCComController.h"
+#include "cocostudio/CCComController.h"
 #include "2d/CCNode.h"
 
 namespace cocostudio {
 
 IMPLEMENT_CLASS_COMPONENT_INFO(ComController)
-
-const std::string ComController::COMPONENT_NAME = "CCComController";
-
-ComController::ComController()
+ComController::ComController(void)
 {
-    _name = COMPONENT_NAME;
+    _name = "CCComController";
 }
 
-ComController::~ComController()
+ComController::~ComController(void)
 {
 }
 
@@ -57,23 +54,21 @@ void ComController::onExit()
 {
 }
 
-void ComController::onAdd()
-{
-    if (_owner != nullptr)
-    {
-       _owner->scheduleUpdate();
-    }
-}
-
-void ComController::onRemove()
+void ComController::update(float delta)
 {
 }
 
-void ComController::update(float /*delta*/)
+bool ComController::isEnabled() const
 {
+    return _enabled;
 }
 
-ComController* ComController::create()
+void ComController::setEnabled(bool b)
+{
+    _enabled = b;
+}
+
+ComController* ComController::create(void)
 {
     ComController * pRet = new (std::nothrow) ComController();
     if (pRet && pRet->init())

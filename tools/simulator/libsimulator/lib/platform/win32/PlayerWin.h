@@ -9,11 +9,10 @@
 #include "PlayerFileDialogServiceWin.h"
 #include "PlayerEditBoxServiceWin.h"
 #include "PlayerTaskServiceWin.h"
-#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 
-class CC_LIBSIM_DLL PlayerWin : public PlayerProtocol, public cocos2d::Ref
+class PlayerWin : public PlayerProtocol, public cocos2d::Ref
 {
 public:
     static PlayerWin *createWithHwnd(HWND hWnd);

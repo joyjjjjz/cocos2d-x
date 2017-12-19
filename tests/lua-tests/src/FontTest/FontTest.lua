@@ -102,8 +102,6 @@ function FontTestMain()
         createTestLayer,
         createTestLayer
     }
-    Helper.index = 1
-    
     scene:addChild(createTestLayer())
     scene:addChild(CreateBackMenuItem())
     return scene

@@ -9,7 +9,6 @@ TextInputTests::TextInputTests()
 {
     ADD_TEST_CASE(TextFieldTTFDefaultTest);
     ADD_TEST_CASE(TextFieldTTFActionTest);
-    ADD_TEST_CASE(TextFieldTTFSecureTextEntryTest);
 }
 
 static Rect getRect(Node * node)
@@ -108,9 +107,14 @@ void KeyboardNotificationLayer::onTouchEnded(Touch  *touch, Event  *event)
 
     // decide the trackNode is clicked.
     Rect rect;
+    auto point = _trackNode->convertTouchToNodeSpace(touch);
+    CCLOG("KeyboardNotificationLayer:clickedAt(%f,%f)", point.x, point.y);
+
     rect.size = _trackNode->getContentSize();
-    auto clicked = isScreenPointInRect(endPos, Camera::getVisitingCamera(), _trackNode->getWorldToNodeTransform(), rect, nullptr);
-    this->onClickTrackNode(clicked);
+    CCLOG("KeyboardNotificationLayer:TrackNode at(origin:%f,%f, size:%f,%f)",
+        rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+
+    this->onClickTrackNode(rect.containsPoint(point));
     CCLOG("----------------------------------");
 }
 
@@ -154,12 +158,12 @@ void TextFieldTTFDefaultTest::onEnter()
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)    
     // on android, TextFieldTTF cannot auto adjust its position when soft-keyboard pop up
-    // so we had to set a higher position to make it visible
+    // so we had to set a higher position to make it visable
     pTextField->setPosition(Vec2(s.width / 2, s.height/2 + 50));
 #else
     pTextField->setPosition(Vec2(s.width / 2, s.height / 2));
 #endif
-    
+
     _trackNode = pTextField;
 }
 
@@ -340,38 +344,4 @@ bool TextFieldTTFActionTest::onDraw(TextFieldTTF * sender)
 void TextFieldTTFActionTest::callbackRemoveNodeWhenDidAction(Node * node)
 {
     this->removeChild(node, true);
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// implement TextFieldTTFSecureTextEntryTest
-//////////////////////////////////////////////////////////////////////////
-
-std::string TextFieldTTFSecureTextEntryTest::subtitle() const
-{
-    return "TextFieldTTF with SecureTextEntry test";
-}
-
-void TextFieldTTFSecureTextEntryTest::onEnter()
-{
-    KeyboardNotificationLayer::onEnter();
-    
-    // add TextFieldTTF
-    auto s = Director::getInstance()->getWinSize();
-    
-    auto pTextField = TextFieldTTF::textFieldWithPlaceHolder("<click here for input>",
-                                                             FONT_NAME,
-                                                             FONT_SIZE);
-    addChild(pTextField);
-    
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    // on android, TextFieldTTF cannot auto adjust its position when soft-keyboard pop up
-    // so we had to set a higher position to make it visible
-    pTextField->setPosition(Vec2(s.width / 2, s.height/2 + 50));
-#else
-    pTextField->setPosition(Vec2(s.width / 2, s.height / 2));
-#endif
-    pTextField->setSecureTextEntry(true);
-    
-    _trackNode = pTextField;
 }

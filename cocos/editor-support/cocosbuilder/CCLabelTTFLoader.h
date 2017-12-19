@@ -4,7 +4,7 @@
 #include "base/CCRef.h"
 #include "2d/CCLabel.h"
 
-#include "editor-support/cocosbuilder/CCNodeLoader.h"
+#include "CCNodeLoader.h"
 
 namespace cocosbuilder {
 

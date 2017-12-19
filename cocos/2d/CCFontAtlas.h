@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2013      Zynga Inc.
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -41,10 +41,10 @@ class Font;
 class Texture2D;
 class EventCustom;
 class EventListenerCustom;
-class FontFreeType;
 
 struct FontLetterDefinition
 {
+    unsigned short  letteCharUTF16;
     float U;
     float V;
     float width;
@@ -54,6 +54,8 @@ struct FontLetterDefinition
     int textureID;
     bool validDefinition;
     int xAdvance;
+
+    int clipBottom;
 };
 
 class CC_DLL FontAtlas : public Ref
@@ -73,18 +75,18 @@ public:
      */
     virtual ~FontAtlas();
     
-    void addLetterDefinition(char32_t utf32Char, const FontLetterDefinition &letterDefinition);
-    bool getLetterDefinitionForChar(char32_t utf32Char, FontLetterDefinition &letterDefinition);
+    void addLetterDefinition(const FontLetterDefinition &letterDefinition);
+    bool getLetterDefinitionForChar(char16_t letteCharUTF16, FontLetterDefinition &outDefinition);
     
-    bool prepareLetterDefinitions(const std::u32string& utf16String);
+    bool prepareLetterDefinitions(const std::u16string& utf16String);
 
-    const std::unordered_map<ssize_t, Texture2D*>& getTextures() const { return _atlasTextures; }
+    inline const std::unordered_map<ssize_t, Texture2D*>& getTextures() const{ return _atlasTextures;}
     void  addTexture(Texture2D *texture, int slot);
-    float getLineHeight() const { return _lineHeight; }
-    void  setLineHeight(float newHeight);
+    float getCommonLineHeight() const;
+    void  setCommonLineHeight(float newHeight);
     
     Texture2D* getTexture(int slot);
-    const Font* getFont() const { return _font; }
+    const Font* getFont() const;
 
     /** listen the event that renderer was recreated on Android/WP8
      It only has effect on Android and WP8.
@@ -109,27 +111,11 @@ public:
      void setAliasTexParameters();
 
 protected:
-    void reset();
-    
-    void releaseTextures();
-
-    void findNewCharacters(const std::u32string& u32Text, std::unordered_map<unsigned int, unsigned int>& charCodeMap);
-
-    void conversionU32TOGB2312(const std::u32string& u32Text, std::unordered_map<unsigned int, unsigned int>& charCodeMap);
-
-    /**
-     * Scale each font letter by scaleFactor.
-     *
-     * @param scaleFactor A float scale factor for scaling font letter info.
-     */
-    void scaleFontLetterDefinition(float scaleFactor);
-
+    void relaseTextures();
     std::unordered_map<ssize_t, Texture2D*> _atlasTextures;
-    std::unordered_map<char32_t, FontLetterDefinition> _letterDefinitions;
-    float _lineHeight;
-    Font* _font;
-    FontFreeType* _fontFreeType;
-    void* _iconv;
+    std::unordered_map<unsigned short, FontLetterDefinition> _fontLetterDefinitions;
+    float _commonLineHeight;
+    Font * _font;
 
     // Dynamic GlyphCollection related stuff
     int _currentPage;
@@ -137,15 +123,11 @@ protected:
     int _currentPageDataSize;
     float _currentPageOrigX;
     float _currentPageOrigY;
-    int _letterPadding;
-    int _letterEdgeExtend;
+    float _letterPadding;
 
     int _fontAscender;
     EventListenerCustom* _rendererRecreatedListener;
     bool _antialiasEnabled;
-    int _currLineHeight;
-
-    friend class Label;
 };
 
 NS_CC_END

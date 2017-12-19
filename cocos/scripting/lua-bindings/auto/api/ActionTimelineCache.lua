@@ -26,14 +26,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#ActionTimelineCache] createActionFromContent 
--- @param self
--- @param #string fileName
--- @param #string content
--- @return ActionTimeline#ActionTimeline ret (return value: ccs.ActionTimeline)
-        
---------------------------------
--- 
 -- @function [parent=#ActionTimelineCache] purge 
 -- @param self
 -- @return ActionTimelineCache#ActionTimelineCache self (return value: ccs.ActionTimelineCache)
@@ -46,17 +38,17 @@
         
 --------------------------------
 -- 
--- @function [parent=#ActionTimelineCache] loadAnimationActionWithContent 
+-- @function [parent=#ActionTimelineCache] loadAnimationActionWithFile 
 -- @param self
 -- @param #string fileName
--- @param #string content
 -- @return ActionTimeline#ActionTimeline ret (return value: ccs.ActionTimeline)
         
 --------------------------------
 -- 
--- @function [parent=#ActionTimelineCache] loadAnimationActionWithFile 
+-- @function [parent=#ActionTimelineCache] loadAnimationActionWithContent 
 -- @param self
 -- @param #string fileName
+-- @param #string content
 -- @return ActionTimeline#ActionTimeline ret (return value: ccs.ActionTimeline)
         
 --------------------------------

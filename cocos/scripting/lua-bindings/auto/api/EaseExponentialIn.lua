@@ -5,7 +5,9 @@
 -- @parent_module cc
 
 --------------------------------
--- 
+-- brief Create the action with the inner action.<br>
+-- param action The pointer of the inner action.<br>
+-- return A pointer of EaseExponentialIn action. If creation failed, return nil.
 -- @function [parent=#EaseExponentialIn] create 
 -- @param self
 -- @param #cc.ActionInterval action
@@ -29,11 +31,5 @@
 -- @function [parent=#EaseExponentialIn] reverse 
 -- @param self
 -- @return ActionEase#ActionEase ret (return value: cc.ActionEase)
-        
---------------------------------
--- 
--- @function [parent=#EaseExponentialIn] EaseExponentialIn 
--- @param self
--- @return EaseExponentialIn#EaseExponentialIn self (return value: cc.EaseExponentialIn)
         
 return nil

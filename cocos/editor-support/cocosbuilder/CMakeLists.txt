@@ -25,3 +25,5 @@ set(COCOS_CCB_SRC
   editor-support/cocosbuilder/CCSpriteLoader.cpp
 
 )
+
+include_directories( editor-support )

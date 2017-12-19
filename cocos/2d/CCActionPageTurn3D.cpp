@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2009      Sindesso Pty Ltd http://www.sindesso.com/
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+CopyRight (c) 2013-2014 Chukong Technologies Inc.
  
 http://www.cocos2d-x.org
 
@@ -25,7 +25,6 @@ THE SOFTWARE.
 ****************************************************************************/
 #include "2d/CCActionPageTurn3D.h"
 #include "2d/CCGrid.h"
-#include "2d/CCNodeGrid.h"
 
 NS_CC_BEGIN
 
@@ -33,30 +32,34 @@ PageTurn3D* PageTurn3D::create(float duration, const Size& gridSize)
 {
     PageTurn3D *action = new (std::nothrow) PageTurn3D();
 
-    if (action && action->initWithDuration(duration, gridSize))
+    if (action)
     {
-        action->autorelease();
-        return action;
+        if (action->initWithDuration(duration, gridSize))
+        {
+            action->autorelease();
+        }
+        else
+        {
+            CC_SAFE_RELEASE_NULL(action);
+        }
     }
 
-    delete action;
-    return nullptr;
+    return action;
 }
 
 PageTurn3D *PageTurn3D::clone() const
 {
-    // no copy constructor
-    return PageTurn3D::create(_duration, _gridSize);
+    // no copy constructor    
+    auto a = new (std::nothrow) PageTurn3D();
+    a->initWithDuration(_duration, _gridSize);
+    a->autorelease();
+    return a;
 }
 
 GridBase* PageTurn3D::getGrid()
 {
-    auto result = Grid3D::create(_gridSize, _gridNodeTarget->getGridRect());
-    if (result)
-    {
-        result->setNeedDepthTestForBlit(true);
-    }
-    
+    auto result = Grid3D::create(_gridSize);
+    result->setNeedDepthTestForBlit(true);
     return result;
 }
 
@@ -70,10 +73,8 @@ void PageTurn3D::update(float time)
     float deltaAy = (tt * tt * 500);
     float ay = -100 - deltaAy;
     
-    float deltaTheta = sqrtf(time);
-    float theta = deltaTheta > 0.5f ? (float)M_PI_2*deltaTheta : (float)M_PI_2*(1-deltaTheta);
-    
-    float rotateByYAxis = (2-time)* M_PI;
+    float deltaTheta = - (float) M_PI_2 * sqrtf( time) ;
+    float theta = /*0.01f */ + (float) M_PI_2 +deltaTheta;
     
     float sinTheta = sinf(theta);
     float cosTheta = cosf(theta);
@@ -85,7 +86,6 @@ void PageTurn3D::update(float time)
             // Get original vertex
             Vec3 p = getOriginalVertex(Vec2(i ,j));
             
-            p.x -= getGridRect().origin.x;
             float R = sqrtf((p.x * p.x) + ((p.y - ay) * (p.y - ay)));
             float r = R * sinTheta;
             float alpha = asinf( p.x / R );
@@ -109,11 +109,8 @@ void PageTurn3D::update(float time)
 
             // We scale z here to avoid the animation being
             // too much bigger than the screen due to perspective transform
+            p.z = (r * ( 1 - cosBeta ) * cosTheta) / 7;// "100" didn't work for
 
-            p.z = (r * ( 1 - cosBeta ) * cosTheta);// "100" didn't work for
-            p.x = p.z * sinf(rotateByYAxis) + p.x * cosf(rotateByYAxis);
-            p.z = p.z * cosf(rotateByYAxis) - p.x * sinf(rotateByYAxis);
-            p.z/=7;
             //    Stop z coord from dropping beneath underlying page in a transition
             // issue #751
             if( p.z < 0.5f )
@@ -122,7 +119,6 @@ void PageTurn3D::update(float time)
             }
             
             // Set new coords
-            p.x += getGridRect().origin.x;
             setVertex(Vec2(i, j), p);
             
         }

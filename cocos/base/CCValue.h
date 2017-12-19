@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies
+ Copyright (c) 2013-2014 Chukong Technologies
 
  http://www.cocos2d-x.org
 
@@ -65,10 +65,7 @@ public:
     
     /** Create a Value by an integer value. */
     explicit Value(int v);
-
-    /** Create a Value by an unsigned value. */
-    explicit Value(unsigned int v);
-
+    
     /** Create a Value by a float value. */
     explicit Value(float v);
     
@@ -99,7 +96,7 @@ public:
     /** Create a Value by a ValueMapIntKey object. It will use std::move internally. */
     explicit Value(ValueMapIntKey&& v);
 
-    /** Create a Value by another Value object. */
+    /** Create a Value by anthoer Value object. */
     Value(const Value& other);
     /** Create a Value by a Value object. It will use std::move internally. */
     Value(Value&& other);
@@ -116,8 +113,6 @@ public:
     Value& operator= (unsigned char v);
     /** Assignment operator, assign from integer to Value. */
     Value& operator= (int v);
-    /** Assignment operator, assign from integer to Value. */
-    Value& operator= (unsigned int v);
     /** Assignment operator, assign from float to Value. */
     Value& operator= (float v);
     /** Assignment operator, assign from double to Value. */
@@ -157,8 +152,6 @@ public:
     unsigned char asByte() const;
     /** Gets as an integer value. Will convert to integer if possible, or will trigger assert error. */
     int asInt() const;
-    /** Gets as an unsigned value. Will convert to unsigned if possible, or will trigger assert error. */
-    unsigned int asUnsignedInt() const;
     /** Gets as a float value. Will convert to float if possible, or will trigger assert error. */
     float asFloat() const;
     /** Gets as a double value. Will convert to double if possible, or will trigger assert error. */
@@ -187,7 +180,7 @@ public:
      * Checks if the Value is null.
      * @return True if the Value is null, false if not.
      */
-    bool isNull() const { return _type == Type::NONE; }
+    inline bool isNull() const { return _type == Type::NONE; }
 
     /** Value type wrapped by Value. */
     enum class Type
@@ -198,8 +191,6 @@ public:
         BYTE,
         /// wrap integer
         INTEGER,
-        /// wrap unsigned
-        UNSIGNED,
         /// wrap float
         FLOAT,
         /// wrap double
@@ -217,7 +208,7 @@ public:
     };
 
     /** Gets the value type. */
-    Type getType() const { return _type; }
+    inline Type getType() const { return _type; }
 
     /** Gets the description of the class. */
     std::string getDescription() const;
@@ -230,7 +221,6 @@ private:
     {
         unsigned char byteVal;
         int intVal;
-        unsigned int unsignedVal;
         float floatVal;
         double doubleVal;
         bool boolVal;

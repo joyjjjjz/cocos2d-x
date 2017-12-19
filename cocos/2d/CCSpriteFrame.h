@@ -2,7 +2,7 @@
 Copyright (c) 2008-2011 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -29,7 +29,6 @@ THE SOFTWARE.
 #define __SPRITE_CCSPRITE_FRAME_H__
 
 #include "2d/CCNode.h"
-#include "2d/CCAutoPolygon.h"
 #include "base/CCRef.h"
 #include "math/CCGeometry.h"
 
@@ -50,10 +49,8 @@ class Texture2D;
 
  You can modify the frame of a Sprite by doing:
  
- @code
-    SpriteFrame* frame = SpriteFrame::createWithTexture(texture, rect);
-    sprite->setSpriteFrame(frame);
- @endcode
+    SpriteFrame *frame = SpriteFrame::frameWithTexture(texture, rect, offset);
+    sprite->setDisplayFrame(frame);
  */
 class CC_DLL SpriteFrame : public Ref, public Clonable
 {
@@ -104,7 +101,7 @@ public:
      *
      * @return The rect of the sprite frame, in pixels.
      */
-    const Rect& getRectInPixels() const { return _rectInPixels; }
+    inline const Rect& getRectInPixels() const { return _rectInPixels; }
     /** Set rect of the sprite frame.
      *
      * @param rectInPixels The rect of the sprite frame, in pixels.
@@ -115,50 +112,23 @@ public:
      *
      * @return Is rotated if true.
      */
-    bool isRotated() const { return _rotated; }
+    inline bool isRotated() const { return _rotated; }
     /** Set rotated of the sprite frame.
      *
      * @param rotated Rotated the sprite frame if true.
      */
-    void setRotated(bool rotated) { _rotated = rotated; }
+    inline void setRotated(bool rotated) { _rotated = rotated; }
 
     /** Get rect of the frame.
      *
      * @return The rect of the sprite frame.
      */
-    const Rect& getRect() const { return _rect; }
+    inline const Rect& getRect() const { return _rect; }
     /** Set rect of the frame.
      *
      * @param rect The rect of the sprite.
      */
     void setRect(const Rect& rect);
-
-    /** Get center rect of the frame.
-     *
-     * Useful to create 9-slice sprites
-     *
-     * @return The center rect of the sprite frame in points
-     */
-    const Rect& getCenterRect() const { return _centerRect; }
-
-     /**
-     * setCenterRect
-     *
-     * Useful to implement "9 sliced" sprites.
-     * The sprite will be sliced into a 3 x 3 grid. The four corners of this grid are applied without
-     * performing any scaling. The upper- and lower-middle parts are scaled horizontally, and the left- and right-middle parts are scaled vertically.
-     * The center is scaled in both directions.
-     * Important: The scaling is based the Sprite's trimmed size.
-     *
-     * Limitations: Does not work when the sprite is part of `SpriteBatchNode`.
-     * @param centerRect the Rect in points
-     */
-    void setCenterRectInPixels(const Rect& centerRect);
-
-    /** hasCenterRect
-     @return Whether or not it has a centerRect
-     */
-    bool hasCenterRect() const;
 
     /** Get offset of the frame.
      * 
@@ -175,23 +145,23 @@ public:
      *
      * @return The original size of the trimmed image, in pixels.
      */
-    const Size& getOriginalSizeInPixels() const { return _originalSizeInPixels; }
+    inline const Size& getOriginalSizeInPixels() const { return _originalSizeInPixels; }
     /** Set original size of the trimmed image.
      *
      * @param sizeInPixels The original size of the trimmed image, in pixels.
      */
-    void setOriginalSizeInPixels(const Size& sizeInPixels) { _originalSizeInPixels = sizeInPixels; }
+    inline void setOriginalSizeInPixels(const Size& sizeInPixels) { _originalSizeInPixels = sizeInPixels; }
 
     /** Get original size of the trimmed image.
      *
      * @return The original size of the trimmed image.
      */
-    const Size& getOriginalSize() const { return _originalSize; }
+    inline const Size& getOriginalSize() const { return _originalSize; }
     /** Set original size of the trimmed image.
      *
      * @param sizeInPixels The original size of the trimmed image.
      */
-    void setOriginalSize(const Size& sizeInPixels) { _originalSize = sizeInPixels; }
+    inline void setOriginalSize(const Size& sizeInPixels) { _originalSize = sizeInPixels; }
 
     /** Get texture of the frame.
      *
@@ -215,43 +185,9 @@ public:
      */
     void setOffset(const Vec2& offsets);
 
-    /** Get anchor point of the frame.
-     *
-     * @return The anchor point of the sprite frame.
-     */
-    const Vec2& getAnchorPoint() const;
-    /** Set anchor point of the frame.
-     *
-     * @param anchorPoint The anchor point of the sprite frame.
-     */
-    void setAnchorPoint(const Vec2& anchorPoint);
-    /** Check if anchor point is defined for the frame.
-     *
-     * @return true if anchor point is available.
-     */
-    bool hasAnchorPoint() const;
-
     // Overrides
 	virtual SpriteFrame *clone() const override;
-
-    /** Set the polygon info for polygon mesh sprites
-     *
-     * @param polygonInfo triangle mesh of the sprite
-     */
-    void setPolygonInfo(const PolygonInfo &polygonInfo);
-
-    /** Get the polygonInfo for this sprite
-     *
-     * @return a reference to the polygonInfo structure
-     */
-    const PolygonInfo& getPolygonInfo() const;
-
-    /** Check if sprite frame is a polygon sprite
-     *
-     * @return true if polygonInfo is available
-     */
-    bool hasPolygonInfo() const;
-
+    
 CC_CONSTRUCTOR_ACCESS:
     /**
      * @lua NA
@@ -287,17 +223,14 @@ CC_CONSTRUCTOR_ACCESS:
 
 protected:
     Vec2 _offset;
-    Vec2 _anchorPoint;
     Size _originalSize;
     Rect _rectInPixels;
     bool   _rotated;
     Rect _rect;
-    Rect _centerRect;
     Vec2 _offsetInPixels;
     Size _originalSizeInPixels;
     Texture2D *_texture;
     std::string  _textureFilename;
-    PolygonInfo _polygonInfo;
 };
 
 // end of _2d group

@@ -29,10 +29,4 @@
 -- @param #cc.Scene scene
 -- @return TransitionMoveInL#TransitionMoveInL ret (return value: cc.TransitionMoveInL)
         
---------------------------------
--- 
--- @function [parent=#TransitionMoveInL] TransitionMoveInL 
--- @param self
--- @return TransitionMoveInL#TransitionMoveInL self (return value: cc.TransitionMoveInL)
-        
 return nil

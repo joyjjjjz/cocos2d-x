@@ -96,13 +96,7 @@ void resetDesignResolution()
     cocos2d::Size size = ConfigParser::getInstance()->getInitViewSize();
     if (!ConfigParser::getInstance()->isLanscape())
     {
-        if (size.width > size.height)
-            std::swap(size.width, size.height);
-    }
-    else
-    {
-        if (size.width < size.height)
-            std::swap(size.width, size.height);
+        std::swap(size.width, size.height);
     }
     Director::getInstance()->getOpenGLView()->setDesignResolutionSize(size.width, size.height, ResolutionPolicy::EXACT_FIT);
 }
@@ -190,28 +184,10 @@ void RuntimeEngine::setProjectPath(const std::string &workPath)
 
     if (workPath.empty())
     {
-        std::string appPath = std::string("");
+        extern std::string getCurAppPath();
+        std::string appPath = getCurAppPath();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-        TCHAR szAppDir[MAX_PATH] = { 0 };
-        if (GetModuleFileName(NULL, szAppDir, MAX_PATH))
-        {
-            int nEnd = 0;
-            for (int i = 0; szAppDir[i]; i++)
-            {
-                if (szAppDir[i] == '\\')
-                    nEnd = i;
-            }
-            szAppDir[nEnd] = 0;
-            int iLen = 2 * wcslen(szAppDir);
-            char* chRtn = new char[iLen + 1];
-            wcstombs(chRtn, szAppDir, iLen + 1);
-            std::string strPath = chRtn;
-            delete[] chRtn;
-            chRtn = NULL;
-            char fuldir[MAX_PATH] = { 0 };
-            _fullpath(fuldir, strPath.c_str(), MAX_PATH);
-            appPath = fuldir;
-        }
+        appPath.append("/../../");
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
         appPath.append("/../../../");
 #endif
@@ -225,11 +201,6 @@ void RuntimeEngine::setProjectPath(const std::string &workPath)
 
     // add project's root directory to search path
     searchPathArray.insert(searchPathArray.begin(), g_projectPath);
-
-    if (!_project.getFirstSearchPath().empty())
-    {
-        searchPathArray.insert(searchPathArray.begin(), _project.getFirstSearchPath().begin(), _project.getFirstSearchPath().end());
-    }
 
     // add writable path to search path
     searchPathArray.insert(searchPathArray.begin(), FileServer::getShareInstance()->getWritePath());

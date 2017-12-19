@@ -8,13 +8,7 @@
 -- 
 -- @function [parent=#Component] setEnabled 
 -- @param self
--- @param #bool enabled
--- @return Component#Component self (return value: cc.Component)
-        
---------------------------------
--- 
--- @function [parent=#Component] onRemove 
--- @param self
+-- @param #bool b
 -- @return Component#Component self (return value: cc.Component)
         
 --------------------------------
@@ -53,7 +47,7 @@
 -- 
 -- @function [parent=#Component] setOwner 
 -- @param self
--- @param #cc.Node owner
+-- @param #cc.Node pOwner
 -- @return Component#Component self (return value: cc.Component)
         
 --------------------------------
@@ -61,12 +55,6 @@
 -- @function [parent=#Component] getName 
 -- @param self
 -- @return string#string ret (return value: string)
-        
---------------------------------
--- 
--- @function [parent=#Component] onAdd 
--- @param self
--- @return Component#Component self (return value: cc.Component)
         
 --------------------------------
 -- 

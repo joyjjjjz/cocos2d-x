@@ -1,7 +1,7 @@
 #ifndef _CCB_CCNODELOADERLIBRARY_H_
 #define _CCB_CCNODELOADERLIBRARY_H_
 
-#include "editor-support/cocosbuilder/CCBReader.h"
+#include "CCBReader.h"
 
 namespace cocosbuilder {
 

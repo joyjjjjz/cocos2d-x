@@ -11,29 +11,21 @@
 -- @return string#string ret (return value: string)
         
 --------------------------------
--- @overload self, char, char, string         
--- @overload self, char, char         
--- @overload self, char, char, string, string         
--- @function [parent=#GLProgram] initWithByteArrays
+-- 
+-- @function [parent=#GLProgram] initWithByteArrays 
 -- @param self
 -- @param #char vShaderByteArray
 -- @param #char fShaderByteArray
--- @param #string compileTimeHeaders
--- @param #string compileTimeDefines
 -- @return bool#bool ret (return value: bool)
-
+        
 --------------------------------
--- @overload self, string, string, string         
--- @overload self, string, string         
--- @overload self, string, string, string, string         
--- @function [parent=#GLProgram] initWithFilenames
+-- 
+-- @function [parent=#GLProgram] initWithFilenames 
 -- @param self
 -- @param #string vShaderFilename
 -- @param #string fShaderFilename
--- @param #string compileTimeHeaders
--- @param #string compileTimeDefines
 -- @return bool#bool ret (return value: bool)
-
+        
 --------------------------------
 --  it will call glUseProgram() 
 -- @function [parent=#GLProgram] use 
@@ -47,8 +39,8 @@
 -- @return string#string ret (return value: string)
         
 --------------------------------
--- @overload self         
 -- @overload self, mat4_table         
+-- @overload self         
 -- @function [parent=#GLProgram] setUniformsForBuiltins
 -- @param self
 -- @param #mat4_table modelView
@@ -104,29 +96,28 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- @overload self, char, char, string         
--- @overload self, char, char         
--- @overload self, char, char, string, string         
--- @function [parent=#GLProgram] createWithByteArrays
+--  @{<br>
+-- Create or Initializes the GLProgram with a vertex and fragment with bytes array.<br>
+-- js initWithString.<br>
+-- lua initWithString.
+-- @function [parent=#GLProgram] createWithByteArrays 
 -- @param self
 -- @param #char vShaderByteArray
 -- @param #char fShaderByteArray
--- @param #string compileTimeHeaders
--- @param #string compileTimeDefines
 -- @return GLProgram#GLProgram ret (return value: cc.GLProgram)
-
+        
 --------------------------------
--- @overload self, string, string, string         
--- @overload self, string, string         
--- @overload self, string, string, string, string         
--- @function [parent=#GLProgram] createWithFilenames
+-- }<br>
+-- {<br>
+-- Create or Initializes the GLProgram with a vertex and fragment with contents of filenames.<br>
+-- js init<br>
+-- lua init
+-- @function [parent=#GLProgram] createWithFilenames 
 -- @param self
 -- @param #string vShaderFilename
 -- @param #string fShaderFilename
--- @param #string compileTimeHeaders
--- @param #string compileTimeDefines
 -- @return GLProgram#GLProgram ret (return value: cc.GLProgram)
-
+        
 --------------------------------
 -- Constructor.
 -- @function [parent=#GLProgram] GLProgram 

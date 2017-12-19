@@ -19,10 +19,4 @@
 -- @param self
 -- @return int#int ret (return value: int)
         
---------------------------------
--- 
--- @function [parent=#AmbientLight] AmbientLight 
--- @param self
--- @return AmbientLight#AmbientLight self (return value: cc.AmbientLight)
-        
 return nil

@@ -67,12 +67,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#Image] getFilePath 
--- @param self
--- @return string#string ret (return value: string)
-        
---------------------------------
--- 
 -- @function [parent=#Image] getNumberOfMipmaps 
 -- @param self
 -- @return int#int ret (return value: int)
@@ -91,14 +85,6 @@
 -- @function [parent=#Image] setPVRImagesHavePremultipliedAlpha 
 -- @param self
 -- @param #bool haveAlphaPremultiplied
--- @return Image#Image self (return value: cc.Image)
-        
---------------------------------
--- Enables or disables premultiplied alpha for PNG files.<br>
--- param enabled (default: true)
--- @function [parent=#Image] setPNGPremultipliedAlphaEnabled 
--- @param self
--- @param #bool enabled
 -- @return Image#Image self (return value: cc.Image)
         
 --------------------------------

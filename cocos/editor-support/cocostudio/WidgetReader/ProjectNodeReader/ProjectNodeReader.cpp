@@ -22,10 +22,10 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "editor-support/cocostudio/WidgetReader/ProjectNodeReader/ProjectNodeReader.h"
+#include "ProjectNodeReader.h"
 
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/WidgetReader/NodeReader/NodeReader.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -51,7 +51,7 @@ namespace cocostudio
     {
         if (!_instanceProjectNodeReader)
         {
-            _instanceProjectNodeReader = new (std::nothrow) ProjectNodeReader();
+            _instanceProjectNodeReader = new ProjectNodeReader();
         }
         
         return _instanceProjectNodeReader;
@@ -135,10 +135,5 @@ namespace cocostudio
         auto nodeReader = NodeReader::getInstance();
         
         nodeReader->setPropsWithFlatBuffers(node, (Table*)options->nodeOptions());
-    }
-    
-    Node* ProjectNodeReader::createNodeWithFlatBuffers(const flatbuffers::Table* /*nodeOptions*/)
-    {
-        return nullptr;
     }
 }

@@ -1,4 +1,4 @@
-#include "editor-support/cocosbuilder/CCBFileLoader.h"
+#include "CCBFileLoader.h"
 
 using namespace cocos2d;
 

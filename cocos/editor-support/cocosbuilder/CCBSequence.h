@@ -4,7 +4,7 @@
 #include <string>
 
 #include "base/CCRef.h"
-#include "editor-support/cocosbuilder/CCBSequenceProperty.h"
+#include "CCBSequenceProperty.h"
 
 namespace cocosbuilder {
 

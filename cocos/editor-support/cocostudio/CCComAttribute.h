@@ -1,5 +1,5 @@
-﻿/****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+/****************************************************************************
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
 #define __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
 
-#include "editor-support/cocostudio/CCComBase.h"
+#include "CCComBase.h"
 #include "2d/CCComponent.h"
 #include "base/CCValue.h"
-#include "editor-support/cocostudio/CocosStudioExport.h"
+#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio {
 
@@ -47,8 +47,6 @@ public:
     virtual ~ComAttribute(void);
     
 public:
-    const static std::string COMPONENT_NAME;
-
     static ComAttribute* create(void);
     virtual bool init() override;
     virtual bool serialize(void* r) override;
@@ -69,4 +67,4 @@ private:
 
 }
 
-#endif  // __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
+#endif  // __FUNDATION__CCCOMPONENT_H__

@@ -76,7 +76,8 @@ local function updateLayer()
 
     local function update(sender)
         progressLable:setString("")
-        getAssetsManager():checkUpdate()
+
+        getAssetsManager():update()
     end
 
     local function reset(sender)

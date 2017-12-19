@@ -34,9 +34,7 @@ using namespace Windows::Foundation;
 #include "base/CCDirector.h"
 #include <algorithm>
 #include "platform/CCFileUtils.h"
-#include "platform/winrt/CCWinRTUtils.h"
-#include "platform/CCApplication.h"
-#include "tinyxml2/tinyxml2.h"
+#include "CCWinRTUtils.h"
 
 /**
 @brief    This function change the PVRFrame show/hide setting in register.
@@ -46,7 +44,7 @@ using namespace Windows::Foundation;
 NS_CC_BEGIN
 
 // sharedApplication pointer
-Application * Application::sm_pSharedApplication = nullptr;
+Application * Application::sm_pSharedApplication = 0;
 
 
 
@@ -57,7 +55,7 @@ Application * Application::sm_pSharedApplication = nullptr;
 ////////////////////////////////////////////////////////////////////////////////
 
 // sharedApplication pointer
-Application * s_pSharedApplication = nullptr;
+Application * s_pSharedApplication = 0;
 
 Application::Application() :
 m_openURLDelegate(nullptr)
@@ -70,7 +68,7 @@ m_openURLDelegate(nullptr)
 Application::~Application()
 {
     CC_ASSERT(this == sm_pSharedApplication);
-    sm_pSharedApplication = nullptr;
+    sm_pSharedApplication = NULL;
 }
 
 int Application::run()
@@ -85,16 +83,11 @@ int Application::run()
 	return 0;
 }
 
-void Application::setAnimationInterval(float interval)
+void Application::setAnimationInterval(double interval)
 {
     LARGE_INTEGER nFreq;
     QueryPerformanceFrequency(&nFreq);
     m_nAnimationInterval.QuadPart = (LONGLONG)(interval * nFreq.QuadPart);
-}
-
-void Application::setAnimationInterval(float interval, SetIntervalReason reason)
-{
-    setAnimationInterval(interval);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -123,12 +116,12 @@ const char * Application::getCurrentLanguageCode()
         result = GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &numLanguages, pwszLanguagesBuffer, &cchLanguagesBuffer);
         if (result) {
 
-            code = StringWideCharToUtf8(pwszLanguagesBuffer);
+            code = CCUnicodeToUtf8(pwszLanguagesBuffer);
         }
 
         if (pwszLanguagesBuffer)
         {
-            delete [] pwszLanguagesBuffer;
+            delete pwszLanguagesBuffer;
         }
     }
 
@@ -221,33 +214,7 @@ LanguageType Application::getCurrentLanguage()
 
 Application::Platform  Application::getTargetPlatform()
 {
-    if (isWindowsPhone())
-    {
-        return Platform::OS_WP8;
-    }
-    else
-    {
-        return Platform::OS_WINRT;
-    }
-}
-
-std::string  Application::getVersion()
-{
-    std::string r("");
-    std::string s = FileUtils::getInstance()->getStringFromFile("WMAppManifest.xml");
-    if (!s.empty()) {
-        tinyxml2::XMLDocument doc;
-        if (!doc.Parse(s.c_str())) {
-            tinyxml2::XMLElement *app = doc.RootElement()->FirstChildElement("App");
-            if (app) {
-                const char* version = app->Attribute("Version");
-                if (version) {
-                    r = version;
-                }
-            }
-        }
-    }
-    return r;
+    return Platform::OS_WP8;
 }
 
 bool Application::openURL(const std::string &url)

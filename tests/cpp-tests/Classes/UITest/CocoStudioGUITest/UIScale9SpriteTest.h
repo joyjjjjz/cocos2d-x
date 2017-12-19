@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -90,27 +90,6 @@ public:
     
     virtual bool init() override;
 };
-
-// S9FrameNameSpriteSheetCroppedSimple
-
-class UIS9FrameNameSpriteSheetCroppedSimple : public UIScene
-{
-public:
-    CREATE_FUNC(UIS9FrameNameSpriteSheetCroppedSimple);
-    
-    virtual bool init() override;
-};
-
-// S9FrameNameSpriteSheetCroppedRotatedSimple
-
-class UIS9FrameNameSpriteSheetCroppedRotatedSimple : public UIScene
-{
-public:
-    CREATE_FUNC(UIS9FrameNameSpriteSheetCroppedRotatedSimple);
-    
-    virtual bool init() override;
-};
-
 
 // S9FrameNameSpriteSheetCropped
 
@@ -268,55 +247,6 @@ class UIS9ChangeAnchorPoint : public UIScene
 public:
     CREATE_FUNC(UIS9ChangeAnchorPoint);
     
-    virtual bool init() override;
-};
-
-class UIS9NinePatchTest : public UIScene
-{
-public:
-    CREATE_FUNC(UIS9NinePatchTest);
-
-    virtual bool init() override;
-};
-
-class UIS9BatchTest: public UIScene
-{
-public:
-    CREATE_FUNC(UIS9BatchTest);
-    
-    virtual bool init() override;
-};
-
-class UIS9ToggleRenderingTypeTest: public UIScene
-{
-public:
-    CREATE_FUNC(UIS9ToggleRenderingTypeTest);
-    
-    virtual bool init() override;
-};
-
-class UIS9GlobalZOrderTest: public UIScene
-{
-public:
-    CREATE_FUNC(UIS9GlobalZOrderTest);
-    
-    virtual bool init() override;
-};
-
-class UIS9EnableScale9FalseTest: public UIScene
-{
-public:
-    CREATE_FUNC(UIS9EnableScale9FalseTest);
-    
-    virtual bool init() override;
-};
-
-class UIS9GrayStateOpacityTest: public UIScene
-{
-public:
-    CREATE_FUNC(UIS9GrayStateOpacityTest);
-    void sliderEvent(cocos2d::Ref* sender, cocos2d::ui::Slider::EventType type);
-
     virtual bool init() override;
 };
 

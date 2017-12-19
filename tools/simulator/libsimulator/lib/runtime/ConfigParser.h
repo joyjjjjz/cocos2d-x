@@ -4,18 +4,16 @@
 #include <string>
 #include <vector>
 #include "cocos2d.h"
-#include "json/document-wrapper.h"
+#include "json/document.h"
 #include "ProjectConfig/SimulatorConfig.h"
 #include "ProjectConfig/ProjectConfig.h"
-#include "SimulatorExport.h"
-
 using namespace std;
 USING_NS_CC;
 
 #define CONFIG_FILE "config.json"
 
 typedef vector<SimulatorScreenSize> ScreenSizeArray;
-class CC_LIBSIM_DLL ConfigParser
+class ConfigParser
 {
 public:
     static ConfigParser *getInstance(void);

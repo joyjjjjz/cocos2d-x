@@ -35,10 +35,4 @@
 -- @param self
 -- @return ScaleBy#ScaleBy ret (return value: cc.ScaleBy)
         
---------------------------------
--- 
--- @function [parent=#ScaleBy] ScaleBy 
--- @param self
--- @return ScaleBy#ScaleBy self (return value: cc.ScaleBy)
-        
 return nil

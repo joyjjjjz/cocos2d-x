@@ -23,13 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "platform/winrt/InputEvent.h"
-#include "platform/winrt/CCWinRTUtils.h"
-#include "platform/winrt/CCGLViewImpl-winrt.h"
+#include "InputEvent.h"
+#include "CCWinRTUtils.h"
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WP8
+#include "CCGLViewImpl-wp8.h"
+#else
+#include "CCGLViewImpl-winrt.h"
+#endif
+
 #include "base/CCEventAcceleration.h"
-#include "base/CCDirector.h"
-#include "base/CCEventDispatcher.h"
-#include "base/CCIMEDispatcher.h"
 
 NS_CC_BEGIN
 
@@ -66,18 +69,6 @@ void PointerEvent::execute()
     case PointerEventType::PointerReleased:
         GLViewImpl::sharedOpenGLView()->OnPointerReleased(m_args.Get());
         break;
-    case cocos2d::MousePressed:
-        GLViewImpl::sharedOpenGLView()->OnMousePressed(m_args.Get());
-        break;
-    case cocos2d::MouseMoved:
-        GLViewImpl::sharedOpenGLView()->OnMouseMoved(m_args.Get());
-        break;
-    case cocos2d::MouseReleased:
-        GLViewImpl::sharedOpenGLView()->OnMouseReleased(m_args.Get());
-        break;
-    case cocos2d::MouseWheelChanged:
-        GLViewImpl::sharedOpenGLView()->OnMouseWheelChanged(m_args.Get());
-        break;
     }
 }
 
@@ -99,7 +90,10 @@ void KeyboardEvent::execute()
     {
     case Cocos2dKeyEvent::Text:
     {
-        std::string utf8String = PlatformStringToString(m_text.Get());
+        std::wstring w(m_text.Get()->Data());
+        std::u16string  s16(w.begin(),w.end());
+        std::string utf8String;
+        StringUtils::UTF16ToUTF8(s16, utf8String);
         IMEDispatcher::sharedDispatcher()->dispatchInsertText(utf8String.c_str(), utf8String.size());
         break;
     }
@@ -123,15 +117,6 @@ void KeyboardEvent::execute()
     }
 }
 
-WinRTKeyboardEvent::WinRTKeyboardEvent(WinRTKeyboardEventType type, Windows::UI::Core::KeyEventArgs^ args)
-	: m_type(type), m_key(args)
-{
-}
-
-void WinRTKeyboardEvent::execute()
-{
-	GLViewImpl::sharedOpenGLView()->OnWinRTKeyboardEvent(m_type, m_key.Get());
-}
 
 BackButtonEvent::BackButtonEvent()
 {
@@ -167,24 +152,6 @@ void UIEditBoxEvent::execute()
     {
         m_handler.Get()->Invoke(m_sender.Get(), m_text.Get());
     }
-}
-
-UIEditBoxEndEvent::UIEditBoxEndEvent(Platform::Object^ sender, Platform::String^ text, int action, Windows::Foundation::EventHandler<cocos2d::EndEventArgs^>^ handle)
-  : m_sender(sender)
-  , m_text(text)
-  , m_action(action)
-  , m_handler(handle)
-{
-
-}
-
-void UIEditBoxEndEvent::execute()
-{
-  if (m_handler.Get())
-  {
-    auto args = ref new EndEventArgs(m_action, m_text.Get());
-    m_handler.Get()->Invoke(m_sender.Get(), args);
-  }
 }
 
 NS_CC_END

@@ -1,13 +1,11 @@
 
 
-#include "editor-support/cocostudio/WidgetReader/TextAtlasReader/TextAtlasReader.h"
+#include "TextAtlasReader.h"
 
 #include "ui/UITextAtlas.h"
-#include "platform/CCFileUtils.h"
-
-#include "editor-support/cocostudio/CocoLoader.h"
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
+#include "cocostudio/CocoLoader.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/FlatBuffersSerialize.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -24,7 +22,7 @@ namespace cocostudio
     static const char* P_ItemHeight = "itemHeight";
     static const char* P_StartCharMap = "startCharMap";
     
-    static TextAtlasReader* instanceTextAtlasReader = nullptr;
+    static TextAtlasReader* instanceTextAtalsReader = nullptr;
     
     IMPLEMENT_CLASS_NODE_READER_INFO(TextAtlasReader)
     
@@ -40,16 +38,16 @@ namespace cocostudio
     
     TextAtlasReader* TextAtlasReader::getInstance()
     {
-        if (!instanceTextAtlasReader)
+        if (!instanceTextAtalsReader)
         {
-            instanceTextAtlasReader = new (std::nothrow) TextAtlasReader();
+            instanceTextAtalsReader = new (std::nothrow) TextAtlasReader();
         }
-        return instanceTextAtlasReader;
+        return instanceTextAtalsReader;
     }
     
     void TextAtlasReader::destroyInstance()
     {
-        CC_SAFE_DELETE(instanceTextAtlasReader);
+        CC_SAFE_DELETE(instanceTextAtalsReader);
     }
     
     void TextAtlasReader::setPropsFromBinary(cocos2d::ui::Widget *widget, CocoLoader *cocoLoader, stExpCocoNode *cocoNode)
@@ -80,7 +78,7 @@ namespace cocostudio
             }
             else if(key == P_CharMapFileData){
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -275,6 +273,13 @@ namespace cocostudio
                 {
                     errorFilePath = cmfPath;
                     fileExist = false;
+                }
+                
+                if (!fileExist)
+                {
+                    auto label = Label::create();
+                    label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+                    labelAtlas->addChild(label);
                 }
                 break;
             }

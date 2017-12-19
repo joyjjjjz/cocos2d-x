@@ -1211,7 +1211,7 @@ TMXOrthoFromXMLTestNew::TMXOrthoFromXMLTestNew()
     std::string resources = "TileMaps";        // partial paths are OK as resource paths.
     std::string file = resources + "/orthogonal-test1.tmx";
 
-    auto str = __String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
+    auto str = String::createWithContentsOfFile(FileUtils::getInstance()->fullPathForFilename(file.c_str()).c_str());
     CCASSERT(str != nullptr, "Unable to open file");
 
     auto map = cocos2d::experimental::TMXTiledMap::createWithXML(str->getCString() ,resources.c_str());
@@ -1323,7 +1323,7 @@ TMXGIDObjectsTestNew::TMXGIDObjectsTestNew()
     Size CC_UNUSED s = map->getContentSize();
     CCLOG("Contentsize: %f, %f", s.width, s.height);
 
-    CCLOG("----> Iterating over all the group objects");
+    CCLOG("----> Iterating over all the group objets");
     
     auto drawNode = DrawNode::create();
     Color4F color(1.0, 1.0, 1.0, 1.0);

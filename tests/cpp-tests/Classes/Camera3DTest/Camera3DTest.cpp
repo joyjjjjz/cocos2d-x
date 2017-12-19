@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -24,7 +24,6 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "Camera3DTest.h"
-#include "testResource.h"
 
 USING_NS_CC;
 
@@ -40,9 +39,11 @@ Camera3DTests::Camera3DTests()
     ADD_TEST_CASE(CameraRotationTest);
     ADD_TEST_CASE(Camera3DTestDemo);
     ADD_TEST_CASE(CameraCullingDemo);
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
+    // 3DEffect use custom shader which is not supported on WP8 yet. 
     ADD_TEST_CASE(FogTestDemo);
+#endif
     ADD_TEST_CASE(CameraArcBallDemo);
-    ADD_TEST_CASE(CameraFrameBufferTest);
 }
 
 //------------------------------------------------------------------
@@ -56,7 +57,7 @@ CameraRotationTest::CameraRotationTest()
     auto s = Director::getInstance()->getWinSize();
     
     _camControlNode = Node::create();
-    _camControlNode->setPositionNormalized(Vec2(.5,.5));
+    _camControlNode->setNormalizedPosition(Vec2(.5,.5));
     addChild(_camControlNode);
 
     _camNode = Node::create();
@@ -87,7 +88,7 @@ CameraRotationTest::CameraRotationTest()
     l1->setScale(3);
     bill1->addChild(l1);
 
-    auto p1 = ParticleSystemQuad::create("Particles/SmallSun.plist");
+    auto p1 = CCParticleSystemQuad::create("Particles/SmallSun.plist");
     p1->setPosition(30,80);
     bill1->addChild(p1);
     
@@ -103,7 +104,7 @@ CameraRotationTest::CameraRotationTest()
     l2->setScale(3);
     bill2->addChild(l2);
     
-    auto p2 = ParticleSystemQuad::create("Particles/SmallSun.plist");
+    auto p2 = CCParticleSystemQuad::create("Particles/SmallSun.plist");
     p2->setPosition(30,80);
     bill2->addChild(p2);
 
@@ -444,6 +445,8 @@ void Camera3DTestDemo::move3D(float elapsedTime)
         Vec3 offset = newFaceDir * 25.0f * elapsedTime;
         curPos+=offset;
         _sprite3D->setPosition3D(curPos);
+        offset.x=offset.x;
+        offset.z=offset.z;
         if(_cameraType==CameraType::ThirdPerson)
         {
             Vec3 cameraPos= _camera->getPosition3D();
@@ -732,7 +735,7 @@ void CameraCullingDemo::onEnter()
     addChild(layer3D,0);
     _layer3D=layer3D;
     
-    // switch camera
+    // swich camera
     MenuItemFont::setFontName("fonts/arial.ttf");
     MenuItemFont::setFontSize(20);
     
@@ -892,7 +895,7 @@ void CameraCullingDemo::addSpriteCallback(Ref* sender)
     
     // update sprite number
     char szText[16];
-    sprintf(szText,"%ld sprits", static_cast<long>(_layer3D->getChildrenCount()));
+    sprintf(szText,"%ld sprits",_layer3D->getChildrenCount());
     _labelSprite3DCount->setString(szText);
 }
 
@@ -920,7 +923,7 @@ void CameraCullingDemo::delSpriteCallback(Ref* sender)
     
     // update sprite number
     char szText[16];
-    sprintf(szText,"%ld sprits", static_cast<long>(_layer3D->getChildrenCount()));
+    sprintf(szText,"%ld sprits",_layer3D->getChildrenCount());
     _labelSprite3DCount->setString(szText);
 }
 
@@ -1011,7 +1014,7 @@ void CameraArcBallDemo::onEnter()
     listener->onTouchesMoved = CC_CALLBACK_2(CameraArcBallDemo::onTouchsMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    // switch camera
+    // swich camera
     MenuItemFont::setFontName("fonts/arial.ttf");
     MenuItemFont::setFontSize(20);
     
@@ -1162,6 +1165,7 @@ void CameraArcBallDemo::updateCameraTransform()
     Mat4::createTranslation(_center, &center);
     Mat4 result = center * rot * trans;
     _camera->setNodeToParentTransform(result);
+
 }
 
 void CameraArcBallDemo::switchOperateCallback(Ref* sender)
@@ -1228,7 +1232,7 @@ void FogTestDemo::onEnter()
     listener->onTouchesMoved = CC_CALLBACK_2(FogTestDemo::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
-    // switch fog type
+    // swich fog type
     TTFConfig ttfConfig("fonts/arial.ttf", 20);
     
     auto label1 = Label::createWithTTF(ttfConfig,"Linear ");
@@ -1313,7 +1317,7 @@ void FogTestDemo::onEnter()
     _layer3D->setCameraMask(2);
 
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     _backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED,
                                                             [this](EventCustom*)
                                                             {
@@ -1376,7 +1380,7 @@ void FogTestDemo::onExit()
         _camera = nullptr;
     }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
 #endif
 }
@@ -1408,70 +1412,4 @@ void FogTestDemo::onTouchesMoved(const std::vector<Touch*>& touches, cocos2d::Ev
             _camera->setPosition3D(cameraPos);
         }
     }
-}
-
-CameraFrameBufferTest::CameraFrameBufferTest()
-{
-    
-}
-
-CameraFrameBufferTest::~CameraFrameBufferTest()
-{
-    
-}
-
-std::string CameraFrameBufferTest::title() const
-{
-    return "Camera FrameBuffer Object Test";
-}
-
-void CameraFrameBufferTest::onEnter()
-{
-    auto sizeInpixels = Director::getInstance()->getWinSizeInPixels();
-    auto size = Director::getInstance()->getWinSize();
-    auto fboSize = Size(sizeInpixels.width * 1, sizeInpixels.height * 1.5);
-    auto fbo = experimental::FrameBuffer::create(1, fboSize.width, fboSize.height);
-    
-    CameraBaseTest::onEnter();
-    //auto sprite = Sprite::createWithTexture(fbo);
-    //sprite->setPosition(Vec2(100,100));
-    //std::string filename = "Sprite3DTest/girl.c3b";
-    //auto sprite = Sprite3D::create(filename);
-    //sprite->setScale(1.0);
-    //auto animation = Animation3D::create(filename);
-    //if (animation)
-    //{
-    //    auto animate = Animate3D::create(animation);
-        
-    //    sprite->runAction(RepeatForever::create(animate));
-    //}
-    //sprite->setPosition(Vec2(100,100));
-    auto rt = experimental::RenderTarget::create(fboSize.width, fboSize.height);
-    auto rtDS = experimental::RenderTargetDepthStencil::create(fboSize.width, fboSize.height);
-    fbo->attachRenderTarget(rt);
-    fbo->attachDepthStencilTarget(rtDS);
-    auto sprite = Sprite::createWithTexture(fbo->getRenderTarget()->getTexture());
-    sprite->setScale(0.3f);
-    sprite->runAction(RepeatForever::create(RotateBy::create(1, 90)));
-    sprite->setPosition(size.width/2, size.height/2);
-    addChild(sprite);
-    
-    auto sprite2 = Sprite::create(s_pathGrossini);
-    sprite2->setPosition(Vec2(size.width/5,size.height/5));
-    addChild(sprite2);
-    sprite2->setCameraMask((unsigned short)CameraFlag::USER1);
-    auto move = MoveBy::create(1.0, Vec2(100,100));
-    sprite2->runAction(
-                       RepeatForever::create(
-                                             Sequence::createWithTwoActions(
-                                                                            move, move->reverse())
-                                             )
-                       );
-    
-    auto camera = Camera::create();
-    camera->setCameraFlag(CameraFlag::USER1);
-    camera->setDepth(-1);
-    camera->setFrameBufferObject(fbo);
-    fbo->setClearColor(Color4F(1,1,1,1));
-    addChild(camera);
 }

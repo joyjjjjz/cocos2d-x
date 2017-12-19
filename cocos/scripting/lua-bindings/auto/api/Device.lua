@@ -11,13 +11,6 @@
 -- @return Device#Device self (return value: cc.Device)
         
 --------------------------------
--- Sets the interval of accelerometer.
--- @function [parent=#Device] setAccelerometerInterval 
--- @param self
--- @param #float interval
--- @return Device#Device self (return value: cc.Device)
-        
---------------------------------
 -- Controls whether the screen should remain on.<br>
 -- param keepScreenOn One flag indicating that the screen should remain on.
 -- @function [parent=#Device] setKeepScreenOn 
@@ -26,14 +19,10 @@
 -- @return Device#Device self (return value: cc.Device)
         
 --------------------------------
--- Vibrate for the specified amount of time.<br>
--- If vibrate is not supported, then invoking this method has no effect.<br>
--- Some platforms limit to a maximum duration of 5 seconds.<br>
--- Duration is ignored on iOS due to API limitations.<br>
--- param duration The duration in seconds.
--- @function [parent=#Device] vibrate 
+-- Sets the interval of accelerometer.
+-- @function [parent=#Device] setAccelerometerInterval 
 -- @param self
--- @param #float duration
+-- @param #float interval
 -- @return Device#Device self (return value: cc.Device)
         
 --------------------------------

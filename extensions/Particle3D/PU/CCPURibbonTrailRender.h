@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -44,8 +44,8 @@ public:
     //Constructor
     PURibbonTrailVisualData (Node* sceneNode, PURibbonTrail* ribbonTrail) : 
         node(sceneNode),
-        addedToTrail(false),
         trail(ribbonTrail),
+        addedToTrail(false),
         index(0){};
 
     Node* node;
@@ -70,7 +70,7 @@ public:
                 addedToTrail = false;
             }
         }
-    }
+    };
 };
 
 // particle render for quad
@@ -126,7 +126,7 @@ public:
     void destroyAll(void);
 
     virtual PURibbonTrailRender* clone() override;
-    void copyAttributesTo(PURibbonTrailRender *render);
+    virtual void copyAttributesTo (PURender *render) override;
 
 CC_CONSTRUCTOR_ACCESS:
     PURibbonTrailRender();

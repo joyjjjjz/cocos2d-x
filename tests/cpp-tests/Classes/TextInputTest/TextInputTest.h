@@ -1,6 +1,7 @@
 #ifndef __TEXT_INPUT_TEST_H__
 #define __TEXT_INPUT_TEST_H__
 
+#include "../testBasic.h"
 #include "../BaseTest.h"
 
 class KeyboardNotificationLayer;
@@ -18,7 +19,7 @@ public:
     virtual std::string title() const override;
     virtual void onClickTrackNode(bool bClicked) = 0;
 
-    virtual void keyboardWillShow(cocos2d::IMEKeyboardNotificationInfo& info)override;
+    virtual void keyboardWillShow(cocos2d::IMEKeyboardNotificationInfo& info);
 
     bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
@@ -53,7 +54,7 @@ class TextFieldTTFActionTest : public KeyboardNotificationLayer, public cocos2d:
     cocos2d::TextFieldTTF*    _textField;
     cocos2d::Action*          _textFieldAction;
     bool                _action;
-    size_t              _charLimit;       // the textfield max char limit
+    int                 _charLimit;       // the textfield max char limit
 
 public:
     CREATE_FUNC(TextFieldTTFActionTest);
@@ -75,17 +76,4 @@ public:
     virtual bool onDraw(cocos2d::TextFieldTTF*  sender);
 };
 
-//////////////////////////////////////////////////////////////////////////
-// TextFieldTTFSecureTextEntryTest for test TextFieldTTF SecureTextEntry.
-//////////////////////////////////////////////////////////////////////////
-
-class TextFieldTTFSecureTextEntryTest : public TextFieldTTFDefaultTest
-{
-public:
-    CREATE_FUNC(TextFieldTTFSecureTextEntryTest);
-    
-    virtual std::string subtitle() const override;
-    // Layer
-    virtual void onEnter() override;
-};
 #endif    // __TEXT_INPUT_TEST_H__

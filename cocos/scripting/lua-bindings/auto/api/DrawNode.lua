@@ -44,13 +44,6 @@
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
 
 --------------------------------
--- 
--- @function [parent=#DrawNode] setLineWidth 
--- @param self
--- @param #float lineWidth
--- @return DrawNode#DrawNode self (return value: cc.DrawNode)
-        
---------------------------------
 -- js NA
 -- @function [parent=#DrawNode] onDrawGLPoint 
 -- @param self
@@ -119,7 +112,7 @@
 -- param origin The origin of the bezier path.<br>
 -- param control The control of the bezier path.<br>
 -- param destination The destination of the bezier path.<br>
--- param segments The number of segments.<br>
+-- param segments The The number of segments.<br>
 -- param color Set the quad bezier color.
 -- @function [parent=#DrawNode] drawQuadBezier 
 -- @param self
@@ -186,12 +179,6 @@
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
         
 --------------------------------
--- 
--- @function [parent=#DrawNode] getLineWidth 
--- @param self
--- @return float#float ret (return value: float)
-        
---------------------------------
 --  Draw a point.<br>
 -- param point A Vec2 used to point.<br>
 -- param pointSize The point size.<br>
@@ -210,7 +197,7 @@
 -- param control1 The first control of the bezier path.<br>
 -- param control2 The second control of the bezier path.<br>
 -- param destination The destination of the bezier path.<br>
--- param segments The number of segments.<br>
+-- param segments The The number of segments.<br>
 -- param color Set the cubic bezier color.
 -- @function [parent=#DrawNode] drawCubicBezier 
 -- @param self
@@ -236,18 +223,6 @@
 -- @param #cc.Renderer renderer
 -- @param #mat4_table transform
 -- @param #unsigned int flags
--- @return DrawNode#DrawNode self (return value: cc.DrawNode)
-        
---------------------------------
--- 
--- @function [parent=#DrawNode] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
--- @function [parent=#DrawNode] DrawNode 
--- @param self
 -- @return DrawNode#DrawNode self (return value: cc.DrawNode)
         
 return nil

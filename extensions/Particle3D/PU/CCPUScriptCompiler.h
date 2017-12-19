@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -41,10 +41,10 @@ enum PUAbstractNodeType
     ANT_VARIABLE_SET,
     ANT_VARIABLE_ACCESS
 };
-class CC_DLL PUAbstractNode;
+class PUAbstractNode;
 typedef std::list<PUAbstractNode*> PUAbstractNodeList;
 
-class CC_DLL PUAbstractNode
+class PUAbstractNode
 {
 public:
     std::string file;
@@ -71,7 +71,7 @@ public:
 
 
 /** This specific abstract node represents a script object */
-class CC_DLL PUObjectAbstractNode : public PUAbstractNode
+class PUObjectAbstractNode : public PUAbstractNode
 {
 private:
     std::map<std::string,std::string> _env;
@@ -97,7 +97,7 @@ public:
 };
 
 /** This abstract node represents a script property */
-class CC_DLL PUPropertyAbstractNode : public PUAbstractNode
+class  PUPropertyAbstractNode : public PUAbstractNode
 {
 public:
     std::string name;
@@ -111,7 +111,7 @@ public:
 };
 
 /** This is an abstract node which cannot be broken down further */
-class CC_DLL PUAtomAbstractNode : public PUAbstractNode
+class PUAtomAbstractNode : public PUAbstractNode
 {
 public:
     std::string value;
@@ -124,8 +124,8 @@ private:
     void parseNumber() const;
 };
 
-class CC_DLL PUParticleSystem3D;
-class CC_DLL PUScriptCompiler
+class PUParticleSystem3D;
+class PUScriptCompiler
 {
 
 private:

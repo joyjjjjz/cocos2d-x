@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -108,11 +108,11 @@ Color4B::Color4B(GLubyte _r, GLubyte _g, GLubyte _b, GLubyte _a)
 , a(_a)
 {}
 
-Color4B::Color4B(const Color3B& color, GLubyte _a)
+Color4B::Color4B(const Color3B& color)
 : r(color.r)
 , g(color.g)
 , b(color.b)
-, a(_a)
+, a(255)
 {}
 
 Color4B::Color4B(const Color4F& color)
@@ -170,11 +170,11 @@ Color4F::Color4F(float _r, float _g, float _b, float _a)
 , a(_a)
 {}
 
-Color4F::Color4F(const Color3B& color, float _a)
+Color4F::Color4F(const Color3B& color)
 : r(color.r / 255.0f)
 , g(color.g / 255.0f)
 , b(color.b / 255.0f)
-, a(_a)
+, a(1.0f)
 {}
 
 Color4F::Color4F(const Color4B& color)
@@ -212,71 +212,6 @@ bool Color4F::operator!=(const Color3B& right) const
 bool Color4F::operator!=(const Color4B& right) const
 {
     return !(*this == right);
-}
-
-Color4F& operator+=(Color4F& lhs, const Color4F& rhs) {
-	lhs.r += rhs.r;
-	lhs.g += rhs.g;
-	lhs.b += rhs.b;
-	lhs.a += rhs.a;
-	return lhs;
-}
-Color4F operator+(Color4F lhs, const Color4F& rhs) {
-	return lhs += rhs;
-}
-Color4F& operator-=(Color4F& lhs, const Color4F& rhs) {
-	lhs.r -= rhs.r;
-	lhs.g -= rhs.g;
-	lhs.b -= rhs.b;
-	lhs.a -= rhs.a;
-	return lhs;
-}
-Color4F operator-(Color4F lhs, const Color4F& rhs) {
-	return lhs -= rhs;
-}
-
-Color4F& operator*=(Color4F& lhs, const Color4F& rhs) {
-	lhs.r *= rhs.r;
-	lhs.g *= rhs.g;
-	lhs.b *= rhs.b;
-	lhs.a *= rhs.a;
-	return lhs;
-}
-Color4F& operator*=(Color4F& lhs, float rhs) {
-	lhs.r *= rhs;
-	lhs.g *= rhs;
-	lhs.b *= rhs;
-	lhs.a *= rhs;
-	return lhs;
-}
-Color4F operator*(Color4F lhs, const Color4F& rhs) {
-    return lhs *= rhs;
-}
-
-Color4F operator*(Color4F lhs, float rhs) {
-    return lhs *= rhs;
-}
-
-Color4F& operator/=(Color4F& lhs, const Color4F& rhs) {
-	lhs.r /= rhs.r;
-	lhs.g /= rhs.g;
-	lhs.b /= rhs.b;
-	lhs.a /= rhs.a;
-	return lhs;
-}
-Color4F& operator/=(Color4F& lhs, float rhs) {
-	lhs.r /= rhs;
-	lhs.g /= rhs;
-	lhs.b /= rhs;
-	lhs.a /= rhs;
-	return lhs;
-}
-Color4F operator/(Color4F lhs, const Color4F& rhs) {
-    return lhs /= rhs;
-}
-
-Color4F operator/(Color4F lhs, float rhs) {
-    return lhs /= rhs;
 }
 
 /**

@@ -11,8 +11,8 @@ extern "C" {
 }
 #endif
 
-
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
+#include "cocos2d.h"
+#include "LuaScriptHandlerMgr.h"
 
 int register_all_cocos2dx_physics_manual(lua_State* tolua_S);
 

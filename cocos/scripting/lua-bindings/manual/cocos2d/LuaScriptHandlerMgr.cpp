@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -21,15 +21,15 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
+#include "LuaScriptHandlerMgr.h"
 #include <map>
 #include <string>
-#include "scripting/lua-bindings/manual/tolua_fix.h"
-
-#include "scripting/lua-bindings/manual/CCLuaStack.h"
-#include "scripting/lua-bindings/manual/CCLuaValue.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
-#include "scripting/lua-bindings/manual/cocos2d/LuaOpengl.h"
+#include "tolua_fix.h"
+#include "cocos2d.h"
+#include "CCLuaStack.h"
+#include "CCLuaValue.h"
+#include "CCLuaEngine.h"
+#include "LuaOpengl.h"
 
 using namespace cocos2d;
 
@@ -38,7 +38,7 @@ NS_CC_BEGIN
 ScheduleHandlerDelegate* ScheduleHandlerDelegate::create()
 {
     ScheduleHandlerDelegate *ret = new (std::nothrow) ScheduleHandlerDelegate();
-    if (nullptr != ret )
+    if (NULL != ret )
     {
         ret->autorelease();
         return ret;
@@ -46,7 +46,7 @@ ScheduleHandlerDelegate* ScheduleHandlerDelegate::create()
     else
     {
         CC_SAFE_DELETE(ret);
-        return nullptr;
+        return NULL;
     }
 }
 
@@ -71,7 +71,7 @@ LuaCallFunc * LuaCallFunc::create(const std::function<void(void* ,Node*)>& func)
     }
     
     CC_SAFE_DELETE(ret);
-    return nullptr;
+    return NULL;
 }
 
 void LuaCallFunc::execute()
@@ -97,12 +97,14 @@ LuaCallFunc* LuaCallFunc::clone() const
     int handler =  ScriptHandlerMgr::getInstance()->getObjectHandler((void*)this, ScriptHandlerMgr::HandlerType::CALLFUNC);
     
     if (0 == handler)
-        return nullptr;
+        return NULL;
     
     auto ret = new (std::nothrow) LuaCallFunc();
     
     if( _functionLua )
+    {
         ret->initWithFunction(_functionLua);
+    }
     
     ret->autorelease();
 
@@ -126,7 +128,7 @@ ScriptHandlerMgr::~ScriptHandlerMgr()
 
 ScriptHandlerMgr* ScriptHandlerMgr::getInstance()
 {
-    if (nullptr == _scriptHandlerMgr)
+    if (NULL == _scriptHandlerMgr)
     {
         _scriptHandlerMgr = new (std::nothrow) ScriptHandlerMgr();
         _scriptHandlerMgr->init();
@@ -146,7 +148,7 @@ void ScriptHandlerMgr::init()
 
 void ScriptHandlerMgr::addObjectHandler(void* object,int handler,ScriptHandlerMgr::HandlerType handlerType)
 {
-    if (nullptr == object)
+    if (NULL == object)
         return;
     
     //may be not need
@@ -156,7 +158,9 @@ void ScriptHandlerMgr::addObjectHandler(void* object,int handler,ScriptHandlerMg
     VecHandlerPairs vecHandlers;
     vecHandlers.clear();
     if (_mapObjectHandlers.end() != iter)
+    {
         vecHandlers = iter->second;
+    }
     
     HandlerPair eventHanler = std::make_pair(handlerType, handler);
     vecHandlers.push_back(eventHanler);
@@ -164,7 +168,7 @@ void ScriptHandlerMgr::addObjectHandler(void* object,int handler,ScriptHandlerMg
 }
 void ScriptHandlerMgr::removeObjectHandler(void* object,ScriptHandlerMgr::HandlerType handlerType)
 {
-    if (nullptr == object || _mapObjectHandlers.empty())
+    if (NULL == object || _mapObjectHandlers.empty())
         return;
     
     auto iterMap = _mapObjectHandlers.find(object);
@@ -175,44 +179,60 @@ void ScriptHandlerMgr::removeObjectHandler(void* object,ScriptHandlerMgr::Handle
         return;
     
     auto iterVec = iterMap->second.begin();
+    bool exist  = false;
     for (; iterVec != iterMap->second.end(); ++iterVec)
     {
         if (iterVec->first == handlerType)
         {
-            LuaEngine::getInstance()->removeScriptHandler(iterVec->second);
-            iterMap->second.erase(iterVec);
+            exist = true;
             break;
         }
     }
-}
+    
+    if (exist)
+    {
+        LuaEngine::getInstance()->removeScriptHandler(iterVec->second);
+        iterMap->second.erase(iterVec);
+    }
 
+}
 int  ScriptHandlerMgr::getObjectHandler(void* object,ScriptHandlerMgr::HandlerType handlerType)
 {
-    if (nullptr == object ||   _mapObjectHandlers.empty() )
+    if (NULL == object ||   _mapObjectHandlers.empty() )
         return 0;
     
     auto iter = _mapObjectHandlers.find(object);
+    
     if (_mapObjectHandlers.end() != iter)
-        for (auto &handlerPair : iter->second)
-            if (handlerPair.first == handlerType)
-                return handlerPair.second;
+    {
+        auto iterVec = (iter->second).begin();
+        for (; iterVec != (iter->second).end(); iterVec++)
+        {
+            if (iterVec->first == handlerType)
+            {
+                return iterVec->second;
+            }
+        }
+    }
     
     return 0;
 }
-
 void ScriptHandlerMgr::removeObjectAllHandlers(void* object)
 {
-    if (nullptr == object || _mapObjectHandlers.empty())
+    if (NULL == object || _mapObjectHandlers.empty())
         return;
     
     auto iter = _mapObjectHandlers.find(object);
+    
     if (_mapObjectHandlers.end() != iter)
     {
         if (!iter->second.empty())
         {
-            for (auto &handlerPair : iter->second)
-                LuaEngine::getInstance()->removeScriptHandler(handlerPair.second);
-            
+            auto iterVec = iter->second.begin();
+            for (; iterVec != iter->second.end(); ++iterVec)
+            {
+                LuaEngine::getInstance()->removeScriptHandler(iterVec->second);
+            }
             (iter->second).clear();
         }
         _mapObjectHandlers.erase(iter);
@@ -231,8 +251,7 @@ ScriptHandlerMgr::HandlerType ScriptHandlerMgr::addCustomHandler(void* object, i
     if (_mapObjectHandlers.end() != iter)
     {
         vecHandlers = iter->second;
-        if (!vecHandlers.empty())
-            handlerType = static_cast<HandlerType>((int)vecHandlers.back().first + 1);
+        handlerType = static_cast<HandlerType>((int)vecHandlers.back().first + 1);
     }
     assert(handlerType <= HandlerType::EVENT_CUSTOM_ENDED);
     

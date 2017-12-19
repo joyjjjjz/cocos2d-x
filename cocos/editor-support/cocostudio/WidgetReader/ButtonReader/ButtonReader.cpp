@@ -1,15 +1,11 @@
 
 
-#include "editor-support/cocostudio/WidgetReader/ButtonReader/ButtonReader.h"
+#include "ButtonReader.h"
 
 #include "ui/UIButton.h"
-#include "2d/CCSpriteFrameCache.h"
-#include "2d/CCLabel.h"
-#include "platform/CCFileUtils.h"
-#include "editor-support/cocostudio/CocoLoader.h"
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
-#include "editor-support/cocostudio/LocalizationManager.h"
+#include "cocostudio/CocoLoader.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/FlatBuffersSerialize.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -102,7 +98,7 @@ namespace cocostudio
             else if (key == P_NormalData){
                 
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -114,7 +110,7 @@ namespace cocostudio
             else if (key == P_PressedData){
                 
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -126,7 +122,7 @@ namespace cocostudio
             else if (key == P_DisabledData){
                 
                 stExpCocoNode *backGroundChildren = stChildArray[i].GetChildArray(cocoLoader);
-                std::string resType = backGroundChildren[2].GetValue(cocoLoader);
+                std::string resType = backGroundChildren[2].GetValue(cocoLoader);;
                 
                 Widget::TextureResType imageFileNameType = (Widget::TextureResType)valueToInt(resType);
                 
@@ -257,7 +253,6 @@ namespace cocostudio
         bool scale9Enabled = false;
         Rect capInsets;
         std::string text = "";
-        bool isLocalized = false;
         int fontSize = 14;
         std::string fontName = "";
         cocos2d::Size scale9Size;
@@ -320,10 +315,6 @@ namespace cocostudio
             else if (name == "ButtonText")
             {
                 text = value;
-            }
-            else if (name == "IsLocalized")
-            {
-                isLocalized = (value == "True") ? true : false;
             }
             else if (name == "FontSize")
             {
@@ -434,7 +425,7 @@ namespace cocostudio
                     }
                     else if (name == "Type")
                     {
-                        disabledResourceType = getResourceType(value);
+                        disabledResourceType = getResourceType(value);;
                     }
                     else if (name == "Plist")
                     {
@@ -647,8 +638,7 @@ namespace cocostudio
                                            &f_shadowColor,
                                            shadowOffset.width,
                                            shadowOffset.height,
-                                           shadowBlurRadius,
-                                           isLocalized);
+                                           shadowBlurRadius);
         
         return *(Offset<Table>*)(&options);
     }
@@ -672,11 +662,6 @@ namespace cocostudio
                 if (FileUtils::getInstance()->isFileExist(normalTexturePath))
                 {
                     normalFileExist = true;
-                }
-                else if (SpriteFrameCache::getInstance()->getSpriteFrameByName(normalTexturePath))
-                {
-                    normalFileExist = true;
-                    normalType = 1;
                 }
                 else
                 {
@@ -720,6 +705,12 @@ namespace cocostudio
         if (normalFileExist)
         {
             button->loadTextureNormal(normalTexturePath, (Widget::TextureResType)normalType);
+        }
+        else if (!normalTexturePath.empty())
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", normalErrorFilePath.c_str())->getCString());
+            button->addChild(label);
         }
         
         bool pressedFileExist = false;
@@ -779,6 +770,12 @@ namespace cocostudio
         {
             button->loadTexturePressed(pressedTexturePath, (Widget::TextureResType)pressedType);
         }
+        else if (!pressedTexturePath.empty())
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", pressedErrorFilePath.c_str())->getCString());
+            button->addChild(label);
+        }
         
         bool disabledFileExist = false;
         std::string disabledErrorFilePath = "";
@@ -837,18 +834,15 @@ namespace cocostudio
         {
             button->loadTextureDisabled(disabledTexturePath, (Widget::TextureResType)disabledType);
         }
+        else if (!disabledTexturePath.empty())
+        {
+            auto label = Label::create();
+            label->setString(__String::createWithFormat("%s missed", disabledErrorFilePath.c_str())->getCString());
+            button->addChild(label);
+        }
         
         std::string titleText = options->text()->c_str();
-        bool isLocalized = options->isLocalized() != 0;
-        if (isLocalized)
-        {
-            ILocalizationManager* lm = LocalizationHelper::getCurrentManager();
-            button->setTitleText(lm->getLocalizationString(titleText));
-        }
-        else
-        {
-            button->setTitleText(titleText);
-        }
+        button->setTitleText(titleText);
         
         auto textColor = options->textColor();
         Color3B titleColor(textColor->r(), textColor->g(), textColor->b());
@@ -879,13 +873,19 @@ namespace cocostudio
             {
                 button->setTitleFontName(path);
             }
+            else
+            {
+                auto label = Label::create();
+                label->setString(__String::createWithFormat("%s missed", errorFilePath.c_str())->getCString());
+                button->addChild(label);
+            }
         }
         
         bool displaystate = options->displaystate() != 0;
         button->setBright(displaystate);
         button->setEnabled(displaystate);
         
-        bool outlineEnabled = options->outlineEnabled() != 0;
+        bool outlineEnabled = options->outlineEnabled();
         if (outlineEnabled)
         {
             auto f_outlineColor = options->outlineColor();
@@ -897,7 +897,7 @@ namespace cocostudio
             }
         }
         
-        bool shadowEnabled = options->shadowEnabled() != 0;
+        bool shadowEnabled = options->shadowEnabled();
         if (shadowEnabled)
         {
             auto f_shadowColor = options->shadowColor();
@@ -929,8 +929,6 @@ namespace cocostudio
             Size contentSize(options->widgetOptions()->size()->width(), options->widgetOptions()->size()->height());
             button->setContentSize(contentSize);
         }
-
-        button->setBright(displaystate);
     }
     
     Node* ButtonReader::createNodeWithFlatBuffers(const flatbuffers::Table *buttonOptions)

@@ -9,12 +9,12 @@ function ViewBase:ctor(app, name)
     -- check CSB resource file
     local res = rawget(self.class, "RESOURCE_FILENAME")
     if res then
-        self:createResourceNode(res)
+        self:createResoueceNode(res)
     end
 
     local binding = rawget(self.class, "RESOURCE_BINDING")
     if res and binding then
-        self:createResourceBinding(binding)
+        self:createResoueceBinding(binding)
     end
 
     if self.onCreate then self:onCreate() end
@@ -32,18 +32,18 @@ function ViewBase:getResourceNode()
     return self.resourceNode_
 end
 
-function ViewBase:createResourceNode(resourceFilename)
+function ViewBase:createResoueceNode(resourceFilename)
     if self.resourceNode_ then
         self.resourceNode_:removeSelf()
         self.resourceNode_ = nil
     end
     self.resourceNode_ = cc.CSLoader:createNode(resourceFilename)
-    assert(self.resourceNode_, string.format("ViewBase:createResourceNode() - load resouce node from file \"%s\" failed", resourceFilename))
+    assert(self.resourceNode_, string.format("ViewBase:createResoueceNode() - load resouce node from file \"%s\" failed", resourceFilename))
     self:addChild(self.resourceNode_)
 end
 
-function ViewBase:createResourceBinding(binding)
-    assert(self.resourceNode_, "ViewBase:createResourceBinding() - not load resource node")
+function ViewBase:createResoueceBinding(binding)
+    assert(self.resourceNode_, "ViewBase:createResoueceBinding() - not load resource node")
     for nodeName, nodeBinding in pairs(binding) do
         local node = self.resourceNode_:getChildByName(nodeName)
         if nodeBinding.varname then

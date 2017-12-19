@@ -5,7 +5,10 @@
 -- @parent_module cc
 
 --------------------------------
--- 
+-- brief Create the action with the inner action and the rate parameter.<br>
+-- param action The pointer of the inner action.<br>
+-- param rate The value of the rate parameter.<br>
+-- return A pointer of EaseInOut action. If creation failed, return nil.
 -- @function [parent=#EaseInOut] create 
 -- @param self
 -- @param #cc.ActionInterval action
@@ -29,12 +32,6 @@
 -- 
 -- @function [parent=#EaseInOut] reverse 
 -- @param self
--- @return EaseRateAction#EaseRateAction ret (return value: cc.EaseRateAction)
-        
---------------------------------
--- 
--- @function [parent=#EaseInOut] EaseInOut 
--- @param self
--- @return EaseInOut#EaseInOut self (return value: cc.EaseInOut)
+-- @return EaseInOut#EaseInOut ret (return value: cc.EaseInOut)
         
 return nil

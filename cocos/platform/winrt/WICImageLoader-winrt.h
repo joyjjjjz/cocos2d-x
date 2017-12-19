@@ -28,15 +28,12 @@ obtained from https://directxtk.codeplex.com
 #ifndef __WIC_IMAGE_LOADER_H__
 #define __WIC_IMAGE_LOADER_H__
 
-#include "base/ccConfig.h"
-
-
-#if CC_USE_WIC
+#if defined(CC_USE_WIC)
 
 #include <memory>
 #include <string>
 #include <wincodec.h>
-#include "platform/CCPlatformMacros.h"
+#include "CCPlatformMacros.h"
 
 NS_CC_BEGIN
 
@@ -49,7 +46,7 @@ struct WICConvert
 	WICPixelFormatGUID target;
 };
 
-class CC_DLL WICImageLoader
+class WICImageLoader
 {
 public:
 
@@ -58,9 +55,9 @@ public:
 
 	int getWidth();
 	int getHeight();
-    size_t getImageDataSize();
+	int getImageDataSize();
 	WICPixelFormatGUID getPixelFormat();
-	size_t getImageData(ImageBlob rawData, size_t dataLen);
+	int getImageData(ImageBlob rawData, size_t dataLen);
 	bool decodeImageData(ImageBlob data, size_t dataLen);
     bool encodeImageData(std::string path, const unsigned char* data, size_t dataLen, WICPixelFormatGUID pixelFormat, int width, int height, GUID containerFormat);
 
@@ -75,7 +72,7 @@ private:
 	int _height;
 	int _width;
 	size_t _dataLen;
-    size_t _bpp;
+	UINT _bpp;
 	WICPixelFormatGUID _format;
 	BYTE* _data;
 

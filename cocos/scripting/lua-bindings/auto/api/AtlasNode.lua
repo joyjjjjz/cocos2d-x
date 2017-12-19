@@ -12,16 +12,6 @@
 -- @return AtlasNode#AtlasNode self (return value: cc.AtlasNode)
         
 --------------------------------
---  Initializes an AtlasNode  with an Atlas file the width and height of each item and the quantity of items to render
--- @function [parent=#AtlasNode] initWithTileFile 
--- @param self
--- @param #string tile
--- @param #int tileWidth
--- @param #int tileHeight
--- @param #int itemsToRender
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- 
 -- @function [parent=#AtlasNode] getTexture 
 -- @param self
@@ -62,7 +52,7 @@
 -- 
 -- @function [parent=#AtlasNode] getQuadsToDraw 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return long#long ret (return value: long)
         
 --------------------------------
 -- 
@@ -72,20 +62,10 @@
 -- @return AtlasNode#AtlasNode self (return value: cc.AtlasNode)
         
 --------------------------------
---  Initializes an AtlasNode  with a texture the width and height of each item measured in points and the quantity of items to render
--- @function [parent=#AtlasNode] initWithTexture 
--- @param self
--- @param #cc.Texture2D texture
--- @param #int tileWidth
--- @param #int tileHeight
--- @param #int itemsToRender
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- 
 -- @function [parent=#AtlasNode] setQuadsToDraw 
 -- @param self
--- @param #int quadsToDraw
+-- @param #long quadsToDraw
 -- @return AtlasNode#AtlasNode self (return value: cc.AtlasNode)
         
 --------------------------------
@@ -142,12 +122,6 @@
 -- @function [parent=#AtlasNode] setOpacity 
 -- @param self
 -- @param #unsigned char opacity
--- @return AtlasNode#AtlasNode self (return value: cc.AtlasNode)
-        
---------------------------------
--- 
--- @function [parent=#AtlasNode] AtlasNode 
--- @param self
 -- @return AtlasNode#AtlasNode self (return value: cc.AtlasNode)
         
 return nil

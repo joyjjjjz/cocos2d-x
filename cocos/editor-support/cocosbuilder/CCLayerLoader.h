@@ -1,7 +1,7 @@
 #ifndef _CCB_CCLAYERLOADER_H_
 #define _CCB_CCLAYERLOADER_H_
 
-#include "editor-support/cocosbuilder/CCNodeLoader.h"
+#include "CCNodeLoader.h"
 
 namespace cocosbuilder {
 

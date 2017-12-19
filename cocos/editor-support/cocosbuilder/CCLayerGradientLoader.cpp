@@ -1,4 +1,4 @@
-#include "editor-support/cocosbuilder/CCLayerGradientLoader.h"
+#include "CCLayerGradientLoader.h"
 
 using namespace cocos2d;
 

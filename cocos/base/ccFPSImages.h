@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2012      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2015 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -23,23 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#pragma once
-
-#include "base/ccConfig.h"
-
+#ifndef __BASE_CCFPSIMAGES__H
+#define __BASE_CCFPSIMAGES__H
 /// @cond DO_NOT_SHOW
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if !CC_STRIP_FPS
 extern unsigned char cc_fps_images_png[];
-unsigned int cc_fps_images_len();
-#endif
+unsigned int cc_fps_images_len(void);
 
 #ifdef __cplusplus
 }
 #endif
 
 /// @endcond
+#endif // __BASE_CCFPSIMAGES__H

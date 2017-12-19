@@ -1,8 +1,8 @@
 #!/bin/bash
 
-GLFW_VERSION="3.2"
-GLFW_SOURCE="https://github.com/glfw/glfw/releases/download/${GLFW_VERSION}/glfw-${GLFW_VERSION}.zip"
-GLFW_ZIP="glfw-${GLFW_VERSION}.zip"
+GLFW_VERSION="3.0.4"
+GLFW_SOURCE="https://codeload.github.com/glfw/glfw/tar.gz/${GLFW_VERSION}"
+GLFW_ZIP="glfw${GLFW_VERSION}.tar.gz"
 GLFW_INSTALL="glfw_install"
 GLFW_SRCDIR="glfw-${GLFW_VERSION}"
 GLFW_DESTDIR="glfw_dest"
@@ -12,7 +12,7 @@ install_glfw_dep()
   sudo apt-get install xorg-dev
   sudo apt-get install libglu1-mesa-dev
   sudo apt-get install cmake
-  sudo apt-get install wget
+  sudo apt-get install curl
 }
 
 clean_tmp_file()
@@ -39,15 +39,13 @@ install_glfw()
   install_glfw_dep
   mkdir $GLFW_INSTALL
   cd $GLFW_INSTALL
-  wget --passive -c -p -O $GLFW_ZIP $GLFW_SOURCE
-  unzip ${GLFW_ZIP} > /dev/null
+  curl -o $GLFW_ZIP $GLFW_SOURCE
+  tar xzf ${GLFW_ZIP}
   make_and_install
   cd ..
   clean_tmp_file
 }
 
-#try to remove glfw3
-sudo apt-get purge libglfw3 libglfw3-dev
 
 install_glfw
 

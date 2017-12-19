@@ -11,11 +11,10 @@
 #include "cocos2d.h"
 
 // encode / decode json
-#include "json/document-wrapper.h"
-#include "json/filereadstream.h"
+#include "json/document.h"
+#include "json/filestream.h"
 #include "json/stringbuffer.h"
 #include "json/writer.h"
-#include "SimulatorExport.h"
 
 enum
 {
@@ -26,7 +25,7 @@ enum
 #define kAppEventDropName "APP.EVENT.DROP"
 #define kAppEventName     "APP.EVENT"
 
-class CC_LIBSIM_DLL AppEvent : public cocos2d::EventCustom
+class AppEvent : public cocos2d::EventCustom
 {
 public:
     /** Constructor */

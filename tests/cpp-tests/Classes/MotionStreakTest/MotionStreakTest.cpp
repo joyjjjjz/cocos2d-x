@@ -14,7 +14,6 @@ MotionStreakTests::MotionStreakTests()
     ADD_TEST_CASE(MotionStreakTest1);
     ADD_TEST_CASE(MotionStreakTest2);
     ADD_TEST_CASE(Issue1358);
-    ADD_TEST_CASE(Issue12226);
 }
 
 //------------------------------------------------------------------
@@ -40,9 +39,9 @@ void MotionStreakTest1::onEnter()
     _target->setPosition(Vec2(s.width/4, 0));
 
     // create the streak object and add it to the scene
-    _streak = MotionStreak::create(2, 3, 32, Color3B::GREEN, s_streak);
-    addChild(_streak);
-    // schedule an update on each frame so we can synchronize the streak with the target
+    streak = MotionStreak::create(2, 3, 32, Color3B::GREEN, s_streak);
+    addChild(streak);
+    // schedule an update on each frame so we can syncronize the streak with the target
     schedule(CC_SCHEDULE_SELECTOR(MotionStreakTest1::onUpdate));
   
     auto a1 = RotateBy::create(2, 360);
@@ -62,12 +61,12 @@ void MotionStreakTest1::onEnter()
         TintTo::create(0.2f, 255, 255, 255),
         nullptr));
 
-    _streak->runAction(colorAction);
+    streak->runAction(colorAction);
 }
 
 void MotionStreakTest1::onUpdate(float delta)
 {
-    _streak->setPosition( _target->convertToWorldSpace(Vec2::ZERO) );
+    streak->setPosition( _target->convertToWorldSpace(Vec2::ZERO) );
 }
 
 std::string MotionStreakTest1::title() const
@@ -92,17 +91,17 @@ void MotionStreakTest2::onEnter()
     auto s = Director::getInstance()->getWinSize();
         
     // create the streak object and add it to the scene
-    _streak = MotionStreak::create(3, 3, 64, Color3B::WHITE, s_streak );
-    addChild(_streak);
+    streak = MotionStreak::create(3, 3, 64, Color3B::WHITE, s_streak );
+    addChild(streak);
     
-    _streak->setPosition( Vec2(s.width/2, s.height/2) );
+    streak->setPosition( Vec2(s.width/2, s.height/2) ); 
 }
 
 void MotionStreakTest2::onTouchesMoved(const std::vector<Touch*>& touches, Event* event)
 {
     auto touchLocation = touches[0]->getLocation();
     
-    _streak->setPosition( touchLocation );
+    streak->setPosition( touchLocation );
 }
 
 std::string MotionStreakTest2::title() const
@@ -123,8 +122,8 @@ void Issue1358::onEnter()
     // ask director the the window size
     auto size = Director::getInstance()->getWinSize();
     
-    _streak = MotionStreak::create(2.0f, 1.0f, 50.0f, Color3B(255, 255, 0), "Images/Icon.png");
-    addChild(_streak);
+    streak = MotionStreak::create(2.0f, 1.0f, 50.0f, Color3B(255, 255, 0), "Images/Icon.png");
+    addChild(streak);
     
     
     _center  = Vec2(size.width/2, size.height/2);
@@ -137,7 +136,7 @@ void Issue1358::onEnter()
 void Issue1358::update(float dt)
 {
     _angle += 1.0f;
-    _streak->setPosition(Vec2(_center.x + cosf(_angle/180 * M_PI)*_radius,
+    streak->setPosition(Vec2(_center.x + cosf(_angle/180 * M_PI)*_radius,
                             _center.y + sinf(_angle/ 180 * M_PI)*_radius));
 }
 
@@ -149,62 +148,6 @@ std::string Issue1358::title() const
 std::string Issue1358::subtitle() const
 {
     return "The tail should use the texture";
-}
-
-//------------------------------------------------------------------
-//
-// Issue12226
-//
-//------------------------------------------------------------------
-
-void Issue12226::onEnter()
-{
-    MotionStreakTest::onEnter();
-
-    // ask director the the window size
-    auto size = Director::getInstance()->getWinSize();
-
-    auto radius = size.width/3;
-
-    auto outer = Sprite::create("Images/grossini.png");
-    outer->setPosition(size/2);
-    addChild(outer);
-
-
-    _streak = MotionStreak::create(1.0f, 3, radius * 1.5f, Color3B(0xA0, 0xA0, 0xA0), "ccb/particle-smoke.png");
-//    motionStreak->setOpacity(0x70);
-    _streak->setPosition(outer->getPosition());
-
-    this->addChild(_streak, outer->getLocalZOrder() - 1);
-
-    outer->setUserData(_streak);
-
-    const uint32_t length = (radius * 0.95);
-
-    std::function<void(float)> updateMotionStreak = [=](float dt) {
-
-        Vec2 position = Vec2(outer->getPositionX() + length * cosf(-1 * CC_DEGREES_TO_RADIANS(outer->getRotation() + 90.0f)),
-                             outer->getPositionY() + length * sinf(-1 * CC_DEGREES_TO_RADIANS(outer->getRotation() + 90.0f)));
-
-        _streak->setPosition(position);
-    };
-
-    outer->schedule(updateMotionStreak, 1 / 240.0f, CC_REPEAT_FOREVER, 0, "motion1scheduler");
-
-    auto rot = RotateBy::create(2, 360);
-    auto forever = RepeatForever::create(rot);
-    outer->runAction(forever);
-
-}
-
-std::string Issue12226::title() const
-{
-    return "Github Issue 12226";
-}
-
-std::string Issue12226::subtitle() const
-{
-    return "Image should look without artifacts";
 }
 
 //------------------------------------------------------------------
@@ -250,6 +193,6 @@ void MotionStreakTest::onEnter()
 
 void MotionStreakTest::modeCallback(Ref *pSender)
 {
-    bool fastMode = _streak->isFastMode();
-    _streak->setFastMode(! fastMode);
+    bool fastMode = streak->isFastMode();
+    streak->setFastMode(! fastMode);
 }

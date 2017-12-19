@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -32,7 +32,6 @@
 #include "renderer/CCGLProgramState.h"
 #include "renderer/CCGLProgramCache.h"
 #include "renderer/CCVertexIndexBuffer.h"
-#include "renderer/CCVertexAttribBinding.h"
 #include "2d/CCCamera.h"
 #include "3d/CCSprite3D.h"
 
@@ -57,7 +56,7 @@ orientation(ori)
 {
 }
 //-----------------------------------------------------------------------
-PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::string &texFile, size_t maxElements,
+PUBillboardChain::PUBillboardChain(const std::string& name, const std::string &texFile, size_t maxElements,
                                size_t numberOfChains, bool useTextureCoords, bool useColours, bool dynamic)
                                :_maxElementsPerChain(maxElements),
                                _chainCount(numberOfChains),
@@ -76,18 +75,8 @@ PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::strin
                                _texture(nullptr),
                                _glProgramState(nullptr),
                                _indexBuffer(nullptr),
-                               _vertexBuffer(nullptr),
-                               _texFile(texFile)
+                               _vertexBuffer(nullptr)
 {
-
-    _stateBlock = RenderState::StateBlock::create();
-    CC_SAFE_RETAIN(_stateBlock);
-
-    _stateBlock->setCullFace(false);
-    _stateBlock->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
-    _stateBlock->setDepthTest(false);
-    _stateBlock->setDepthWrite(false);
-    _stateBlock->setBlend(true);
 
     _otherTexCoordRange[0] = 0.0f;
     _otherTexCoordRange[1] = 1.0f;
@@ -100,7 +89,6 @@ PUBillboardChain::PUBillboardChain(const std::string& /*name*/, const std::strin
 PUBillboardChain::~PUBillboardChain()
 {
     CC_SAFE_DELETE(_meshCommand);
-    CC_SAFE_RELEASE(_stateBlock);
     //CC_SAFE_RELEASE(_texture);
     CC_SAFE_RELEASE(_glProgramState);
     CC_SAFE_RELEASE(_vertexBuffer);
@@ -579,7 +567,7 @@ void PUBillboardChain::updateVertexBuffer(const Mat4 &camMat)
     } // each segment
 
 
-    _vertexBuffer->updateVertices(&_vertices[0], (int)_vertices.size(), 0);
+    _vertexBuffer->updateVertices(&_vertices[0], (int)_vertices.size(), 0);;
     //pBuffer->unlock();
     //_vertexCameraUsed = cam;
     _vertexContentDirty = false;
@@ -677,12 +665,11 @@ void PUBillboardChain::init( const std::string &texFile )
     _glProgramState = glProgramState;
 
     _meshCommand = new (std::nothrow) MeshCommand();
-    _meshCommand->setSkipBatching(true);
     _meshCommand->setTransparent(true);
-    _stateBlock->setDepthTest(true);
-    _stateBlock->setDepthWrite(false);
-    _stateBlock->setCullFaceSide(RenderState::CULL_FACE_SIDE_BACK);
-    _stateBlock->setCullFace(true);
+    _meshCommand->setDepthTestEnabled(true);
+    _meshCommand->setDepthWriteEnabled(false);
+    _meshCommand->setCullFace(GL_BACK);
+    _meshCommand->setCullFaceEnabled(true);
 }
 
 void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, ParticleSystem3D* particleSystem )
@@ -690,28 +677,13 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
     auto camera = Camera::getVisitingCamera();
     auto cameraMat = camera->getNodeToWorldTransform();
 
-    if (!_chainSegmentList.empty())
-    {
+    if (!_chainSegmentList.empty()){
         updateVertexBuffer(cameraMat);
         updateIndexBuffer();
-        if (!_vertices.empty() && !_indices.empty())
-        {
-            GLuint texId = this->getTextureName();
-            _stateBlock->setBlendFunc(particleSystem->getBlendFunc());
-            _meshCommand->init(0,
-                               texId,
-                               _glProgramState,
-                               _stateBlock,
-                               _vertexBuffer->getVBO(),
-                               _indexBuffer->getVBO(),
-                               GL_TRIANGLES,
-                               GL_UNSIGNED_SHORT,
-                               _indices.size(),
-                               transform,
-                               Node::FLAGS_RENDER_AS_3D);
-            _meshCommand->setSkipBatching(true);
-            _meshCommand->setTransparent(true);            
-            _glProgramState->setUniformVec4("u_color", Vec4(1,1,1,1));
+        if (!_vertices.empty() && !_indices.empty()){
+            GLuint texId = (_texture ? _texture->getName() : 0);
+            _meshCommand->init(0, texId, _glProgramState, particleSystem->getBlendFunc(), _vertexBuffer->getVBO(), _indexBuffer->getVBO(), GL_TRIANGLES, GL_UNSIGNED_SHORT, _indices.size(), transform, Node::FLAGS_RENDER_AS_3D);
+            _meshCommand->setTransparent(true);
             renderer->addCommand(_meshCommand);
         }
     }
@@ -719,35 +691,12 @@ void PUBillboardChain::render( Renderer* renderer, const Mat4 &transform, Partic
 
 void PUBillboardChain::setDepthTest( bool isDepthTest )
 {
-    _stateBlock->setDepthTest(isDepthTest);
+    _meshCommand->setDepthTestEnabled(isDepthTest);
 }
 
 void PUBillboardChain::setDepthWrite( bool isDepthWrite )
 {
-    _stateBlock->setDepthWrite(isDepthWrite);
-}
-
-void PUBillboardChain::setBlendFunc(const BlendFunc& blendFunc)
-{
-    _stateBlock->setBlendFunc(blendFunc);
-}
-
-GLuint PUBillboardChain::getTextureName()
-{
-    if (Director::getInstance()->getTextureCache()->getTextureForKey(_texFile) == nullptr)
-    {
-        _texture = nullptr;
-        this->init("");
-    }
-    else if (_texture == nullptr)
-    {
-        this->init(_texFile);
-    }
-
-    if (_texture == nullptr)
-        return 0;
-
-    return _texture->getName();
+    _meshCommand->setDepthWriteEnabled(isDepthWrite);
 }
 
 //-----------------------------------------------------------------------

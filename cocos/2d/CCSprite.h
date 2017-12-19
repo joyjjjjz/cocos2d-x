@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -33,9 +33,8 @@ THE SOFTWARE.
 #include "2d/CCDrawNode.h"
 #include "base/CCProtocols.h"
 #include "renderer/CCTextureAtlas.h"
-#include "renderer/CCTrianglesCommand.h"
+#include "renderer/CCQuadCommand.h"
 #include "renderer/CCCustomCommand.h"
-#include "2d/CCAutoPolygon.h"
 
 NS_CC_BEGIN
 
@@ -46,16 +45,6 @@ class Rect;
 class Size;
 class Texture2D;
 struct transformValues_;
-
-#ifdef SPRITE_RENDER_IN_SUBPIXEL
-#undef SPRITE_RENDER_IN_SUBPIXEL
-#endif
-
-#if CC_SPRITEBATCHNODE_RENDER_SUBPIXEL
-#define SPRITE_RENDER_IN_SUBPIXEL
-#else
-#define SPRITE_RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
-#endif
 
 /**
  * @addtogroup _2d
@@ -72,18 +61,8 @@ struct transformValues_;
  *  - Use the same blending function for all your sprites.
  *  - ...and the Renderer will automatically "batch" your sprites (will draw all of them in one OpenGL call).
  *
- *  Sprite has 4 types or rendering modes:
- *
- *  - `QUAD`: Renders the sprite using 2 triangles (1 rectangle): uses small memory, but renders empty pixels (slow)
- *  - `POLYGON`: Renders the sprite using many triangles (depending on the setting): Uses more memory, but doesn't render so much empty pixels (faster)
- *  - `SLICE9`: Renders the sprite using 18 triangles (9 rectangles). Useful to to scale buttons an other rectangular sprites
- *  - `QUAD_BATCHNODE`: Renders the sprite using 2 triangles (1 rectangle) with a static batch, which has some limitations (see below)
- *
- * By default, the sprite uses `QUAD` mode. But can be changed to `POLYGON` when calling `setPolygonInfo()`. To use `SLICE9` call `setCenterRect()` or
- * `serCenterRectNormalized()`. To use `QUAD_BATCHNODE` parent the sprite to a `SpriteBatchNode` object.
- *
- *
- *  `QUAD_BATCHNODE` is deprecated and should be avoid. It has the following limitations:
+ *  To gain an additional 5% ~ 10% more in the rendering, you can parent your sprites into a `SpriteBatchNode`.
+ *  But doing so carries the following limitations:
  *
  *  - The Alias/Antialias property belongs to `SpriteBatchNode`, so you can't individually set the aliased property.
  *  - The Blending function property belongs to `SpriteBatchNode`, so you can't individually set the blending function property.
@@ -95,12 +74,6 @@ struct transformValues_;
 class CC_DLL Sprite : public Node, public TextureProtocol
 {
 public:
-    enum class RenderMode {
-        QUAD,
-        POLYGON,
-        SLICE9,
-        QUAD_BATCHNODE
-    };
      /** Sprite invalid index on the SpriteBatchNode. */
     static const int INDEX_NOT_INITIALIZED = -1;
 
@@ -125,17 +98,6 @@ public:
      * @return  An autoreleased sprite object.
      */
     static Sprite* create(const std::string& filename);
-    
-    /**
-     * Creates a polygon sprite with a polygon info.
-     *
-     * After creation, the rect of sprite will be the size of the image,
-     * and the offset will be (0,0).
-     *
-     * @param   polygonInfo A path to image file, e.g., "scene1/monster.png".
-     * @return  An autoreleased sprite object.
-     */
-    static Sprite* create(const PolygonInfo& info);
 
     /**
      * Creates a sprite with an image filename and a rect.
@@ -263,41 +225,6 @@ public:
      */
     virtual void setVertexRect(const Rect& rect);
 
-    /**
-     * setCenterRectNormalized
-     *
-     * Useful to implement "9 sliced" sprites.
-     * The default value is (0,0) - (1,1), which means that only one "slice" will be used: From top-left (0,0) to bottom-right (1,1).
-     * If the value is different than (0,0), (1,1), then the sprite will be sliced into a 3 x 3 grid. The four corners of this grid are applied without
-     * performing any scaling. The upper- and lower-middle parts are scaled horizontally, and the left- and right-middle parts are scaled vertically.
-     * The center is scaled in both directions.
-     * Important: The scaling is based the Sprite's trimmed size.
-     *
-     * Limitations: Does not work when the sprite is part of `SpriteBatchNode`.
-     */
-    virtual void setCenterRectNormalized(const Rect& rect);
-
-    /**
-     * getCenterRectNormalized
-     *
-     * Returns the CenterRect in normalized coordinates
-     */
-    virtual Rect getCenterRectNormalized() const;
-
-    /* setCenterRect
-     *
-     * Like `setCenterRectNormalized`, but instead of being in normalized coordinates, it is in points coordinates
-     */
-    virtual void setCenterRect(const Rect& rect);
-
-    /**
-     * @brief Returns the Cap Insets rect
-     *
-     * @return Scale9Sprite's cap inset.
-     */
-    virtual Rect getCenterRect() const;
-
-
     /** @{
      * Sets a new SpriteFrame to the Sprite.
      */
@@ -357,44 +284,44 @@ public:
      * @js  NA
      * @lua NA
      */
-    V3F_C4B_T2F_Quad getQuad() const { return _quad; }
+    inline V3F_C4B_T2F_Quad getQuad() const { return _quad; }
 
     /**
      * Returns whether or not the texture rectangle is rotated.
      */
-    bool isTextureRectRotated() const { return _rectRotated; }
+    inline bool isTextureRectRotated() const { return _rectRotated; }
 
     /**
      * Returns the index used on the TextureAtlas.
      */
-    ssize_t getAtlasIndex() const { return _atlasIndex; }
+    inline ssize_t getAtlasIndex() const { return _atlasIndex; }
 
     /**
      * Sets the index used on the TextureAtlas.
      *
      * @warning Don't modify this value unless you know what you are doing.
      */
-    void setAtlasIndex(ssize_t atlasIndex) { _atlasIndex = atlasIndex; }
+    inline void setAtlasIndex(ssize_t atlasIndex) { _atlasIndex = atlasIndex; }
 
     /**
      * Returns the rect of the Sprite in points.
      */
-    const Rect& getTextureRect() const { return _rect; }
+    inline const Rect& getTextureRect() const { return _rect; }
 
     /**
      * Gets the weak reference of the TextureAtlas when the sprite is rendered using via SpriteBatchNode.
      */
-    TextureAtlas* getTextureAtlas() const { return _textureAtlas; }
+    inline TextureAtlas* getTextureAtlas() const { return _textureAtlas; }
 
     /**
      * Sets the weak reference of the TextureAtlas when the sprite is rendered using via SpriteBatchNode.
      */
-    void setTextureAtlas(TextureAtlas *textureAtlas) { _textureAtlas = textureAtlas; }
+    inline void setTextureAtlas(TextureAtlas *textureAtlas) { _textureAtlas = textureAtlas; }
 
     /**
      * Gets the offset position of the sprite. Calculated automatically by editors like Zwoptex.
      */
-    const Vec2& getOffsetPosition() const { return _offsetPosition; }
+    inline const Vec2& getOffsetPosition() const { return _offsetPosition; }
 
 
     /**
@@ -454,32 +381,6 @@ public:
      */
     CC_DEPRECATED_ATTRIBUTE void setFlipY(bool flippedY) { setFlippedY(flippedY); };
 
-    /**
-     * returns a reference of the polygon information associated with this sprite
-     *
-     * @return a reference of PolygonInfo
-     */
-    const PolygonInfo& getPolygonInfo() const;
-
-    /**
-     * set the sprite to use this new PolygonInfo
-     *
-     * @param PolygonInfo the polygon information object
-     */
-    void setPolygonInfo(const PolygonInfo& info);
-
-    /** whether or not contentSize stretches the sprite's texture */
-    void setStretchEnabled(bool enabled);
-
-    /** @deprecated Use setStretchEnabled() instead. */
-    CC_DEPRECATED_ATTRIBUTE void setStrechEnabled(bool enabled);
-
-    /** returns whether or not contentSize stretches the sprite's texture */
-    bool isStretchEnabled() const;
-
-    /** @deprecated Use isStretchEnabled() instead. */
-    CC_DEPRECATED_ATTRIBUTE bool isStrechEnabled() const;
-
     //
     // Overrides
     //
@@ -492,12 +393,12 @@ public:
     *In lua: local setBlendFunc(local src, local dst).
     *@endcode
     */
-    void setBlendFunc(const BlendFunc &blendFunc) override { _blendFunc = blendFunc; }
+    inline void setBlendFunc(const BlendFunc &blendFunc) override { _blendFunc = blendFunc; }
     /**
     * @js  NA
     * @lua NA
     */
-    const BlendFunc& getBlendFunc() const override { return _blendFunc; }
+    inline const BlendFunc& getBlendFunc() const override { return _blendFunc; }
     /// @}
 
     /**
@@ -531,27 +432,21 @@ public:
     virtual void setScale(float scale) override;
     virtual void setPositionZ(float positionZ) override;
     virtual void setAnchorPoint(const Vec2& anchor) override;
-    virtual void setContentSize(const Size& size) override;
-    
-    virtual void setIgnoreAnchorPointForPosition(bool value) override;
-    
+    virtual void ignoreAnchorPointForPosition(bool value) override;
     virtual void setVisible(bool bVisible) override;
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     virtual void setOpacityModifyRGB(bool modify) override;
     virtual bool isOpacityModifyRGB() const override;
     /// @}
 
-    int getResourceType() const { return _fileType; }
-    const std::string& getResourceName() const { return _fileName; }
-
-CC_CONSTRUCTOR_ACCESS :
+CC_CONSTRUCTOR_ACCESS:
 	/**
      * @js ctor
      */
     Sprite();
     virtual ~Sprite();
 
-    /* Initializes an empty sprite with no parameters. */
+    /* Initializes an empty sprite with nothing init. */
     virtual bool init() override;
 
     /**
@@ -564,24 +459,13 @@ CC_CONSTRUCTOR_ACCESS :
      * @return  True if the sprite is initialized properly, false otherwise.
      */
     virtual bool initWithTexture(Texture2D *texture);
-    
-    
-    /**
-     * Initializes a sprite with a PolygonInfo.
-     *
-     * After initialization, the rect used will be the size of the texture, and the offset will be (0,0).
-     *
-     * @param   PolygonInfo    a Polygon info contains the structure of the polygon.
-     * @return  True if the sprite is initialized properly, false otherwise.
-     */
-    virtual bool initWithPolygon(const PolygonInfo& info);
 
     /**
      * Initializes a sprite with a texture and a rect.
      *
      * After initialization, the offset will be (0,0).
      *
-     * @param   texture    A pointer to an existing Texture2D object.
+     * @param   texture    A pointer to an exisiting Texture2D object.
      *                      You can use a Texture2D object for many sprites.
      * @param   rect        Only the contents inside rect of this texture will be applied for this sprite.
      * @return  True if the sprite is initialized properly, false otherwise.
@@ -615,7 +499,7 @@ CC_CONSTRUCTOR_ACCESS :
      * A SpriteFrame will be fetched from the SpriteFrameCache by name.
      * If the SpriteFrame doesn't exist it will raise an exception.
      *
-     * @param   spriteFrameName  A key string that can fetched a valid SpriteFrame from SpriteFrameCache.
+     * @param   spriteFrameName  A key string that can fected a volid SpriteFrame from SpriteFrameCache.
      * @return  True if the sprite is initialized properly, false otherwise.
      */
     virtual bool initWithSpriteFrameName(const std::string& spriteFrameName);
@@ -646,23 +530,14 @@ CC_CONSTRUCTOR_ACCESS :
      * @lua     init
      */
     virtual bool initWithFile(const std::string& filename, const Rect& rect);
-    
+
 protected:
 
-    virtual void updateColor() override;
-    virtual void setTextureCoords(const Rect& rect);
-    virtual void setTextureCoords(const Rect& rect, V3F_C4B_T2F_Quad* outQuad);
-    virtual void setVertexCoords(const Rect& rect, V3F_C4B_T2F_Quad* outQuad);
-    void populateTriangle(int quadIndex, const V3F_C4B_T2F_Quad& quad);
+    void updateColor() override;
+    virtual void setTextureCoords(Rect rect);
     virtual void updateBlendFunc();
     virtual void setReorderChildDirtyRecursively();
     virtual void setDirtyRecursively(bool value);
-
-    void updatePoly();
-    void updateStretchFactor();
-
-    virtual void flipX();
-    virtual void flipY();
 
     //
     // Data used when the sprite is rendered using a SpriteSheet
@@ -682,7 +557,7 @@ protected:
     BlendFunc        _blendFunc;            /// It's required for TextureProtocol inheritance
     Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
     SpriteFrame*     _spriteFrame;
-    TrianglesCommand _trianglesCommand;     ///
+    QuadCommand      _quadCommand;          /// quad command
 #if CC_SPRITE_DEBUG_DRAW
     DrawNode *_debugDrawNode;
 #endif //CC_SPRITE_DEBUG_DRAW
@@ -691,14 +566,8 @@ protected:
     //
 
     // texture
-    Rect _rect;                             /// Rectangle of Texture2D
-    bool _rectRotated;                      /// Whether the texture is rotated
-
-    Rect _centerRectNormalized;             /// Rectangle to implement "slice 9"
-    RenderMode _renderMode;                 /// render mode used by the Sprite: Quad, Slice9, Polygon or Quad_Batchnode
-    Vec2 _stretchFactor;                    /// stretch factor to match the contentSize. for 1- and 9- slice sprites
-    Size _originalContentSize;              /// original content size
-
+    Rect _rect;                             /// Retangle of Texture2D
+    bool   _rectRotated;                    /// Whether the texture is rotated
 
     // Offset Position (used by Zwoptex)
     Vec2 _offsetPosition;
@@ -706,9 +575,6 @@ protected:
 
     // vertex coords, texture coords and color info
     V3F_C4B_T2F_Quad _quad;
-    V3F_C4B_T2F* _trianglesVertex;
-    unsigned short* _trianglesIndex;
-    PolygonInfo  _polyInfo;
 
     // opacity and RGB protocol
     bool _opacityModifyRGB;
@@ -718,12 +584,6 @@ protected:
     bool _flippedY;                         /// Whether the sprite is flipped vertically or not
 
     bool _insideBounds;                     /// whether or not the sprite was inside bounds the previous frame
-
-    std::string _fileName;
-    int _fileType;
-
-    bool _stretchEnabled;
-
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Sprite);
 };

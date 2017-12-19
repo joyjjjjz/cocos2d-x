@@ -2,11 +2,10 @@
 
 #include <string>
 #include "PlayerMacros.h"
-#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 
-class CC_LIBSIM_DLL DeviceEx
+class DeviceEx
 {
 public:
     static DeviceEx *getInstance();

@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2011      ForzeField Studios S.L.
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -47,24 +47,24 @@ class CC_DLL MotionStreak : public Node, public TextureProtocol
 public:
     /** Creates and initializes a motion streak with fade in seconds, minimum segments, stroke's width, color, texture filename.
      *
-     * @param timeToFade The fade time, in seconds.
+     * @param fade The fade time, in seconds.
      * @param minSeg The minimum segments.
-     * @param strokeWidth The width of stroke.
-     * @param strokeColor The color of stroke.
-     * @param imagePath The texture file name of stoke.
+     * @param stroke The width of stroke.
+     * @param color The color of stroke.
+     * @param path The texture file name of stoke.
      * @return An autoreleased MotionStreak object.
      */
-    static MotionStreak* create(float timeToFade, float minSeg, float strokeWidth, const Color3B& strokeColor, const std::string& imagePath);
+    static MotionStreak* create(float fade, float minSeg, float stroke, const Color3B& color, const std::string& path);
     /** Creates and initializes a motion streak with fade in seconds, minimum segments, stroke's width, color, texture.
      * 
-     * @param timeToFade The fade time, in seconds.
+     * @param fade The fade time, in seconds.
      * @param minSeg The minimum segments.
-     * @param strokeWidth The width of stroke.
-     * @param strokeColor The color of stroke.
+     * @param stroke The width of stroke.
+     * @param color The color of stroke.
      * @param texture The texture name of stoke.
      * @return An autoreleased MotionStreak object.
      */
-    static MotionStreak* create(float timeToFade, float minSeg, float strokeWidth, const Color3B& strokeColor, Texture2D* texture);
+    static MotionStreak* create(float fade, float minSeg, float stroke, const Color3B& color, Texture2D* texture);
 
     /** Color used for the tint.
      *
@@ -80,33 +80,33 @@ public:
      * 
      * @return True if fast mode is enabled.
      */
-    bool isFastMode() const { return _fastMode; }
+    inline bool isFastMode() const { return _fastMode; }
     /** Sets fast mode or not.
      *
      * @param bFastMode True if enabled fast mode.
      */
-    void setFastMode(bool bFastMode) { _fastMode = bFastMode; }
+    inline void setFastMode(bool bFastMode) { _fastMode = bFastMode; }
     /** Get stroke.
      *
      * @return float stroke.
      */
-    float getStroke() const { return _stroke; }
+    inline float getStroke() const { return _stroke; }
     /** Set stroke.
      *
      * @param stroke The width of stroke.
      */
-    void setStroke(float stroke) { _stroke = stroke; }
+    inline void setStroke(float stroke) { _stroke = stroke; }
 
     /** Is the starting position initialized or not.
      *
      * @return True if the starting position is initialized.
      */
-    bool isStartingPositionInitialized() const { return _startingPositionInitialized; }
+    inline bool isStartingPositionInitialized() const { return _startingPositionInitialized; }
     /** Sets the starting position initialized or not.
      *
      * @param bStartingPositionInitialized True if initialized the starting position.
      */
-    void setStartingPositionInitialized(bool bStartingPositionInitialized)
+    inline void setStartingPositionInitialized(bool bStartingPositionInitialized)
     {
         _startingPositionInitialized = bStartingPositionInitialized; 
     }

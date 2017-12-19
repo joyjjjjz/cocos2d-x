@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -31,10 +31,10 @@ THE SOFTWARE.
 #include <android/log.h>
 #include <jni.h>
 #include "base/ccTypes.h"
-#include "platform/android/jni/JniHelper.h"
+#include "jni/DPIJni.h"
+#include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
+#include "jni/JniHelper.h"
 #include "platform/CCFileUtils.h"
-
-static const std::string helperClassName = "org/cocos2dx/lib/Cocos2dxHelper";
 
 NS_CC_BEGIN
 
@@ -43,7 +43,7 @@ int Device::getDPI()
     static int dpi = -1;
     if (dpi == -1)
     {
-        dpi = JniHelper::callStaticIntMethod(helperClassName, "getDPI");
+        dpi = (int)getDPIJNI();
     }
     return dpi;
 }
@@ -52,17 +52,17 @@ void Device::setAccelerometerEnabled(bool isEnabled)
 {
     if (isEnabled)
     {
-        JniHelper::callStaticVoidMethod(helperClassName, "enableAccelerometer");
+        enableAccelerometerJni();
     }
     else
     {
-        JniHelper::callStaticVoidMethod(helperClassName, "disableAccelerometer");
+        disableAccelerometerJni();
     }
 }
 
 void Device::setAccelerometerInterval(float interval)
 {
-    JniHelper::callStaticVoidMethod(helperClassName, "setAccelerometerInterval", interval);
+	setAccelerometerIntervalJni(interval);
 }
 
 class BitmapDC
@@ -70,9 +70,9 @@ class BitmapDC
 public:
 
     BitmapDC()
-    : _width(0)
+    : _data(nullptr)
+    , _width(0)
     , _height(0)
-    , _data(nullptr)
     {
     }
 
@@ -80,15 +80,15 @@ public:
     {
     }
 
-    bool getBitmapFromJavaShadowStroke( const char *text,
-                                        int nWidth,
-                                        int nHeight,
-                                        Device::TextAlign eAlignMask,
+    bool getBitmapFromJavaShadowStroke(	const char *text,
+    									int nWidth,
+    									int nHeight,
+    									Device::TextAlign eAlignMask,
                       const FontDefinition& textDefinition )
     {
            JniMethodInfo methodInfo;
            if (! JniHelper::getStaticMethodInfo(methodInfo, "org/cocos2dx/lib/Cocos2dxBitmap", "createTextBitmapShadowStroke",
-               "([BLjava/lang/String;IIIIIIIIZFFFFZIIIIFZI)Z"))
+               "([BLjava/lang/String;IIIIIIIIZFFFFZIIIIF)Z"))
            {
                CCLOG("%s %d: error to get methodInfo", __FILE__, __LINE__);
                return false;
@@ -96,15 +96,13 @@ public:
 
            // Do a full lookup for the font path using FileUtils in case the given font name is a relative path to a font file asset,
            // or the path has been mapped to a different location in the app package:
-           std::string fullPathOrFontName = textDefinition._fontName;
-           if(FileUtils::getInstance()->isFileExist(fullPathOrFontName)) {
-               fullPathOrFontName = FileUtils::getInstance()->fullPathForFilename(textDefinition._fontName);
-               // If the path name returned includes the 'assets' dir then that needs to be removed, because the android.content.Context
-               // requires this portion of the path to be omitted for assets inside the app package.
-               if (fullPathOrFontName.find("assets/") == 0)
-               {
-                   fullPathOrFontName = fullPathOrFontName.substr(strlen("assets/"));   // Chop out the 'assets/' portion of the path.
-               }
+           std::string fullPathOrFontName = FileUtils::getInstance()->fullPathForFilename(textDefinition._fontName);
+            
+           // If the path name returned includes the 'assets' dir then that needs to be removed, because the android.content.Context
+           // requires this portion of the path to be omitted for assets inside the app package.
+           if (fullPathOrFontName.find("assets/") == 0)
+           {
+               fullPathOrFontName = fullPathOrFontName.substr(strlen("assets/"));	// Chop out the 'assets/' portion of the path.
            }
 
            /**create bitmap
@@ -125,8 +123,7 @@ public:
                textDefinition._shadow._shadowEnabled, textDefinition._shadow._shadowOffset.width, -textDefinition._shadow._shadowOffset.height, 
                textDefinition._shadow._shadowBlur, textDefinition._shadow._shadowOpacity, 
                textDefinition._stroke._strokeEnabled, textDefinition._stroke._strokeColor.r, textDefinition._stroke._strokeColor.g, 
-                                                       textDefinition._stroke._strokeColor.b, textDefinition._stroke._strokeAlpha, textDefinition._stroke._strokeSize,
-                                                       textDefinition._enableWrap, textDefinition._overflow))
+               textDefinition._stroke._strokeColor.b, textDefinition._stroke._strokeAlpha, textDefinition._stroke._strokeSize))
            {
                 return false;
            }
@@ -171,14 +168,10 @@ Data Device::getTextureDataForText(const char * text, const FontDefinition& text
     return ret;
 }
 
+
 void Device::setKeepScreenOn(bool value)
 {
-    JniHelper::callStaticVoidMethod(helperClassName, "setKeepScreenOn", value);
-}
-
-void Device::vibrate(float duration)
-{
-    JniHelper::callStaticVoidMethod(helperClassName, "vibrate", duration);
+    setKeepScreenOnJni(value);
 }
 
 NS_CC_END

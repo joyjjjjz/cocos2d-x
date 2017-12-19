@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2014-2017 Chukong Technologies Inc.
+Copyright (c) Chukong Technologies Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -27,11 +27,6 @@ NS_CC_BEGIN
 Ray::Ray()
 : _direction(0, 0, 1)
 {
-}
-
-Ray::Ray(const Ray& ray)
-{
-    set(ray._origin, ray._direction);
 }
 
 Ray::Ray(const Vec3& origin, const Vec3& direction)

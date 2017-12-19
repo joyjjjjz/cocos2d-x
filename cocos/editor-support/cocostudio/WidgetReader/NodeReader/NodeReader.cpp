@@ -22,11 +22,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "editor-support/cocostudio/WidgetReader/NodeReader/NodeReader.h"
+#include "NodeReader.h"
 
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/ActionTimeline/CCActionTimeline.h"
-#include "editor-support/cocostudio/CCComExtensionData.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/ActionTimeline/CCActionTimeline.h"
+#include "cocostudio/CCObjectExtensionData.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -73,7 +73,7 @@ namespace cocostudio
     {
         if (!_instanceNodeReader)
         {
-            _instanceNodeReader = new (std::nothrow) NodeReader();
+            _instanceNodeReader = new NodeReader();
         }
         
         return _instanceNodeReader;
@@ -470,7 +470,7 @@ namespace cocostudio
         float rotationSkewY      = options->rotationSkew()->rotationSkewY();
         float anchorx       = options->anchorPoint()->scaleX();
         float anchory       = options->anchorPoint()->scaleY();
-        int zorder            = options->zOrder();
+        int zorder		    = options->zOrder();
         int tag             = options->tag();
         int actionTag       = options->actionTag();
         bool visible        = options->visible() != 0;
@@ -509,14 +509,10 @@ namespace cocostudio
         
         node->setTag(tag);
         
-        ComExtensionData* extensionData = ComExtensionData::create();
+        ObjectExtensionData* extensionData = ObjectExtensionData::create();
         extensionData->setCustomProperty(customProperty);
         extensionData->setActionTag(actionTag);
-        if (node->getComponent(ComExtensionData::COMPONENT_NAME))
-        {
-            node->removeComponent(ComExtensionData::COMPONENT_NAME);
-        }
-        node->addComponent(extensionData);
+        node->setUserObject(extensionData);
         
         
         node->setCascadeColorEnabled(true);

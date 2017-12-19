@@ -25,13 +25,6 @@
 -- @return bool#bool ret (return value: bool)
 
 --------------------------------
--- 
--- @function [parent=#Node] setPhysicsBody 
--- @param self
--- @param #cc.PhysicsBody physicsBody
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
 -- Gets the description string. It makes debugging easier.<br>
 -- return A string<br>
 -- js NA<br>
@@ -55,16 +48,14 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- If you want the opacity affect the color property, then set to true.<br>
--- param value A boolean value.
+-- 
 -- @function [parent=#Node] setOpacityModifyRGB 
 -- @param self
 -- @param #bool value
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Change node's cascadeOpacity property.<br>
--- param cascadeOpacityEnabled True to enable cascadeOpacity, false otherwise.
+-- 
 -- @function [parent=#Node] setCascadeOpacityEnabled 
 -- @param self
 -- @param #bool cascadeOpacityEnabled
@@ -78,20 +69,17 @@
 -- @return array_table#array_table ret (return value: array_table)
 
 --------------------------------
--- Set the callback of event onExit.<br>
--- param callback A std::function<void()> callback.
+-- 
 -- @function [parent=#Node] setOnExitCallback 
 -- @param self
 -- @param #function callback
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Sets the ActionManager object that is used by all actions.<br>
--- warning If you set a new ActionManager, then previously created actions will be removed.<br>
--- param actionManager     A ActionManager object that is used by all actions.
--- @function [parent=#Node] setActionManager 
+-- Pauses all scheduled selectors, actions and event listeners.<br>
+-- This method is called internally by onExit.
+-- @function [parent=#Node] pause 
 -- @param self
--- @param #cc.ActionManager actionManager
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
@@ -106,7 +94,7 @@
         
 --------------------------------
 -- Gets whether the anchor point will be (0,0) when you position this node.<br>
--- see `setIgnoreAnchorPointForPosition(bool)`<br>
+-- see `ignoreAnchorPointForPosition(bool)`<br>
 -- return true if the anchor point will be (0,0) when you position this node.
 -- @function [parent=#Node] isIgnoreAnchorPointForPosition 
 -- @param self
@@ -123,21 +111,14 @@
 -- @return Node#Node ret (return value: cc.Node)
         
 --------------------------------
--- Update the displayed opacity of node with it's parent opacity;<br>
--- param parentOpacity The opacity of parent node.
+-- 
 -- @function [parent=#Node] updateDisplayedOpacity 
 -- @param self
 -- @param #unsigned char parentOpacity
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- 
--- @function [parent=#Node] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- get & set camera mask, the node is visible by the camera whose camera flag & node's camera mask is true
+--  get & set camera mask, the node is visible by the camera whose camera flag & node's camera mask is true 
 -- @function [parent=#Node] getCameraMask 
 -- @param self
 -- @return unsigned short#unsigned short ret (return value: unsigned short)
@@ -197,8 +178,7 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Set the callback of event EnterTransitionDidFinish.<br>
--- param callback A std::function<void()> callback.
+-- 
 -- @function [parent=#Node] setonEnterTransitionDidFinishCallback 
 -- @param self
 -- @param #function callback
@@ -212,16 +192,12 @@
         
 --------------------------------
 -- 
--- @function [parent=#Node] _setLocalZOrder 
+-- @function [parent=#Node] getOpacity 
 -- @param self
--- @param #int z
--- @return Node#Node self (return value: cc.Node)
+-- @return unsigned char#unsigned char ret (return value: unsigned char)
         
 --------------------------------
--- Modify the camera mask for current node.<br>
--- If applyChildren is true, then it will modify the camera mask of its children recursively.<br>
--- param mask A unsigned short bit for mask.<br>
--- param applyChildren A boolean value to determine whether the mask bit should apply to its children or not.
+-- 
 -- @function [parent=#Node] setCameraMask 
 -- @param self
 -- @param #unsigned short mask
@@ -317,31 +293,29 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Set the callback of event onEnter.<br>
--- param callback A std::function<void()> callback.
+-- 
 -- @function [parent=#Node] setOnEnterCallback 
 -- @param self
 -- @param #function callback
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Removes all actions from the running action list by its flags.<br>
--- param flags   A flag field that removes actions based on bitwise AND.
--- @function [parent=#Node] stopActionsByFlags 
--- @param self
--- @param #unsigned int flags
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- 
+--  Sets the position (x,y) using values between 0 and 1.<br>
+-- The positions in pixels is calculated like the following:<br>
+-- code pseudo code<br>
+-- void setNormalizedPosition(Vec2 pos) {<br>
+-- Size s = getParent()->getContentSize();<br>
+-- _position = pos * s;<br>
+-- }<br>
+-- endcode<br>
+-- param position The normalized position (x,y) of the node, using value between 0 and 1.
 -- @function [parent=#Node] setNormalizedPosition 
 -- @param self
 -- @param #vec2_table position
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Set the callback of event ExitTransitionDidStart.<br>
--- param callback A std::function<void()> callback.
+-- 
 -- @function [parent=#Node] setonExitTransitionDidStartCallback 
 -- @param self
 -- @param #function callback
@@ -365,16 +339,13 @@
 -- @return Node#Node self (return value: cc.Node)
 
 --------------------------------
--- @overload self, cc.Node         
--- @overload self         
--- @function [parent=#Node] getNodeToParentAffineTransform
+-- 
+-- @function [parent=#Node] getNodeToParentAffineTransform 
 -- @param self
--- @param #cc.Node ancestor
 -- @return AffineTransform#AffineTransform ret (return value: cc.AffineTransform)
-
+        
 --------------------------------
--- Whether cascadeOpacity is enabled or not.<br>
--- return A boolean value.
+-- 
 -- @function [parent=#Node] isCascadeOpacityEnabled 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -411,13 +382,13 @@
 -- @return vec3_table#vec3_table ret (return value: vec3_table)
         
 --------------------------------
--- @overload self, cc.Node         
--- @overload self         
--- @function [parent=#Node] getNodeToParentTransform
+-- Returns the matrix that transform the node's (local) space coordinates into the parent's space coordinates.<br>
+-- The matrix is in Pixels.<br>
+-- return The transformation matrix.
+-- @function [parent=#Node] getNodeToParentTransform 
 -- @param self
--- @param #cc.Node ancestor
 -- @return mat4_table#mat4_table ret (return value: mat4_table)
-
+        
 --------------------------------
 -- converts a Touch (world coordinates) into a local coordinate. This method is AR (Anchor Relative).<br>
 -- param touch A given touch.<br>
@@ -435,35 +406,6 @@
 -- @param self
 -- @param #vec2_table worldPoint
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
-        
---------------------------------
---  Sets the position (x,y) using values between 0 and 1.<br>
--- The positions in pixels is calculated like the following:<br>
--- code pseudo code<br>
--- void setNormalizedPosition(Vec2 pos) {<br>
--- Size s = getParent()->getContentSize();<br>
--- _position = pos * s;<br>
--- }<br>
--- endcode<br>
--- param position The normalized position (x,y) of the node, using value between 0 and 1.
--- @function [parent=#Node] setPositionNormalized 
--- @param self
--- @param #vec2_table position
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- Pauses all scheduled selectors, actions and event listeners.<br>
--- This method is called internally by onExit.
--- @function [parent=#Node] pause 
--- @param self
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- If node opacity will modify the RGB color value, then you should override this method and return true.<br>
--- return A boolean value, true indicates that opacity will modify color; false otherwise.
--- @function [parent=#Node] isOpacityModifyRGB 
--- @param self
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- @overload self, float, float         
@@ -490,6 +432,17 @@
 -- @param self
 -- @param #cc.Node child
 -- @param #int localZOrder
+-- @return Node#Node self (return value: cc.Node)
+        
+--------------------------------
+-- Sets whether the anchor point will be (0,0) when you position this node.<br>
+-- This is an internal method, only used by Layer and Scene. Don't call it outside framework.<br>
+-- The default value is false, while in Layer and Scene are true.<br>
+-- param ignore    true if anchor point will be (0,0) when you position this node.<br>
+-- todo This method should be renamed as setIgnoreAnchorPointForPosition(bool) or something with "set".
+-- @function [parent=#Node] ignoreAnchorPointForPosition 
+-- @param self
+-- @param #bool ignore
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
@@ -561,10 +514,11 @@
 -- Composable actions are counted as 1 action. Example:<br>
 -- If you are running 1 Sequence of 7 actions, it will return 1.<br>
 -- If you are running 7 Sequences of 2 actions, it will return 7.<br>
+-- todo Rename to getNumberOfRunningActions()<br>
 -- return The number of actions that are running plus the ones that are schedule to run.
 -- @function [parent=#Node] getNumberOfRunningActions 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return long#long ret (return value: long)
         
 --------------------------------
 -- Calls children's updateTransform() method recursively.<br>
@@ -573,19 +527,6 @@
 -- e.g., `batchNode->addChild(myCustomNode)`, while you can only addChild(sprite) before.
 -- @function [parent=#Node] updateTransform 
 -- @param self
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- Sets the shader program for this node<br>
--- Since v2.0, each rendering node must set its shader program.<br>
--- It should be set in initialize phase.<br>
--- code<br>
--- node->setGLProgram(GLProgramCache::getInstance()->getProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));<br>
--- endcode<br>
--- param glprogram The shader program.
--- @function [parent=#Node] setGLProgram 
--- @param self
--- @param #cc.GLProgram glprogram
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
@@ -601,7 +542,7 @@
 -- return The amount of children.
 -- @function [parent=#Node] getChildrenCount 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return long#long ret (return value: long)
         
 --------------------------------
 -- Converts a Vec2 to node (local) space coordinates. The result is in Points.<br>
@@ -643,18 +584,18 @@
 -- @return Node#Node self (return value: cc.Node)
 
 --------------------------------
+-- 
+-- @function [parent=#Node] isOpacityModifyRGB 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
 -- Returns the rotation of the node in degrees.<br>
 -- see `setRotation(float)`<br>
 -- return The rotation of the node in degrees.
 -- @function [parent=#Node] getRotation 
 -- @param self
 -- @return float#float ret (return value: float)
-        
---------------------------------
--- 
--- @function [parent=#Node] getPhysicsBody 
--- @param self
--- @return PhysicsBody#PhysicsBody ret (return value: cc.PhysicsBody)
         
 --------------------------------
 -- Returns the anchorPoint in absolute pixels.<br>
@@ -685,7 +626,7 @@
 --------------------------------
 -- Sets a Scheduler object that is used to schedule all "updates" and timers.<br>
 -- warning If you set a new Scheduler, then previously created timers/update are going to be removed.<br>
--- param scheduler     A Scheduler object that is used to schedule all "update" and timers.
+-- param scheduler     A Shdeduler object that is used to schedule all "update" and timers.
 -- @function [parent=#Node] setScheduler 
 -- @param self
 -- @param #cc.Scheduler scheduler
@@ -714,8 +655,7 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
--- Query node's displayed color.<br>
--- return A Color3B color value.
+-- 
 -- @function [parent=#Node] getDisplayedColor 
 -- @param self
 -- @return color3b_table#color3b_table ret (return value: color3b_table)
@@ -739,18 +679,7 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Update method will be called automatically every frame if "scheduleUpdate" is called, and the node is "live".<br>
--- param delta In seconds.
--- @function [parent=#Node] update 
--- @param self
--- @param #float delta
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- Return the node's display opacity.<br>
--- The difference between opacity and displayedOpacity is:<br>
--- The displayedOpacity is what's the final rendering opacity of node.<br>
--- return A GLubyte value.
+-- 
 -- @function [parent=#Node] getDisplayedOpacity 
 -- @param self
 -- @return unsigned char#unsigned char ret (return value: unsigned char)
@@ -777,15 +706,24 @@
 -- @return AffineTransform#AffineTransform ret (return value: cc.AffineTransform)
         
 --------------------------------
---  Returns the normalized position.<br>
--- return The normalized position.
--- @function [parent=#Node] getPositionNormalized 
+-- Returns the arrival order, indicates which children is added previously.<br>
+-- see `setOrderOfArrival(unsigned int)`<br>
+-- return The arrival order.
+-- @function [parent=#Node] getOrderOfArrival 
 -- @param self
--- @return vec2_table#vec2_table ret (return value: vec2_table)
+-- @return int#int ret (return value: int)
         
 --------------------------------
--- Change the color of node.<br>
--- param color A Color3B color value.
+-- Sets the ActionManager object that is used by all actions.<br>
+-- warning If you set a new ActionManager, then previously created actions will be removed.<br>
+-- param actionManager     A ActionManager object that is used by all actions.
+-- @function [parent=#Node] setActionManager 
+-- @param self
+-- @param #cc.ActionManager actionManager
+-- @return Node#Node self (return value: cc.Node)
+        
+--------------------------------
+-- 
 -- @function [parent=#Node] setColor 
 -- @param self
 -- @param #color3b_table color
@@ -831,7 +769,7 @@
         
 --------------------------------
 -- Removes a child from the container by tag value. It will also cleanup all running actions depending on the cleanup parameter.<br>
--- param tag       An integer number that identifies a child node.<br>
+-- param tag       An interger number that identifies a child node.<br>
 -- param cleanup   True if all running actions and callbacks on the child node will be cleanup, false otherwise.<br>
 -- Please use `removeChildByName` instead.
 -- @function [parent=#Node] removeChildByTag 
@@ -855,8 +793,7 @@
 -- @return AffineTransform#AffineTransform ret (return value: cc.AffineTransform)
         
 --------------------------------
--- Update node's displayed color with its parent color.<br>
--- param parentColor A Color3B color value.
+-- 
 -- @function [parent=#Node] updateDisplayedColor 
 -- @param self
 -- @param #color3b_table parentColor
@@ -891,13 +828,13 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- Defines the order in which the nodes are renderer.<br>
+-- Defines the oder in which the nodes are renderer.<br>
 -- Nodes that have a Global Z Order lower, are renderer first.<br>
--- In case two or more nodes have the same Global Z Order, the order is not guaranteed.<br>
+-- In case two or more nodes have the same Global Z Order, the oder is not guaranteed.<br>
 -- The only exception if the Nodes have a Global Z Order == 0. In that case, the Scene Graph order is used.<br>
 -- By default, all nodes have a Global Z Order = 0. That means that by default, the Scene Graph order is used to render the nodes.<br>
 -- Global Z Order is useful when you need to render nodes in an order different than the Scene Graph order.<br>
--- Limitations: Global Z Order can't be used by Nodes that have SpriteBatchNode as one of their ancestors.<br>
+-- Limitations: Global Z Order can't be used used by Nodes that have SpriteBatchNode as one of their acenstors.<br>
 -- And if ClippingNode is one of the ancestors, then "global Z order" will be relative to the ClippingNode.<br>
 -- see `setLocalZOrder()`<br>
 -- see `setVertexZ()`<br>
@@ -928,6 +865,17 @@
 -- @return Node#Node ret (return value: cc.Node)
         
 --------------------------------
+-- Sets the arrival order when this node has a same ZOrder with other children.<br>
+-- A node which called addChild subsequently will take a larger arrival order,<br>
+-- If two children have the same Z order, the child with larger arrival order will be drawn later.<br>
+-- warning This method is used internally for localZOrder sorting, don't change this manually<br>
+-- param orderOfArrival   The arrival order.
+-- @function [parent=#Node] setOrderOfArrival 
+-- @param self
+-- @param #int orderOfArrival
+-- @return Node#Node self (return value: cc.Node)
+        
+--------------------------------
 -- Returns the scale factor on Z axis of this node<br>
 -- see `setScaleZ(float)`<br>
 -- return The scale factor on Z axis.
@@ -953,11 +901,11 @@
         
 --------------------------------
 -- LocalZOrder is the 'key' used to sort the node relative to its siblings.<br>
--- The Node's parent will sort all its children based on the LocalZOrder value.<br>
+-- The Node's parent will sort all its children based ont the LocalZOrder value.<br>
 -- If two nodes have the same LocalZOrder, then the node that was added first to the children's array will be in front of the other node in the array.<br>
 -- Also, the Scene Graph is traversed using the "In-Order" tree traversal algorithm ( http:en.wikipedia.org/wiki/Tree_traversal#In-order )<br>
--- And Nodes that have LocalZOrder values < 0 are the "left" subtree<br>
--- While Nodes with LocalZOrder >=0 are the "right" subtree.<br>
+-- And Nodes that have LocalZOder values < 0 are the "left" subtree<br>
+-- While Nodes with LocalZOder >=0 are the "right" subtree.<br>
 -- see `setGlobalZOrder`<br>
 -- see `setVertexZ`<br>
 -- param localZOrder The local Z order value.
@@ -973,17 +921,14 @@
 -- @return AffineTransform#AffineTransform ret (return value: cc.AffineTransform)
         
 --------------------------------
--- If you want node's color affect the children node's color, then set it to true.<br>
--- Otherwise, set it to false.<br>
--- param cascadeColorEnabled A boolean value.
+-- 
 -- @function [parent=#Node] setCascadeColorEnabled 
 -- @param self
 -- @param #bool cascadeColorEnabled
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Change node opacity.<br>
--- param opacity A GLubyte opacity value.
+-- 
 -- @function [parent=#Node] setOpacity 
 -- @param self
 -- @param #unsigned char opacity
@@ -1022,8 +967,7 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Query node's color value.<br>
--- return A Color3B color value.
+-- 
 -- @function [parent=#Node] getColor 
 -- @param self
 -- @return color3b_table#color3b_table ret (return value: color3b_table)
@@ -1034,16 +978,6 @@
 -- @function [parent=#Node] getBoundingBox 
 -- @param self
 -- @return rect_table#rect_table ret (return value: rect_table)
-        
---------------------------------
--- Sets whether the anchor point will be (0,0) when you position this node.<br>
--- This is an internal method, only used by Layer and Scene. Don't call it outside framework.<br>
--- The default value is false, while in Layer and Scene are true.<br>
--- param ignore    true if anchor point will be (0,0) when you position this node.
--- @function [parent=#Node] setIgnoreAnchorPointForPosition 
--- @param self
--- @param #bool ignore
--- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
 --  Set event dispatcher for scene.<br>
@@ -1101,23 +1035,16 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Returns the numbers of actions that are running plus the ones that are<br>
--- schedule to run (actions in actionsToAdd and actions arrays) with a<br>
--- specific tag.<br>
--- Composable actions are counted as 1 action. Example:<br>
--- If you are running 1 Sequence of 7 actions, it will return 1.<br>
--- If you are running 7 Sequences of 2 actions, it will return 7.<br>
--- param  tag The tag that will be searched.<br>
--- return The number of actions that are running plus the<br>
--- ones that are schedule to run with specific tag.
--- @function [parent=#Node] getNumberOfRunningActionsByTag 
+-- Update method will be called automatically every frame if "scheduleUpdate" is called, and the node is "live".<br>
+-- param delta In seconds.
+-- @function [parent=#Node] update 
 -- @param self
--- @param #int tag
--- @return int#int ret (return value: int)
+-- @param #float delta
+-- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
 -- Sorts the children array once before drawing, instead of every time when a child is added or reordered.<br>
--- This approach can improves the performance massively.<br>
+-- This appraoch can improves the performance massively.<br>
 -- note Don't call this manually unless a child added needs to be removed in the same frame.
 -- @function [parent=#Node] sortAllChildren 
 -- @param self
@@ -1131,6 +1058,19 @@
 -- @return mat4_table#mat4_table ret (return value: mat4_table)
         
 --------------------------------
+-- Sets the shader program for this node<br>
+-- Since v2.0, each rendering node must set its shader program.<br>
+-- It should be set in initialize phase.<br>
+-- code<br>
+-- node->setGLrProgram(GLProgramCache::getInstance()->getProgram(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));<br>
+-- endcode<br>
+-- param glprogram The shader program.
+-- @function [parent=#Node] setGLProgram 
+-- @param self
+-- @param #cc.GLProgram glprogram
+-- @return Node#Node self (return value: cc.Node)
+        
+--------------------------------
 -- Gets the scale factor of the node,  when X and Y have the same scale factor.<br>
 -- warning Assert when `_scaleX != _scaleY`<br>
 -- see setScale(float)<br>
@@ -1140,25 +1080,8 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
--- Return the node's opacity.<br>
--- return A GLubyte value.
--- @function [parent=#Node] getOpacity 
--- @param self
--- @return unsigned char#unsigned char ret (return value: unsigned char)
-        
---------------------------------
---  !!! ONLY FOR INTERNAL USE<br>
--- Sets the arrival order when this node has a same ZOrder with other children.<br>
--- A node which called addChild subsequently will take a larger arrival order,<br>
--- If two children have the same Z order, the child with larger arrival order will be drawn later.<br>
--- warning This method is used internally for localZOrder sorting, don't change this manually<br>
--- param orderOfArrival   The arrival order.
--- @function [parent=#Node] updateOrderOfArrival 
--- @param self
--- @return Node#Node self (return value: cc.Node)
-        
---------------------------------
--- 
+--  Returns the normalized position.<br>
+-- return The normalized position.
 -- @function [parent=#Node] getNormalizedPosition 
 -- @param self
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
@@ -1192,8 +1115,7 @@
 -- @return Node#Node self (return value: cc.Node)
         
 --------------------------------
--- Query whether cascadeColor is enabled or not.<br>
--- return Whether cascadeColor is enabled or not.
+-- 
 -- @function [parent=#Node] isCascadeColorEnabled 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -1219,17 +1141,5 @@
 -- @function [parent=#Node] create 
 -- @param self
 -- @return Node#Node ret (return value: cc.Node)
-        
---------------------------------
--- Gets count of nodes those are attached to scene graph.
--- @function [parent=#Node] getAttachedNodeCount 
--- @param self
--- @return int#int ret (return value: int)
-        
---------------------------------
--- 
--- @function [parent=#Node] Node 
--- @param self
--- @return Node#Node self (return value: cc.Node)
         
 return nil

@@ -37,10 +37,4 @@
 -- @param #string negative_z
 -- @return TextureCube#TextureCube ret (return value: cc.TextureCube)
         
---------------------------------
--- Constructor.
--- @function [parent=#TextureCube] TextureCube 
--- @param self
--- @return TextureCube#TextureCube self (return value: cc.TextureCube)
-        
 return nil

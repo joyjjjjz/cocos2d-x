@@ -1,18 +1,15 @@
-#include <memory>
-
-#include <android/log.h>
-#include <jni.h>
-
 #include "AppDelegate.h"
+#include "cocos2d.h"
+#include "platform/android/jni/JniHelper.h"
+#include <jni.h>
+#include <android/log.h>
 
 #define  LOG_TAG    "main"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
-namespace {
-std::unique_ptr<AppDelegate> appDelegate;
-}
+using namespace cocos2d;
 
-void cocos_android_app_init(JNIEnv* env) {
+void cocos_android_app_init (JNIEnv* env, jobject thiz) {
     LOGD("cocos_android_app_init");
-    appDelegate.reset(new AppDelegate());
+    AppDelegate *pAppDelegate = new (std::nothrow) AppDelegate();
 }

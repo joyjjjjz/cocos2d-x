@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -24,13 +24,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #include "2d/CCMenu.h"
-#include "2d/CCCamera.h"
 #include "base/CCDirector.h"
 #include "base/CCTouch.h"
 #include "base/CCEventListenerTouch.h"
 #include "base/CCEventDispatcher.h"
-#include "base/ccUTF8.h"
 #include "platform/CCStdC.h"
+#include "deprecated/CCString.h"
 
 #include <vector>
 
@@ -58,7 +57,7 @@ Menu* Menu::create()
     return Menu::create(nullptr, nullptr);
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 Menu * Menu::variadicCreate(MenuItem* item, ...)
 {
     va_list args;
@@ -137,7 +136,7 @@ bool Menu::initWithArray(const Vector<MenuItem*>& arrayOfItems)
         // menu in the center of the screen
         Size s = Director::getInstance()->getWinSize();
 
-        this->setIgnoreAnchorPointForPosition(true);
+        this->ignoreAnchorPointForPosition(true);
         setAnchorPoint(Vec2(0.5f, 0.5f));
         this->setContentSize(s);
 
@@ -201,27 +200,11 @@ void Menu::addChild(Node * child, int zOrder, const std::string &name)
 
 void Menu::onEnter()
 {
-#if CC_ENABLE_SCRIPT_BINDING
-    if (_scriptType == kScriptTypeJavascript)
-    {
-        if (ScriptEngineManager::sendNodeEventToJSExtended(this, kNodeOnEnter))
-            return;
-    }
-#endif
-    
     Layer::onEnter();
 }
 
 void Menu::onExit()
 {
-#if CC_ENABLE_SCRIPT_BINDING
-    if (_scriptType == kScriptTypeJavascript)
-    {
-        if (ScriptEngineManager::sendNodeEventToJSExtended(this, kNodeOnExit))
-            return;
-    }
-#endif
-    
     if (_state == Menu::State::TRACKING_TOUCH)
     {
         if (_selectedItem)
@@ -238,9 +221,10 @@ void Menu::onExit()
 
 void Menu::removeChild(Node* child, bool cleanup)
 {
-    CCASSERT(dynamic_cast<MenuItem*>(child) != nullptr, "Menu only supports MenuItem objects as children");
+    MenuItem *menuItem = dynamic_cast<MenuItem*>(child);
+    CCASSERT(menuItem != nullptr, "Menu only supports MenuItem objects as children");
     
-    if (_selectedItem == child)
+    if (_selectedItem == menuItem)
     {
         _selectedItem = nullptr;
     }
@@ -250,10 +234,9 @@ void Menu::removeChild(Node* child, bool cleanup)
 
 //Menu - Events
 
-bool Menu::onTouchBegan(Touch* touch, Event* /*event*/)
+bool Menu::onTouchBegan(Touch* touch, Event* event)
 {
-    auto camera = Camera::getVisitingCamera();
-    if (_state != Menu::State::WAITING || ! _visible || !_enabled || !camera)
+    if (_state != Menu::State::WAITING || ! _visible || !_enabled)
     {
         return false;
     }
@@ -265,12 +248,11 @@ bool Menu::onTouchBegan(Touch* touch, Event* /*event*/)
             return false;
         }
     }
-    _selectedItem = this->getItemForTouch(touch, camera);
-
+    
+    _selectedItem = this->getItemForTouch(touch);
     if (_selectedItem)
     {
         _state = Menu::State::TRACKING_TOUCH;
-        _selectedWithCamera = camera;
         _selectedItem->selected();
         
         return true;
@@ -279,7 +261,7 @@ bool Menu::onTouchBegan(Touch* touch, Event* /*event*/)
     return false;
 }
 
-void Menu::onTouchEnded(Touch* /*touch*/, Event* /*event*/)
+void Menu::onTouchEnded(Touch* touch, Event* event)
 {
     CCASSERT(_state == Menu::State::TRACKING_TOUCH, "[Menu ccTouchEnded] -- invalid state");
     this->retain();
@@ -289,11 +271,10 @@ void Menu::onTouchEnded(Touch* /*touch*/, Event* /*event*/)
         _selectedItem->activate();
     }
     _state = Menu::State::WAITING;
-    _selectedWithCamera = nullptr;
     this->release();
 }
 
-void Menu::onTouchCancelled(Touch* /*touch*/, Event* /*event*/)
+void Menu::onTouchCancelled(Touch* touch, Event* event)
 {
     CCASSERT(_state == Menu::State::TRACKING_TOUCH, "[Menu ccTouchCancelled] -- invalid state");
     this->retain();
@@ -305,10 +286,10 @@ void Menu::onTouchCancelled(Touch* /*touch*/, Event* /*event*/)
     this->release();
 }
 
-void Menu::onTouchMoved(Touch* touch, Event* /*event*/)
+void Menu::onTouchMoved(Touch* touch, Event* event)
 {
     CCASSERT(_state == Menu::State::TRACKING_TOUCH, "[Menu ccTouchMoved] -- invalid state");
-    MenuItem *currentItem = this->getItemForTouch(touch, _selectedWithCamera);
+    MenuItem *currentItem = this->getItemForTouch(touch);
     if (currentItem != _selectedItem)
     {
         if (_selectedItem)
@@ -394,11 +375,11 @@ void Menu::alignItemsInColumnsWithArray(const ValueVector& rows)
     int rowColumns = 0;
 
     for(const auto &child : _children) {
-        CCASSERT(row < rows.size(), "row should less than rows.size()!");
+        CCASSERT(row < rows.size(), "");
         
         rowColumns = rows[row].asInt();
         // can not have zero columns on a row
-        CCASSERT(rowColumns, "rowColumns can't be 0.");
+        CCASSERT(rowColumns, "");
         
         float tmp = child->getContentSize().height;
         rowHeight = (unsigned int)((rowHeight >= tmp || isnan(tmp)) ? rowHeight : tmp);
@@ -415,9 +396,9 @@ void Menu::alignItemsInColumnsWithArray(const ValueVector& rows)
     }
 
     // check if too many rows/columns for available menu items
-    CCASSERT(! columnsOccupied, "columnsOccupied should be 0.");
+    CCASSERT(! columnsOccupied, "");
 
-    Size winSize = getContentSize();
+    Size winSize = Director::getInstance()->getWinSize();
 
     row = 0;
     rowHeight = 0;
@@ -490,11 +471,11 @@ void Menu::alignItemsInRowsWithArray(const ValueVector& columns)
 
     for(const auto &child : _children) {
         // check if too many menu items for the amount of rows/columns
-        CCASSERT(column < columns.size(), "column should be less than columns.size().");
+        CCASSERT(column < columns.size(), "");
 
         columnRows = columns[column].asInt();
         // can't have zero rows on a column
-        CCASSERT(columnRows, "columnRows can't be 0.");
+        CCASSERT(columnRows, "");
 
         // columnWidth = fmaxf(columnWidth, [item contentSize].width);
         float tmp = child->getContentSize().width;
@@ -517,9 +498,9 @@ void Menu::alignItemsInRowsWithArray(const ValueVector& columns)
     }
 
     // check if too many rows/columns for available menu items.
-    CCASSERT(! rowsOccupied, "rowsOccupied should be 0.");
+    CCASSERT(! rowsOccupied, "");
 
-    Size winSize = getContentSize();
+    Size winSize = Director::getInstance()->getWinSize();
 
     column = 0;
     columnWidth = 0;
@@ -555,32 +536,30 @@ void Menu::alignItemsInRowsWithArray(const ValueVector& columns)
     }
 }
 
-MenuItem* Menu::getItemForTouch(Touch *touch, const Camera *camera)
+MenuItem* Menu::getItemForTouch(Touch *touch)
 {
     Vec2 touchLocation = touch->getLocation();
-    for (const auto &item: _children)
+
+    if (!_children.empty())
     {
-        MenuItem* child = dynamic_cast<MenuItem*>(item);
-        if (nullptr == child || false == child->isVisible() || false == child->isEnabled())
+        for (auto iter = _children.crbegin(); iter != _children.crend(); ++iter)
         {
-            continue;
-        }
-        Rect rect;
-        rect.size = child->getContentSize();
-        if (isScreenPointInRect(touchLocation, camera, child->getWorldToNodeTransform(), rect, nullptr))
-        {
-            return child;
+            MenuItem* child = dynamic_cast<MenuItem*>(*iter);
+            if (child && child->isVisible() && child->isEnabled())
+            {
+                Vec2 local = child->convertToNodeSpace(touchLocation);
+                Rect r = child->rect();
+                r.origin.setZero();
+                
+                if (r.containsPoint(local))
+                {
+                    return child;
+                }
+            }
         }
     }
+
     return nullptr;
-}
-
-void Menu::setOpacityModifyRGB(bool /*value*/)
-{}
-
-bool Menu::isOpacityModifyRGB() const
-{
-    return false;
 }
 
 std::string Menu::getDescription() const

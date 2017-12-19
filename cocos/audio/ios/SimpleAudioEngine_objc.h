@@ -23,7 +23,7 @@
  */
 
 
-#import "audio/ios/CDAudioManager.h"
+#import "CDAudioManager.h"
 
 /**
  A wrapper to the CDAudioManager object.

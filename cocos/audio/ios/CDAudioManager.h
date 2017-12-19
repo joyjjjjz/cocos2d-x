@@ -22,11 +22,11 @@
  $Id$
  */
 
-#import "audio/ios/CocosDenshion.h"
+#import "CocosDenshion.h"
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= 30000
     #import <AVFoundation/AVFoundation.h>
 #else
-    #import "audio/mac/CDXMacOSXSupport.h"
+    #import "CDXMacOSXSupport.h"
 #endif
 
 /** Different modes of the engine */
@@ -120,7 +120,7 @@ typedef enum {
 -(void) load:(NSString*) filePath;
 /** Plays the audio source */
 -(void) play;
-/** Stops playing the audio source */
+/** Stops playing the audio soruce */
 -(void) stop;
 /** Pauses the audio source */
 -(void) pause;
@@ -146,7 +146,7 @@ typedef enum {
  - Frameworks: OpenAL, AudioToolbox, AVFoundation
  @since v0.8
  */
-@interface CDAudioManager : NSObject <CDLongAudioSourceDelegate, CDAudioInterruptProtocol> {
+@interface CDAudioManager : NSObject <CDLongAudioSourceDelegate, CDAudioInterruptProtocol, AVAudioSessionDelegate> {
     CDSoundEngine        *soundEngine;
     CDLongAudioSource    *backgroundMusic;
     NSMutableArray        *audioSourceChannels;

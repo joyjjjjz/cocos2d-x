@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -29,7 +29,7 @@
 #include "renderer/CCGLProgramState.h"
 
 /**
- * @addtogroup renderer
+ * @addtogroup support
  * @{
  */
 
@@ -50,11 +50,11 @@ public:
         /**Index data pointer.*/
         unsigned short* indices;
         /**The number of vertices.*/
-        int vertCount;
+        ssize_t vertCount;
         /**The number of indices.*/
-        int indexCount;
+        ssize_t indexCount;
     };
-    /**Constructor.*/
+    /**Construtor.*/
     TrianglesCommand();
     /**Destructor.*/
     ~TrianglesCommand();
@@ -71,29 +71,28 @@ public:
     void init(float globalOrder, GLuint textureID, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles,const Mat4& mv, uint32_t flags);
     /**Deprecated function, the params is similar as the upper init function, with flags equals 0.*/
     CC_DEPRECATED_ATTRIBUTE void init(float globalOrder, GLuint textureID, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles,const Mat4& mv);
-    void init(float globalOrder, Texture2D* textureID, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles, const Mat4& mv, uint32_t flags);
     /**Apply the texture, shaders, programs, blend functions to GPU pipeline.*/
     void useMaterial() const;
     /**Get the material id of command.*/
-    uint32_t getMaterialID() const { return _materialID; }
+    inline uint32_t getMaterialID() const { return _materialID; }
     /**Get the openGL texture handle.*/
-    GLuint getTextureID() const { return _textureID; }
+    inline GLuint getTextureID() const { return _textureID; }
     /**Get a const reference of triangles.*/
-    const Triangles& getTriangles() const { return _triangles; }
+    inline const Triangles& getTriangles() const { return _triangles; }
     /**Get the vertex count in the triangles.*/
-    ssize_t getVertexCount() const { return _triangles.vertCount; }
+    inline ssize_t getVertexCount() const { return _triangles.vertCount; }
     /**Get the index count of the triangles.*/
-    ssize_t getIndexCount() const { return _triangles.indexCount; }
+    inline ssize_t getIndexCount() const { return _triangles.indexCount; }
     /**Get the vertex data pointer.*/
-    const V3F_C4B_T2F* getVertices() const { return _triangles.verts; }
+    inline const V3F_C4B_T2F* getVertices() const { return _triangles.verts; }
     /**Get the index data pointer.*/
-    const unsigned short* getIndices() const { return _triangles.indices; }
+    inline const unsigned short* getIndices() const { return _triangles.indices; }
     /**Get the glprogramstate.*/
-    GLProgramState* getGLProgramState() const { return _glProgramState; }
+    inline GLProgramState* getGLProgramState() const { return _glProgramState; }
     /**Get the blend function.*/
-    BlendFunc getBlendType() const { return _blendType; }
+    inline BlendFunc getBlendType() const { return _blendType; }
     /**Get the model view matrix.*/
-    const Mat4& getModelView() const { return _mv; }
+    inline const Mat4& getModelView() const { return _mv; }
     
 protected:
     /**Generate the material ID by textureID, glProgramState, and blend function.*/
@@ -103,7 +102,7 @@ protected:
     uint32_t _materialID;
     /**OpenGL handle for texture.*/
     GLuint _textureID;
-    /**GLprogramstate for the command. encapsulate shaders and uniforms.*/
+    /**GLprogramstate for the commmand. encapsulate shaders and uniforms.*/
     GLProgramState* _glProgramState;
     /**Blend function when rendering the triangles.*/
     BlendFunc _blendType;
@@ -111,8 +110,6 @@ protected:
     Triangles _triangles;
     /**Model view matrix when rendering the triangles.*/
     Mat4 _mv;
-
-    GLuint _alphaTextureID; // ANDROID ETC1 ALPHA supports.
 };
 
 NS_CC_END

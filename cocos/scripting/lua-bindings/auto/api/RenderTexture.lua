@@ -39,6 +39,12 @@
 -- @return int#int ret (return value: int)
         
 --------------------------------
+--  Ends grabbing. 
+-- @function [parent=#RenderTexture] end 
+-- @param self
+-- @return RenderTexture#RenderTexture self (return value: cc.RenderTexture)
+        
+--------------------------------
 --  Set Value for clear Stencil.<br>
 -- param clearStencil Value for clear Stencil.
 -- @function [parent=#RenderTexture] setClearStencil 
@@ -62,7 +68,7 @@
 -- @return Sprite#Sprite ret (return value: cc.Sprite)
         
 --------------------------------
---  When enabled, it will render its children into the texture automatically. Disabled by default for compatibility reasons.<br>
+--  When enabled, it will render its children into the texture automatically. Disabled by default for compatiblity reasons.<br>
 -- Will be enabled in the future.<br>
 -- return Return the autoDraw value.
 -- @function [parent=#RenderTexture] isAutoDraw 
@@ -71,7 +77,7 @@
         
 --------------------------------
 --  Flag: Use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.<br>
--- param keepMatrix Whether or not use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.<br>
+-- param keepMatrix Wether or not use stack matrix computed from scene hierarchy or generate new modelView and projection matrix.<br>
 -- js NA
 -- @function [parent=#RenderTexture] setKeepMatrix 
 -- @param self
@@ -120,9 +126,9 @@
 -- @return RenderTexture#RenderTexture self (return value: cc.RenderTexture)
         
 --------------------------------
---  Ends grabbing.<br>
--- lua endToLua
--- @function [parent=#RenderTexture] end 
+--  End is key word of lua, use other name to export to lua.<br>
+-- js NA
+-- @function [parent=#RenderTexture] endToLua 
 -- @param self
 -- @return RenderTexture#RenderTexture self (return value: cc.RenderTexture)
         
@@ -232,7 +238,7 @@
 -- @return RenderTexture#RenderTexture self (return value: cc.RenderTexture)
         
 --------------------------------
---  FIXME: should be protected.<br>
+--  FIXME: should be procted.<br>
 -- but due to a bug in PowerVR + Android,<br>
 -- the constructor is public again.<br>
 -- js ctor

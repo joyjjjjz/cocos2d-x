@@ -17,8 +17,6 @@ DrawPrimitivesTests::DrawPrimitivesTests()
 {
     ADD_TEST_CASE(DrawPrimitivesTest);
     ADD_TEST_CASE(DrawNodeTest);
-    ADD_TEST_CASE(PrimitivesCommandTest);
-    ADD_TEST_CASE(Issue11942Test);
 }
 
 string DrawPrimitivesBaseTest::title() const
@@ -69,7 +67,7 @@ void DrawPrimitivesTest::onDraw(const Mat4 &transform, uint32_t flags)
     CHECK_GL_ERROR_DEBUG();
     
     // TIP:
-    // If you are going to use always the same color or width, you don't
+    // If you are going to use always thde same color or width, you don't
     // need to call it before every draw
     //
     // Remember: OpenGL is a state-machine.
@@ -286,21 +284,12 @@ DrawNodeTest::DrawNodeTest()
     
     draw->drawSegment(Vec2(10,s.height/2), Vec2(s.width/2, s.height/2), 40, Color4F(1, 0, 1, 0.5));
 
-    // Draw triangle
+	// Draw triangle
     draw->drawTriangle(Vec2(10, 10), Vec2(70, 30), Vec2(100, 140), Color4F(CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), 0.5));
     
     for (int i = 0; i < 100; i++) {
         draw->drawPoint(Vec2(i*7, 5), (float)i/5+1, Color4F(CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), 1));
     }
-
-    auto draw1 = DrawNode::create();
-    this->addChild(draw1, 10);
-    draw1->setLineWidth(4);
-    draw1->drawLine(Vec2(0, s.height), Vec2(s.width, s.height - 20), Color4F::YELLOW);
-    draw1->drawLine(Vec2(0, 0), Vec2(s.width, s.height - 20), Color4F::YELLOW);
-
-    draw->runAction(RepeatForever::create(Sequence::create(FadeIn::create(1.2),FadeOut::create(1.2), NULL)));
-    draw1->runAction(RepeatForever::create(Sequence::create(FadeIn::create(1.2),FadeOut::create(1.2), NULL)));
 }
 
 string DrawNodeTest::title() const
@@ -312,106 +301,6 @@ string DrawNodeTest::subtitle() const
 {
     return "Testing DrawNode - batched draws. Concave polygons are BROKEN";
 }
-
-// PrimitivesCommandTest
-PrimitivesCommandTest::PrimitivesCommandTest()
-{
-    // draws a quad
-    V3F_C4B_T2F data[] = {
-        {{0,    0,0}, {255,  0,  0,255}, {0,1}},
-        {{200,  0,0}, {0,  255,255,255}, {1,1}},
-        {{200,200,0}, {255,255,  0,255}, {1,0}},
-        {{0,  200,0}, {255,255,255,255}, {0,0}},
-    };
-
-    uint16_t indices[] = {
-        0,1,2,
-        2,0,3
-    };
-
-    static const int TOTAL_VERTS = sizeof(data) / sizeof(data[0]);
-    static const int TOTAL_INDICES = TOTAL_VERTS*6/4;
-
-    auto vertexBuffer = VertexBuffer::create(sizeof(V3F_C4B_T2F), TOTAL_VERTS);
-    vertexBuffer->updateVertices(data, TOTAL_VERTS,0);
-
-    auto vertsData = VertexData::create();
-    vertsData->setStream(vertexBuffer, VertexStreamAttribute(0, GLProgram::VERTEX_ATTRIB_POSITION, GL_FLOAT, 3));
-    vertsData->setStream(vertexBuffer, VertexStreamAttribute(offsetof(V3F_C4B_T2F, colors), GLProgram::VERTEX_ATTRIB_COLOR, GL_UNSIGNED_BYTE, 4, true));
-    vertsData->setStream(vertexBuffer, VertexStreamAttribute(offsetof(V3F_C4B_T2F, texCoords), GLProgram::VERTEX_ATTRIB_TEX_COORD, GL_FLOAT, 2));
-
-
-    auto indexBuffer = IndexBuffer::create(IndexBuffer::IndexType::INDEX_TYPE_SHORT_16, TOTAL_INDICES);
-    indexBuffer->updateIndices(indices, TOTAL_INDICES, 0);
-
-    _primitive = Primitive::create(vertsData, indexBuffer, GL_TRIANGLES);
-    _primitive->setCount(TOTAL_INDICES);
-    _primitive->setStart(0);
-
-    auto cache = Director::getInstance()->getTextureCache();
-    _texture = cache->addImage("Images/grossini.png");
-    _programState = GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR);
-
-    _primitive->retain();
-    _texture->retain();
-    _programState->retain();
-}
-
-PrimitivesCommandTest::~PrimitivesCommandTest()
-{
-    CC_SAFE_RELEASE(_primitive);
-    CC_SAFE_RELEASE(_texture);
-    CC_SAFE_RELEASE(_programState);
-}
-
-
-void PrimitivesCommandTest::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
-{
-    _primitiveCommand.init(_globalZOrder,
-                           _texture->getName(),
-                           _programState,
-                           BlendFunc::ALPHA_NON_PREMULTIPLIED,
-                           _primitive,
-                           transform,
-                           flags);
-    renderer->addCommand(&_primitiveCommand);
-}
-
-string PrimitivesCommandTest::title() const
-{
-    return "PrimitiveCommand test";
-}
-
-string PrimitivesCommandTest::subtitle() const
-{
-    return "Drawing Primitives using PrimitiveCommand";
-}
-
-//
-// Issue11942Test
-//
-Issue11942Test::Issue11942Test()
-{
-    auto draw = DrawNode::create();
-    addChild(draw, 10);
-
-    // draw a circle
-    draw->setLineWidth(1);
-    draw->drawCircle(VisibleRect::center() - Vec2(140,0), 50, CC_DEGREES_TO_RADIANS(90), 30, false, Color4F(CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), 1));
-    draw->setLineWidth(10);
-    draw->drawCircle(VisibleRect::center() + Vec2(140,0), 50, CC_DEGREES_TO_RADIANS(90), 30, false, Color4F(CCRANDOM_0_1(), CCRANDOM_0_1(), CCRANDOM_0_1(), 1));
-}
-
-string Issue11942Test::title() const
-{
-    return "GitHub Issue #11942";
-}
-
-string Issue11942Test::subtitle() const
-{
-    return "drawCircle() with width";
-}
-
 
 #if defined(__GNUC__) && ((__GNUC__ >= 4) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 1)))
 #pragma GCC diagnostic warning "-Wdeprecated-declarations"

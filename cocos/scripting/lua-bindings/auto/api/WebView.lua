@@ -5,10 +5,11 @@
 -- @parent_module ccexp
 
 --------------------------------
--- SetOpacity of webview.
--- @function [parent=#WebView] setOpacityWebView 
+-- Loads the given URL.<br>
+-- param url Content URL.
+-- @function [parent=#WebView] loadURL 
 -- @param self
--- @param #float opacity
+-- @param #string url
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
@@ -41,34 +42,11 @@
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
--- Set WebView should support zooming. The default value is false.
--- @function [parent=#WebView] setScalesPageToFit 
+-- Set javascript interface scheme.<br>
+-- see WebView::setOnJSCallback()
+-- @function [parent=#WebView] setJavascriptInterfaceScheme 
 -- @param self
--- @param #bool scalesPageToFit
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- Loads the given fileName.<br>
--- param fileName Content fileName.
--- @function [parent=#WebView] loadFile 
--- @param self
--- @param #string fileName
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- @overload self, string, bool         
--- @overload self, string         
--- @function [parent=#WebView] loadURL
--- @param self
--- @param #string url
--- @param #bool cleanCachedData
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-
---------------------------------
--- Set whether the webview bounces at end of scroll of WebView.
--- @function [parent=#WebView] setBounces 
--- @param self
--- @param #bool bounce
+-- @param #string scheme
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
@@ -79,16 +57,23 @@
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
--- set the background transparent
--- @function [parent=#WebView] setBackgroundTransparent 
--- @param self
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
 -- Get the Javascript callback.
 -- @function [parent=#WebView] getOnJSCallback 
 -- @param self
 -- @return function#function ret (return value: function)
+        
+--------------------------------
+-- Reloads the current URL.
+-- @function [parent=#WebView] reload 
+-- @param self
+-- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
+        
+--------------------------------
+-- Set WebView should support zooming. The default value is false.
+-- @function [parent=#WebView] setScalesPageToFit 
+-- @param self
+-- @param #bool scalesPageToFit
+-- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
 -- Gets whether this WebView has a forward history item.<br>
@@ -98,29 +83,17 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
+-- Loads the given fileName.<br>
+-- param fileName Content fileName.
+-- @function [parent=#WebView] loadFile 
+-- @param self
+-- @param #string fileName
+-- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
+        
+--------------------------------
 -- Stops the current load.
 -- @function [parent=#WebView] stopLoading 
 -- @param self
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- getOpacity of webview.
--- @function [parent=#WebView] getOpacityWebView 
--- @param self
--- @return float#float ret (return value: float)
-        
---------------------------------
--- Reloads the current URL.
--- @function [parent=#WebView] reload 
--- @param self
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- Set javascript interface scheme.<br>
--- see WebView::setOnJSCallback()
--- @function [parent=#WebView] setJavascriptInterfaceScheme 
--- @param self
--- @param #string scheme
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 --------------------------------
@@ -130,28 +103,10 @@
 -- @return experimental::ui::WebView#experimental::ui::WebView ret (return value: cc.experimental::ui::WebView)
         
 --------------------------------
--- 
--- @function [parent=#WebView] onEnter 
--- @param self
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
 -- Toggle visibility of WebView.
 -- @function [parent=#WebView] setVisible 
 -- @param self
 -- @param #bool visible
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- 
--- @function [parent=#WebView] onExit 
--- @param self
--- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
-        
---------------------------------
--- Default constructor.
--- @function [parent=#WebView] WebView 
--- @param self
 -- @return experimental::ui::WebView#experimental::ui::WebView self (return value: cc.experimental::ui::WebView)
         
 return nil

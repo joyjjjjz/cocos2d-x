@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -43,14 +43,14 @@ PUObserver::PUObserver(void) :
     _originalEnabled(DEFAULT_ENABLED),
     _originalEnabledSet(false),
     _observe(true),
-    _observeUntilEvent(DEFAULT_UNTIL_EVENT),
-    _eventHandlersExecuted(false),
-    _observerScale(Vec3::ONE),
     _particleTypeToObserve(DEFAULT_PARTICLE_TYPE),
     _particleTypeToObserveSet(false),
+    _observerScale(Vec3::ONE),
     _observerInterval(DEFAULT_INTERVAL),
     _observerIntervalRemainder(0.0),
-    _observerIntervalSet(false)
+    _observerIntervalSet(false),
+    _observeUntilEvent(DEFAULT_UNTIL_EVENT),
+    _eventHandlersExecuted(false)
 {
     //mAliasType = AT_OBSERVER;
 }
@@ -170,7 +170,7 @@ PUEventHandler* PUObserver::getEventHandler (size_t index) const
 PUEventHandler* PUObserver::getEventHandler (const std::string& eventHandlerName) const
 {
     if (eventHandlerName.empty())
-        return nullptr;
+        return 0;
 
     ParticleEventHandlerConstIterator it;
     ParticleEventHandlerConstIterator itEnd = _eventHandlers.end();
@@ -182,7 +182,7 @@ PUEventHandler* PUObserver::getEventHandler (const std::string& eventHandlerName
         }
     }
 
-    return nullptr;
+    return 0;
 }
 //-----------------------------------------------------------------------
 size_t PUObserver::getNumEventHandlers (void) const
@@ -198,7 +198,7 @@ void PUObserver::destroyEventHandler(PUEventHandler* eventHandler)
     {
         if (*it == eventHandler)
         {
-            // Destroy it
+            // Detroy it
             //ParticleSystemManager::getSingletonPtr()->destroyEventHandler(*it);
             (*it)->release();
             _eventHandlers.erase(it);
@@ -303,12 +303,12 @@ void PUObserver::updateObserver( PUParticle3D *particle, float deltaTime, bool f
     handleObserve(particle, deltaTime);
 }
 
-void PUObserver::postUpdateObserver( float /*deltaTime*/ )
+void PUObserver::postUpdateObserver( float deltaTime )
 {
 
 }
 
-void PUObserver::firstParticleUpdate( PUParticle3D* /*particle*/, float /*deltaTime*/ )
+void PUObserver::firstParticleUpdate( PUParticle3D *particle, float deltaTime )
 {
 
 }

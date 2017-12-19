@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -29,7 +29,7 @@
 #include "renderer/CCRenderCommand.h"
 
 /**
- * @addtogroup renderer
+ * @addtogroup support
  * @{
  */
 
@@ -65,7 +65,7 @@ public:
     */
     void execute();
     //TODO: This function is not used, it should be removed.
-    bool isTranslucent() { return true; }
+    inline bool isTranslucent() { return true; }
     /**Callback function.*/
     std::function<void()> func;
 

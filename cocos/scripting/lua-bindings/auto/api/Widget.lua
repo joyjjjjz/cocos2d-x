@@ -6,7 +6,8 @@
 
 --------------------------------
 -- Toggle layout component enable.<br>
--- param enable Layout Component of a widget
+-- param enable Layout Component of a widget<br>
+-- return void
 -- @function [parent=#Widget] setLayoutComponentEnabled 
 -- @param self
 -- @param #bool enable
@@ -36,7 +37,7 @@
         
 --------------------------------
 -- Sets whether the widget should be flipped horizontally or not.<br>
--- param flippedX true if the widget should be flipped horizontally, false otherwise.
+-- param flippedX true if the widget should be flipped horizaontally, false otherwise.
 -- @function [parent=#Widget] setFlippedX 
 -- @param self
 -- @param #bool flippedX
@@ -108,12 +109,12 @@
 -- @return size_table#size_table ret (return value: size_table)
         
 --------------------------------
--- Sets whether the widget is highlighted<br>
--- The default value is false, a widget is default to not highlighted<br>
--- param highlight   true if the widget is highlighted, false if the widget is not highlighted.
+-- Sets whether the widget is hilighted<br>
+-- The default value is false, a widget is default to not hilighted<br>
+-- param hilight   true if the widget is hilighted, false if the widget is not hilighted.
 -- @function [parent=#Widget] setHighlighted 
 -- @param self
--- @param #bool highlight
+-- @param #bool hilight
 -- @return Widget#Widget self (return value: ccui.Widget)
         
 --------------------------------
@@ -126,7 +127,7 @@
 -- @return Widget#Widget self (return value: ccui.Widget)
         
 --------------------------------
--- Query whether the widget ignores user defined content size or not<br>
+-- Query whether the widget ignores user deinfed content size or not<br>
 -- return True means ignore user defined content size, false otherwise.
 -- @function [parent=#Widget] isIgnoreContentAdaptWithSize 
 -- @param self
@@ -141,7 +142,7 @@
         
 --------------------------------
 -- Determines if the widget is highlighted<br>
--- return true if the widget is highlighted, false if the widget is not highlighted.
+-- return true if the widget is highlighted, false if the widget is not hignlighted .
 -- @function [parent=#Widget] isHighlighted 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -173,7 +174,7 @@
 -- Toggle whether ignore user defined content size for widget.<br>
 -- Set true will ignore user defined content size which means <br>
 -- the widget size is always equal to the return value of `getVirtualRendererSize`.<br>
--- param ignore set member variable _ignoreSize to ignore
+-- param ignore set member variabl _ignoreSize to ignore
 -- @function [parent=#Widget] ignoreContentAdaptWithSize 
 -- @param self
 -- @param #bool ignore
@@ -249,7 +250,8 @@
         
 --------------------------------
 -- Toggle widget focus status.<br>
--- param focus  pass true to let the widget get focus or pass false to let the widget lose focus
+-- param focus  pass true to let the widget get focus or pass false to let the widget lose focus<br>
+-- return void
 -- @function [parent=#Widget] setFocused 
 -- @param self
 -- @param #bool focus
@@ -274,7 +276,7 @@
         
 --------------------------------
 -- Sets whether the widget should be flipped vertically or not.<br>
--- param flippedY true if the widget should be flipped vertically, false otherwise.
+-- param flippedY true if the widget should be flipped vertically, flase otherwise.
 -- @function [parent=#Widget] setFlippedY 
 -- @param self
 -- @param #bool flippedY
@@ -325,7 +327,8 @@
         
 --------------------------------
 -- Allow widget to accept focus.<br>
--- param enable pass true/false to enable/disable the focus ability of a widget
+-- param enable pass true/false to enable/disable the focus ability of a widget<br>
+-- return void
 -- @function [parent=#Widget] setFocusEnabled 
 -- @param self
 -- @param #bool enable
@@ -346,18 +349,9 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- Dispatch a EventFocus through a EventDispatcher<br>
--- param widgetLoseFocus  The widget which lose its focus<br>
--- param widgetGetFocus he widget which get its focus
--- @function [parent=#Widget] dispatchFocusEvent 
--- @param self
--- @param #ccui.Widget widgetLoseFocus
--- @param #ccui.Widget widgetGetFocus
--- @return Widget#Widget self (return value: ccui.Widget)
-        
---------------------------------
 -- Toggle use unify size.<br>
--- param enable True to use unify size, false otherwise.
+-- param enable True to use unify size, false otherwise.<br>
+-- return void
 -- @function [parent=#Widget] setUnifySizeEnabled 
 -- @param self
 -- @param #bool enable
@@ -372,17 +366,20 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
+-- Return a current focused widget in your UI scene.<br>
+-- No matter what widget object you call this method on , it will return you the exact one focused widget.
+-- @function [parent=#Widget] getCurrentFocusedWidget 
+-- @param self
+-- @return Widget#Widget ret (return value: ccui.Widget)
+        
+--------------------------------
 -- Checks a point is in widget's content space.<br>
 -- This function is used for determining touch area of widget.<br>
--- param pt        The point in `Vec2`.<br>
--- param camera    The camera look at widget, used to convert GL screen point to near/far plane.<br>
--- param p         Point to a Vec3 for store the intersect point, if don't need them set to nullptr.<br>
--- return true if the point is in widget's content space, false otherwise.
+-- param pt The point in `Vec2`.<br>
+-- return true if the point is in widget's content space, flase otherwise.
 -- @function [parent=#Widget] hitTest 
 -- @param self
 -- @param #vec2_table pt
--- @param #cc.Camera camera
--- @param #vec3_table p
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
@@ -406,16 +403,6 @@
 -- @param #size_table parentSize
 -- @return Widget#Widget self (return value: ccui.Widget)
 
---------------------------------
--- This method is called when a focus change event happens<br>
--- param widgetLostFocus  The widget which lose its focus<br>
--- param widgetGetFocus  The widget which get its focus
--- @function [parent=#Widget] onFocusChange 
--- @param self
--- @param #ccui.Widget widgetLostFocus
--- @param #ccui.Widget widgetGetFocus
--- @return Widget#Widget self (return value: ccui.Widget)
-        
 --------------------------------
 -- 
 -- @function [parent=#Widget] getTouchMovePosition 
@@ -451,20 +438,11 @@
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
         
 --------------------------------
--- brief Propagate touch events to its parents
--- @function [parent=#Widget] propagateTouchEvent 
--- @param self
--- @param #int event
--- @param #ccui.Widget sender
--- @param #cc.Touch touch
--- @return Widget#Widget self (return value: ccui.Widget)
-        
---------------------------------
 -- Returns the flag which indicates whether the widget is flipped horizontally or not.<br>
 -- It not only flips the texture of the widget, but also the texture of the widget's children.<br>
 -- Also, flipping relies on widget's anchor point.<br>
 -- Internally, it just use setScaleX(-1) to flip the widget.<br>
--- return true if the widget is flipped horizontally, false otherwise.
+-- return true if the widget is flipped horizaontally, false otherwise.
 -- @function [parent=#Widget] isFlippedX 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -474,7 +452,7 @@
 -- It not only flips the texture of the widget, but also the texture of the widget's children.<br>
 -- Also, flipping relies on widget's anchor point.<br>
 -- Internally, it just use setScaleY(-1) to flip the widget.<br>
--- return true if the widget is flipped vertically, false otherwise.
+-- return true if the widget is flipped vertically, flase otherwise.
 -- @function [parent=#Widget] isFlippedY 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -482,7 +460,7 @@
 --------------------------------
 -- Checks a point if in parent's area.<br>
 -- param pt A point in `Vec2`.<br>
--- return true if the point is in parent's area, false otherwise.
+-- return true if the point is in parent's area, flase otherwise.
 -- @function [parent=#Widget] isClippingParentContainsPoint 
 -- @param self
 -- @param #vec2_table pt
@@ -495,15 +473,6 @@
 -- @function [parent=#Widget] setSizeType 
 -- @param self
 -- @param #int type
--- @return Widget#Widget self (return value: ccui.Widget)
-        
---------------------------------
--- 
--- @function [parent=#Widget] interceptTouchEvent 
--- @param self
--- @param #int event
--- @param #ccui.Widget sender
--- @param #cc.Touch touch
 -- @return Widget#Widget self (return value: ccui.Widget)
         
 --------------------------------
@@ -537,13 +506,6 @@
 -- @param self
 -- @param #bool enable
 -- @return Widget#Widget self (return value: ccui.Widget)
-        
---------------------------------
--- Return a current focused widget in your UI scene.<br>
--- No matter what widget object you call this method on , it will return you the exact one focused widget.
--- @function [parent=#Widget] getCurrentFocusedWidget 
--- @param self
--- @return Widget#Widget ret (return value: ccui.Widget)
         
 --------------------------------
 -- Create and return a empty Widget instance pointer.
@@ -593,12 +555,6 @@
 -- @param #float scaley
 -- @return Widget#Widget self (return value: ccui.Widget)
 
---------------------------------
--- 
--- @function [parent=#Widget] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
 --------------------------------
 -- Changes the position (x,y) of the widget in OpenGL coordinates<br>
 -- Usually we use p(x,y) to compose a Vec2 object.<br>

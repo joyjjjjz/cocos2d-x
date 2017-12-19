@@ -62,28 +62,28 @@ void UITextFieldTest::textFieldEvent(Ref *pSender, TextField::EventType type)
         case TextField::EventType::ATTACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.225f,
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f + textField->getContentSize().height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME"));
+            _displayValueLabel->setString(String::createWithFormat("attach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("detach with IME"));
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            _displayValueLabel->setString(String::createWithFormat("detach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
-            _displayValueLabel->setString(StringUtils::format("insert words"));
+            _displayValueLabel->setString(String::createWithFormat("insert words")->getCString());
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
-            _displayValueLabel->setString(StringUtils::format("delete word"));
+            _displayValueLabel->setString(String::createWithFormat("delete word")->getCString());
             break;
             
         default:
@@ -106,7 +106,7 @@ bool UITextFieldTest_MaxLength::init()
 {
     if (UIScene::init())
     {
-        Size screenSize = Director::getInstance()->getWinSize();
+        Size screenSize = CCDirector::getInstance()->getWinSize();
         
         // Add a label in which the textfield events will be displayed
         _displayValueLabel = Text::create("No Event","fonts/Marker Felt.ttf",32);
@@ -140,33 +140,33 @@ void UITextFieldTest_MaxLength::textFieldEvent(Ref *pSender, TextField::EventTyp
         case TextField::EventType::ATTACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.225f,
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f + textField->getContentSize().height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME max length %d", textField->getMaxLength()));
+            _displayValueLabel->setString(String::createWithFormat("attach with IME max length %d", textField->getMaxLength())->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("detach with IME max length %d", textField->getMaxLength()));
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            _displayValueLabel->setString(String::createWithFormat("detach with IME max length %d", textField->getMaxLength())->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            _displayValueLabel->setString(StringUtils::format("insert words max length %d", textField->getMaxLength()));
+            _displayValueLabel->setString(String::createWithFormat("insert words max length %d", textField->getMaxLength())->getCString());
         }
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            _displayValueLabel->setString(StringUtils::format("delete word max length %d", textField->getMaxLength()));
+            _displayValueLabel->setString(String::createWithFormat("delete word max length %d", textField->getMaxLength())->getCString());
         }
             break;
             
@@ -190,7 +190,7 @@ bool UITextFieldTest_Password::init()
 {
     if (UIScene::init())
     {
-        Size screenSize = Director::getInstance()->getWinSize();
+        Size screenSize = CCDirector::getInstance()->getWinSize();
         
         // Add a label in which the textfield events will be displayed
         _displayValueLabel = Text::create("No Event","fonts/Marker Felt.ttf",32);
@@ -224,28 +224,28 @@ void UITextFieldTest_Password::textFieldEvent(Ref *pSender, TextField::EventType
         case TextField::EventType::ATTACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.225f,
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f + textField->getContentSize().height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME password"));
+            _displayValueLabel->setString(String::createWithFormat("attach with IME password")->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("detach with IME password"));
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            _displayValueLabel->setString(String::createWithFormat("detach with IME password")->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
-            _displayValueLabel->setString(StringUtils::format("insert words password"));
+            _displayValueLabel->setString(String::createWithFormat("insert words password")->getCString());
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
-            _displayValueLabel->setString(StringUtils::format("delete word password"));
+            _displayValueLabel->setString(String::createWithFormat("delete word password")->getCString());
             break;
             
         default:
@@ -308,30 +308,33 @@ void UITextFieldTest_LineWrap::textFieldEvent(Ref *pSender, TextField::EventType
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
             Size widgetSize = _widget->getContentSize();
-            textField->runAction(MoveTo::create(0.225f,
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(widgetSize.width / 2.0f, widgetSize.height / 2.0f + 30)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME"));
+            textField->setTextHorizontalAlignment(TextHAlignment::LEFT);
+            textField->setTextVerticalAlignment(TextVAlignment::TOP);
+            
+            _displayValueLabel->setString(CCString::createWithFormat("attach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            Size widgetSize = _widget->getContentSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(widgetSize.width / 2.0f, widgetSize.height / 2.0f)));
             textField->setTextHorizontalAlignment(TextHAlignment::CENTER);
             textField->setTextVerticalAlignment(TextVAlignment::CENTER);
             
-            _displayValueLabel->setString(StringUtils::format("detach with IME"));
+            _displayValueLabel->setString(CCString::createWithFormat("detach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
-            _displayValueLabel->setString(StringUtils::format("insert words"));
+            _displayValueLabel->setString(CCString::createWithFormat("insert words")->getCString());
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
-            _displayValueLabel->setString(StringUtils::format("delete word"));
+            _displayValueLabel->setString(CCString::createWithFormat("delete word")->getCString());
             break;
             
         default:
@@ -387,28 +390,28 @@ void UITextFieldTest_TrueTypeFont::textFieldEvent(Ref *pSender, TextField::Event
         case TextField::EventType::ATTACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.225f,
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f + textField->getContentSize().height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME"));
+            _displayValueLabel->setString(String::createWithFormat("attach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("detach with IME"));
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            _displayValueLabel->setString(String::createWithFormat("detach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
-            _displayValueLabel->setString(StringUtils::format("insert words"));
+            _displayValueLabel->setString(String::createWithFormat("insert words")->getCString());
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
-            _displayValueLabel->setString(StringUtils::format("delete word"));
+            _displayValueLabel->setString(String::createWithFormat("delete word")->getCString());
             break;
             
         default:
@@ -464,31 +467,31 @@ void UITextFieldTest_PlaceHolderColor::textFieldEvent(Ref *pSender, TextField::E
         case TextField::EventType::ATTACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.225f,
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.225f,
                                                   Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f + textField->getContentSize().height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("attach with IME"));
+            _displayValueLabel->setString(String::createWithFormat("attach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::DETACH_WITH_IME:
         {
             TextField* textField = dynamic_cast<TextField*>(pSender);
-            Size screenSize = Director::getInstance()->getWinSize();
-            textField->runAction(MoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
-            _displayValueLabel->setString(StringUtils::format("detach with IME"));
+            Size screenSize = CCDirector::getInstance()->getWinSize();
+            textField->runAction(CCMoveTo::create(0.175f, Vec2(screenSize.width / 2.0f, screenSize.height / 2.0f)));
+            _displayValueLabel->setString(String::createWithFormat("detach with IME")->getCString());
         }
             break;
             
         case TextField::EventType::INSERT_TEXT:
         {
-            _displayValueLabel->setString(StringUtils::format("insert words"));
+            _displayValueLabel->setString(String::createWithFormat("insert words")->getCString());
             CCLOG("%f, %f", dynamic_cast<TextField*>(pSender)->getContentSize().width, dynamic_cast<TextField*>(pSender)->getContentSize().height);
         }
             break;
             
         case TextField::EventType::DELETE_BACKWARD:
-            _displayValueLabel->setString(StringUtils::format("delete word"));
+            _displayValueLabel->setString(String::createWithFormat("delete word")->getCString());
             break;
             
         default:

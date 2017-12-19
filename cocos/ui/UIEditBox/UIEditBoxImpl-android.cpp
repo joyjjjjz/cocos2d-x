@@ -1,8 +1,7 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
  Copyright (c) 2012 James Chen
- Copyright (c) 2013-2015 zilongshanren
-
+ 
  http://www.cocos2d-x.org
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,153 +23,131 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "ui/UIEditBox/UIEditBoxImpl-android.h"
+#include "UIEditBoxImpl-android.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
-#include "ui/UIEditBox/UIEditBox.h"
-#include <jni.h>
-#include "platform/android/jni/JniHelper.h"
+#include "UIEditBox.h"
+#include "jni/Java_org_cocos2dx_lib_Cocos2dxBitmap.h"
+#include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 #include "2d/CCLabel.h"
 #include "base/ccUTF8.h"
-#include "math/Vec2.h"
-#include "ui/UIHelper.h"
-#include "base/CCDirector.h"
-#include "platform/CCFileUtils.h"
 
 NS_CC_BEGIN
 
-static const std::string editBoxClassName = "org/cocos2dx/lib/Cocos2dxEditBoxHelper";
-
 namespace ui {
 
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_ERROR,"",__VA_ARGS__)
-static void editBoxEditingDidBegin(int index);
-static void editBoxEditingDidChanged(int index, const std::string& text);
-static void editBoxEditingDidEnd(int index, const std::string& text, int action);
-extern "C"{
-    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidBegin(JNIEnv *env, jclass, jint index) {
-        editBoxEditingDidBegin(index);
-    }
-
-    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingChanged(JNIEnv *env, jclass, jint index, jstring text) {
-        std::string textString = StringUtils::getStringUTFCharsJNI(env,text);
-        editBoxEditingDidChanged(index, textString);
-    }
-
-    JNIEXPORT void JNICALL Java_org_cocos2dx_lib_Cocos2dxEditBoxHelper_editBoxEditingDidEnd(JNIEnv *env, jclass, jint index, jstring text, jint action) {
-        std::string textString = StringUtils::getStringUTFCharsJNI(env,text);
-        editBoxEditingDidEnd(index, textString, action);
-    }
-}
-
-static std::unordered_map<int, EditBoxImplAndroid*> s_allEditBoxes;
-
-
-EditBoxImpl* __createSystemEditBox(EditBox* editBox)
+EditBoxImpl* __createSystemEditBox(EditBox* pEditBox)
 {
-    return new EditBoxImplAndroid(editBox);
+    return new EditBoxImplAndroid(pEditBox);
 }
-
 
 EditBoxImplAndroid::EditBoxImplAndroid(EditBox* pEditText)
-: EditBoxImplCommon(pEditText)
-, _editBoxIndex(-1)
+: EditBoxImpl(pEditText)
+, _label(nullptr)
+, _labelPlaceHolder(nullptr)
+, _editBoxInputMode(EditBox::InputMode::SINGLE_LINE)
+, _editBoxInputFlag(EditBox::InputFlag::INTIAL_CAPS_ALL_CHARACTERS)
+, _keyboardReturnType(EditBox::KeyboardReturnType::DEFAULT)
+, _colText(Color3B::WHITE)
+, _colPlaceHolder(Color3B::GRAY)
+, _maxLength(-1)
 {
+    
 }
 
 EditBoxImplAndroid::~EditBoxImplAndroid()
 {
-    s_allEditBoxes.erase(_editBoxIndex);
-    JniHelper::callStaticVoidMethod(editBoxClassName, "removeEditBox", _editBoxIndex);
-
+	
 }
 
-void EditBoxImplAndroid::createNativeControl(const Rect& frame)
+void EditBoxImplAndroid::doAnimationWhenKeyboardMove(float duration, float distance)
+{ // don't need to be implemented on android platform.
+	
+}
+
+static const int CC_EDIT_BOX_PADDING = 5;
+
+bool EditBoxImplAndroid::initWithSize(const Size& size)
 {
-    auto director = cocos2d::Director::getInstance();
-    auto glView = director->getOpenGLView();
-    auto frameSize = glView->getFrameSize();
+    int fontSize = getFontSizeAccordingHeightJni(size.height-12);
+    _label = Label::create();
+    _label->setSystemFontSize(size.height-12);
+	// align the text vertically center
+    _label->setAnchorPoint(Vec2(0, 0.5f));
+    _label->setPosition(Vec2(CC_EDIT_BOX_PADDING, size.height / 2.0f));
+    _label->setTextColor(_colText);
+    _editBox->addChild(_label);
+	
+    _labelPlaceHolder = Label::create();
+    _labelPlaceHolder->setSystemFontSize(size.height-12);
+	// align the text vertically center
+    _labelPlaceHolder->setAnchorPoint(Vec2(0, 0.5f));
+    _labelPlaceHolder->setPosition(CC_EDIT_BOX_PADDING, size.height / 2.0f);
+    _labelPlaceHolder->setVisible(false);
+    _labelPlaceHolder->setTextColor(_colPlaceHolder);
+    _editBox->addChild(_labelPlaceHolder);
     
-    auto winSize = director->getWinSize();
-    auto leftBottom = _editBox->convertToWorldSpace(Point::ZERO);
-    
-    auto contentSize = frame.size;
-    auto rightTop = _editBox->convertToWorldSpace(Point(contentSize.width, contentSize.height));
-    
-    auto uiLeft = frameSize.width / 2 + (leftBottom.x - winSize.width / 2 ) * glView->getScaleX();
-    auto uiTop = frameSize.height /2 - (rightTop.y - winSize.height / 2) * glView->getScaleY();
-    auto uiWidth = (rightTop.x - leftBottom.x) * glView->getScaleX();
-    auto uiHeight = (rightTop.y - leftBottom.y) * glView->getScaleY();
-    LOGD("scaleX = %f", glView->getScaleX());
-    _editBoxIndex = JniHelper::callStaticIntMethod(editBoxClassName, "createEditBox",
-                                                   (int)uiLeft, (int)uiTop, (int)uiWidth, (int)uiHeight, 
-                                                   (float)glView->getScaleX());
-    s_allEditBoxes[_editBoxIndex] = this;
+    _editSize = size;
+    return true;
 }
 
-void EditBoxImplAndroid::setNativeFont(const char* pFontName, int fontSize)
+void EditBoxImplAndroid::setFont(const char* pFontName, int fontSize)
 {
-    auto director = cocos2d::Director::getInstance();
-    auto glView = director->getOpenGLView();
-    auto isFontFileExists = cocos2d::FileUtils::getInstance()->isFileExist(pFontName);
-    std::string realFontPath = pFontName;
-    if(isFontFileExists) {
-        realFontPath = cocos2d::FileUtils::getInstance()->fullPathForFilename(pFontName);
-        if (realFontPath.find("assets/") == 0)
-        {
-            realFontPath = realFontPath.substr(strlen("assets/"));   // Chop out the 'assets/' portion of the path.
-        }
-    }
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setFont",
-                                    _editBoxIndex, realFontPath,
-                                    (float)fontSize * glView->getScaleX());
+	if(_label != NULL) {
+		_label->setSystemFontName(pFontName);
+		_label->setSystemFontSize(fontSize);
+	}
+	
+	if(_labelPlaceHolder != NULL) {
+		_labelPlaceHolder->setSystemFontName(pFontName);
+		_labelPlaceHolder->setSystemFontSize(fontSize);
+	}
 }
 
-void EditBoxImplAndroid::setNativeFontColor(const Color4B& color)
+void EditBoxImplAndroid::setFontColor(const Color4B& color)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setFontColor", _editBoxIndex, 
-                                    (int)color.r, (int)color.g, (int)color.b, (int)color.a);
+    _colText = color;
+    _label->setTextColor(color);
 }
 
-void EditBoxImplAndroid::setNativePlaceholderFont(const char* pFontName, int fontSize)
+void EditBoxImplAndroid::setPlaceholderFont(const char* pFontName, int fontSize)
 {
-    CCLOG("Warning! You can't change Android Hint fontName and fontSize");
+	if(_labelPlaceHolder != NULL) {
+		_labelPlaceHolder->setSystemFontName(pFontName);
+		_labelPlaceHolder->setSystemFontSize(fontSize);
+	}
 }
 
-void EditBoxImplAndroid::setNativePlaceholderFontColor(const Color4B& color)
+void EditBoxImplAndroid::setPlaceholderFontColor(const Color4B& color)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setPlaceHolderTextColor", _editBoxIndex, 
-                                    (int)color.r, (int)color.g, (int)color.b, (int)color.a);
+    _colPlaceHolder = color;
+    _labelPlaceHolder->setTextColor(color);
 }
 
-void EditBoxImplAndroid::setNativeInputMode(EditBox::InputMode inputMode)
+void EditBoxImplAndroid::setInputMode(EditBox::InputMode inputMode)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setInputMode", 
-                                    _editBoxIndex, static_cast<int>(inputMode));
+    _editBoxInputMode = inputMode;
 }
 
-void EditBoxImplAndroid::setNativeMaxLength(int maxLength)
+void EditBoxImplAndroid::setMaxLength(int maxLength)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setMaxLength", _editBoxIndex, maxLength);
+    _maxLength = maxLength;
 }
 
-void EditBoxImplAndroid::setNativeInputFlag(EditBox::InputFlag inputFlag)
+int EditBoxImplAndroid::getMaxLength()
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setInputFlag", 
-                                    _editBoxIndex, static_cast<int>(inputFlag));
+    return _maxLength;
 }
 
-void EditBoxImplAndroid::setNativeReturnType(EditBox::KeyboardReturnType returnType)
+void EditBoxImplAndroid::setInputFlag(EditBox::InputFlag inputFlag)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setReturnType", 
-                                    _editBoxIndex, static_cast<int>(returnType));
+    _editBoxInputFlag = inputFlag;
 }
 
-void EditBoxImplAndroid::setNativeTextHorizontalAlignment(cocos2d::TextHAlignment alignment)
+void EditBoxImplAndroid::setReturnType(EditBox::KeyboardReturnType returnType)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setTextHorizontalAlignment", 
-                                    _editBoxIndex, static_cast<int>(alignment));
+    _keyboardReturnType = returnType;
 }
 
 bool EditBoxImplAndroid::isEditing()
@@ -178,72 +155,164 @@ bool EditBoxImplAndroid::isEditing()
     return false;
 }
 
-void EditBoxImplAndroid::setNativeText(const char* pText)
+void EditBoxImplAndroid::setText(const char* pText)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setText", _editBoxIndex, pText);
+    if (pText != NULL)
+    {
+        _text = pText;
+		
+        if (_text.length() > 0)
+        {
+            _labelPlaceHolder->setVisible(false);
+			
+            std::string strToShow;
+			
+            if (EditBox::InputFlag::PASSWORD == _editBoxInputFlag)
+            {
+                long length = cc_utf8_strlen(_text.c_str(), -1);
+                for (long i = 0; i < length; i++)
+                {
+                    strToShow.append("*");
+                }
+            }
+            else
+            {
+                strToShow = _text;
+            }
+
+			_label->setString(strToShow.c_str());
+
+			// Clip the text width to fit to the text box
+
+            float fMaxWidth = _editSize.width - CC_EDIT_BOX_PADDING * 2;
+            auto labelSize = _label->getContentSize();
+            if(labelSize.width > fMaxWidth) {
+                _label->setDimensions(fMaxWidth,labelSize.height);
+            }
+        }
+        else
+        {
+            _labelPlaceHolder->setVisible(true);
+            _label->setString("");
+        }
+		
+    }
 }
 
-void EditBoxImplAndroid::setNativePlaceHolder(const char* pText)
+const char*  EditBoxImplAndroid::getText(void)
 {
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setPlaceHolderText", _editBoxIndex, pText);
+    return _text.c_str();
 }
 
+void EditBoxImplAndroid::setPlaceHolder(const char* pText)
+{
+    if (pText != NULL)
+    {
+        _placeHolder = pText;
+        if (_placeHolder.length() > 0 && _text.length() == 0)
+        {
+            _labelPlaceHolder->setVisible(true);
+        }
+		
+        _labelPlaceHolder->setString(_placeHolder.c_str());
+    }
+}
 
-void EditBoxImplAndroid::setNativeVisible(bool visible)
+void EditBoxImplAndroid::setPosition(const Vec2& pos)
 { // don't need to be implemented on android platform.
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setVisible", _editBoxIndex, visible);
+	
 }
 
-void EditBoxImplAndroid::updateNativeFrame(const Rect& rect)
-{
-    JniHelper::callStaticVoidMethod(editBoxClassName, "setEditBoxViewRect", _editBoxIndex, 
-                                    (int)rect.origin.x, (int)rect.origin.y, 
-                                    (int)rect.size.width, (int)rect.size.height);
+void EditBoxImplAndroid::setVisible(bool visible)
+{ // don't need to be implemented on android platform.
+
 }
 
-void EditBoxImplAndroid::nativeOpenKeyboard()
-{
-    JniHelper::callStaticVoidMethod(editBoxClassName, "openKeyboard", _editBoxIndex);
+void EditBoxImplAndroid::setContentSize(const Size& size)
+{ // don't need to be implemented on android platform.
+	
 }
 
-
-void EditBoxImplAndroid::nativeCloseKeyboard()
-{
-    JniHelper::callStaticVoidMethod(editBoxClassName, "closeKeyboard", _editBoxIndex);
+void EditBoxImplAndroid::setAnchorPoint(const Vec2& anchorPoint)
+{ // don't need to be implemented on android platform.
+	
 }
 
-void editBoxEditingDidBegin(int index)
+void EditBoxImplAndroid::visit(void)
+{ // don't need to be implemented on android platform.
+    
+}
+
+void EditBoxImplAndroid::onEnter(void)
+{ // don't need to be implemented on android platform.
+    
+}
+
+static void editBoxCallbackFunc(const char* pText, void* ctx)
 {
-    auto it = s_allEditBoxes.find(index);
-    if (it != s_allEditBoxes.end())
+    EditBoxImplAndroid* thiz = (EditBoxImplAndroid*)ctx;
+    thiz->setText(pText);
+	
+    if (thiz->getDelegate() != NULL)
     {
-        s_allEditBoxes[index]->editBoxEditingDidBegin();
+        thiz->getDelegate()->editBoxTextChanged(thiz->getEditBox(), thiz->getText());
+        thiz->getDelegate()->editBoxEditingDidEnd(thiz->getEditBox());
+        thiz->getDelegate()->editBoxReturn(thiz->getEditBox());
     }
+    
+#if CC_ENABLE_SCRIPT_BINDING
+    EditBox* pEditBox = thiz->getEditBox();
+    if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
+    {        
+        CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "changed",pEditBox);
+        ScriptEvent event(kCommonEvent,(void*)&data);
+        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        memset(data.eventName, 0, sizeof(data.eventName));
+        strncpy(data.eventName, "ended", sizeof(data.eventName));
+        event.data = (void*)&data;
+        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+        memset(data.eventName, 0, sizeof(data.eventName));
+        strncpy(data.eventName, "return", sizeof(data.eventName));
+        event.data = (void*)&data;
+        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
+    }
+#endif
 }
-void editBoxEditingDidChanged(int index, const std::string& text)
+
+void EditBoxImplAndroid::openKeyboard()
 {
-    auto it = s_allEditBoxes.find(index);
-    if (it != s_allEditBoxes.end())
+    if (_delegate != NULL)
     {
-        s_allEditBoxes[index]->editBoxEditingChanged(text);
+        _delegate->editBoxEditingDidBegin(_editBox);
     }
-}
-
-void editBoxEditingDidEnd(int index, const std::string& text, int action)
-{
-    auto it = s_allEditBoxes.find(index);
-    if (it != s_allEditBoxes.end())
-    {
-        s_allEditBoxes[index]->editBoxEditingDidEnd(text, static_cast<cocos2d::ui::EditBoxDelegate::EditBoxEndAction>(action));
+    
+#if CC_ENABLE_SCRIPT_BINDING
+    EditBox* pEditBox = this->getEditBox();
+    if (NULL != pEditBox && 0 != pEditBox->getScriptEditBoxHandler())
+    {        
+        CommonScriptData data(pEditBox->getScriptEditBoxHandler(), "began",pEditBox);
+        ScriptEvent event(cocos2d::kCommonEvent,(void*)&data);
+        ScriptEngineManager::getInstance()->getScriptEngine()->sendEvent(&event);
     }
+#endif
+	
+    showEditTextDialogJNI(  _placeHolder.c_str(),
+						  _text.c_str(),
+						  (int)_editBoxInputMode,
+						  (int)_editBoxInputFlag,
+						  (int)_keyboardReturnType,
+						  _maxLength,
+						  editBoxCallbackFunc,
+						  (void*)this  );
+	
 }
 
-const char* EditBoxImplAndroid::getNativeDefaultFontName()
+void EditBoxImplAndroid::closeKeyboard()
 {
-    return "sans-serif";
+	
 }
 
-} //end of ui namespace
+}
 
 NS_CC_END
 

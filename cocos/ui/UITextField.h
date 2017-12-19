@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -59,7 +59,7 @@ public:
     virtual void onEnter() override;
     
     /**
-     * Create a UICCTextField instance with a placeholder, a fontName and a fontSize.
+     * Create a UICCTextField intance with a placeholder, a fontName and a fontSize.
      *@param placeholder Placeholder in string.
      *@param fontName Font name in string.
      *@param fontSize Font size in float.
@@ -104,8 +104,8 @@ public:
     bool isMaxLengthEnabled()const;
 
     /**
-     * Set maximize length.
-     *@param length  The maximize length in integer.
+     * Set maxmize length.
+     *@param length  The maxmize length in integer.
      */
     void setMaxLength(int length);
 
@@ -116,10 +116,10 @@ public:
     int getMaxLength()const;
 
     /**
-     * Return the total inputed characters.
+     * Return the total inputed charaters.
      *@return Total inputed character count.
      */
-    std::size_t getCharCount()const;
+    int getCharCount()const;
     
     
     /**
@@ -209,6 +209,8 @@ public:
 protected:
     bool _maxLengthEnabled;
     int _maxLength;
+    bool _passwordEnabled;
+    std::string _passwordStyleText;
     bool _attachWithIME;
     bool _detachWithIME;
     bool _insertText;
@@ -314,7 +316,7 @@ public:
      */
     void setTouchAreaEnabled(bool enable);
     
-    virtual bool hitTest(const Vec2 &pt, const Camera* camera, Vec3 *p) const override;
+    virtual bool hitTest(const Vec2 &pt) override;
     
     
     /**
@@ -351,13 +353,6 @@ public:
      * @param color A color value in `Color4B`.
      */
     void setPlaceHolderColor(const Color4B& color);
-    
-    /**
-     * @brief Query the text string color.
-     *
-     * @return The color of the text.
-     */
-    const Color4B& getTextColor()const;
     
     /**
      * @brief Change the text color.
@@ -555,9 +550,9 @@ public:
      * Add a event listener to TextField, when some predefined event happens, the callback will be called.
      *@deprecated Use @see `addEventListener` instead.
      *@param target A pointer of `Ref*` type.
-     *@param selector A member function pointer with type of `SEL_TextFieldEvent`.
+     *@param selecor A member function pointer with type of `SEL_TextFieldEvent`.
      */
-    CC_DEPRECATED_ATTRIBUTE void addEventListenerTextField(Ref* target, SEL_TextFieldEvent selector);
+    CC_DEPRECATED_ATTRIBUTE void addEventListenerTextField(Ref* target, SEL_TextFieldEvent selecor);
     /**
      * Add a event listener to TextField, when some predefined event happens, the callback will be called.
      *@param callback A callback function with type of `ccTextFieldCallback`.
@@ -570,12 +565,12 @@ public:
     virtual std::string getDescription() const override;
     
     /**
-     * @brief Get the renderer size in auto mode.
+     * @brief Get the the renderer size in auto mode.
      *
      * @return A delimitation zone.
      */
     virtual Size getAutoRenderSize();
-    //override functions.
+    //overide functions.
     virtual Size getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
     virtual void onEnter() override;
@@ -599,13 +594,6 @@ public:
      * @param alignment A alignment arguments in @see `TextHAlignment`.
      */
     void setTextHorizontalAlignment(TextHAlignment alignment);
-
-    /**
-     * @brief Inquire the horizontal alignment
-     *
-     * @return The horizontal alignment
-     */
-    TextHAlignment getTextHorizontalAlignment() const;
     
     /**
      * @brief Change the vertical text alignment.
@@ -613,37 +601,6 @@ public:
      * @param alignment A alignment arguments in @see `TextVAlignment`.
      */
     void setTextVerticalAlignment(TextVAlignment alignment);
-
-    /**
-     * @brief Inquire the horizontal alignment
-     *
-     * @return The horizontal alignment
-     */
-    TextVAlignment getTextVerticalAlignment() const;
-    
-    /**
-     * Set enable cursor use.
-     * @js NA
-     */
-    void setCursorEnabled(bool enabled);
-    
-    /**
-     * Set char showing cursor.
-     * @js NA
-     */
-    void setCursorChar(char cursor);
-    
-    /**
-     * Set cursor position, if enabled
-     * @js NA
-     */
-    void setCursorPosition(std::size_t cursorPosition);
-    
-    /**
-     * Set cursor position to hit letter, if enabled
-     * @js NA
-     */
-    void setCursorFromPoint(const Vec2 &point, const Camera* camera);
     
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
@@ -683,6 +640,7 @@ protected:
 #endif
     ccTextFieldCallback _eventCallback;
     
+    std::string _passwordStyleText;
     bool _textFieldRendererAdaptDirty;
 private:
     enum class FontType

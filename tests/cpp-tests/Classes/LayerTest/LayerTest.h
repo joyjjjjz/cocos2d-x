@@ -2,8 +2,6 @@
 #define _LAYER_TEST_H_
 
 #include "../BaseTest.h"
-#include "cocos/ui/UISlider.h"
-#include "../cocos/ui/UIListView.h"
 
 DEFINE_TEST_SUITE(LayerTests);
 
@@ -118,6 +116,15 @@ public:
     virtual std::string subtitle() const override;
 };
 
+class LayerGradientTest3 : public LayerTest
+{
+public:
+    CREATE_FUNC(LayerGradientTest3);
+    LayerGradientTest3();
+    virtual std::string title() const override;
+    virtual std::string subtitle() const override;
+};
+
 class LayerIgnoreAnchorPointPos : public LayerTest
 {
 public:
@@ -196,23 +203,6 @@ public:
     
 private:
     cocos2d::LayerColor* _layer;
-};
-
-class LayerRadialGradientTest : public LayerTest
-{
-public:
-    CREATE_FUNC(LayerRadialGradientTest);
-    virtual void onEnter() override;
-    virtual std::string title() const override;
-    
-    void sliderCallback(cocos2d::Ref* sender, cocos2d::ui::Slider::EventType type);
-    void listviewCallback(cocos2d::Ref* sender, cocos2d::ui::ListView::EventType type);
-private:
-    cocos2d::ui::Slider* createSlider();
-    cocos2d::ui::ListView* createListView();
-    
-    cocos2d::LayerRadialGradient* _layer;
-    int _currentSeletedItemIndex;
 };
 
 

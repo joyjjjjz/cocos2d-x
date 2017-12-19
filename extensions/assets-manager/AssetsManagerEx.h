@@ -25,21 +25,18 @@
 #ifndef __AssetsManagerEx__
 #define __AssetsManagerEx__
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include "base/CCEventDispatcher.h"
 #include "platform/CCFileUtils.h"
-#include "network/CCDownloader.h"
-
 #include "CCEventAssetsManagerEx.h"
-
+#include "Downloader.h"
 #include "Manifest.h"
 #include "extensions/ExtensionMacros.h"
 #include "extensions/ExtensionExport.h"
-#include "json/document-wrapper.h"
+#include "json/document.h"
 
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 NS_CC_EXT_BEGIN
 
@@ -49,6 +46,9 @@ NS_CC_EXT_BEGIN
 class CC_EX_DLL AssetsManagerEx : public Ref
 {
 public:
+    
+    friend class Downloader;
+    friend int downloadProgressFunc(Downloader::ProgressData *ptr, double totalToDownload, double nowDownloaded, double totalToUpLoad, double nowUpLoaded);
     
     //! Update states
     enum class State
@@ -62,17 +62,17 @@ public:
         MANIFEST_LOADED,
         NEED_UPDATE,
         UPDATING,
-        UNZIPPING,
         UP_TO_DATE,
         FAIL_TO_UPDATE
     };
     
     const static std::string VERSION_ID;
     const static std::string MANIFEST_ID;
+    const static std::string BATCH_UPDATE_ID;
     
     /** @brief Create function for creating a new AssetsManagerEx
      @param manifestUrl   The url for the local manifest file
-     @param storagePath   The storage path for downloaded assets
+     @param storagePath   The storage path for downloaded assetes
      @warning   The cached manifest in your storage path have higher priority and will be searched first,
                 only if it doesn't exist, AssetsManagerEx will use the given manifestUrl.
      */
@@ -100,31 +100,13 @@ public:
      */
     const std::string& getStoragePath() const;
     
-    /** @brief Function for retrieving the local manifest object
+    /** @brief Function for retrieve the local manifest object
      */
     const Manifest* getLocalManifest() const;
     
-    /** @brief Function for retrieving the remote manifest object
+    /** @brief Function for retrieve the remote manifest object
      */
     const Manifest* getRemoteManifest() const;
-    
-    /** @brief Function for retrieving the max concurrent task count
-     */
-    const int getMaxConcurrentTask() const {return _maxConcurrentTask;};
-    
-    /** @brief Function for setting the max concurrent task count
-     */
-    void setMaxConcurrentTask(const int max) {_maxConcurrentTask = max;};
-    
-    /** @brief Set the handle function for comparing manifests versions
-     * @param handle    The compare function
-     */
-    void setVersionCompareHandle(const std::function<int(const std::string& versionA, const std::string& versionB)>& handle) {_versionCompareHandle = handle;};
-    
-    /** @brief Set the verification function for checking whether downloaded asset is correct, e.g. using md5 verification
-     * @param callback  The verify callback function
-     */
-    void setVerifyCallback(const std::function<bool(const std::string& path, Manifest::Asset asset)>& callback) {_verifyCallback = callback;};
     
 CC_CONSTRUCTOR_ACCESS:
     
@@ -157,27 +139,19 @@ protected:
     void startUpdate();
     void updateSucceed();
     bool decompress(const std::string &filename);
-    void decompressDownloadedZip(const std::string &customId, const std::string &storagePath);
+    void decompressDownloadedZip();
     
     /** @brief Update a list of assets under the current AssetsManagerEx context
      */
-    void updateAssets(const DownloadUnits& assets);
+    void updateAssets(const Downloader::DownloadUnits& assets);
     
     /** @brief Retrieve all failed assets during the last update
      */
-    const DownloadUnits& getFailedAssets() const;
+    const Downloader::DownloadUnits& getFailedAssets() const;
     
-    /** @brief Function for destroying the downloaded version file and manifest file
+    /** @brief Function for destorying the downloaded version file and manifest file
      */
     void destroyDownloadedVersion();
-    
-    /** @brief Download items in queue with max concurrency setting
-     */
-    void queueDowload();
-    
-    void fileError(const std::string& identifier, const std::string& errorStr, int errorCode = 0, int errorCodeInternal = 0);
-    
-    void fileSuccess(const std::string &customId, const std::string &storagePath);
     
     /** @brief  Call back function for error handling,
      the error will then be reported to user's listener registed in addUpdateEventListener
@@ -186,10 +160,7 @@ protected:
      * @js NA
      * @lua NA
      */
-    virtual void onError(const network::DownloadTask& task,
-                         int errorCode,
-                         int errorCodeInternal,
-                         const std::string& errorStr);
+    virtual void onError(const Downloader::Error &error);
     
     /** @brief  Call back function for recording downloading percent of the current asset,
      the progression will then be reported to user's listener registed in addUpdateProgressEventListener
@@ -214,10 +185,6 @@ protected:
     virtual void onSuccess(const std::string &srcUrl, const std::string &storagePath, const std::string &customId);
     
 private:
-    void batchDownload();
-
-    // Called when one DownloadUnits finished
-    void onDownloadUnitsFinished();
     
     //! The event of the current AssetsManagerEx in event dispatcher
     std::string _eventName;
@@ -231,19 +198,16 @@ private:
     State _updateState;
     
     //! Downloader
-    std::shared_ptr<network::Downloader> _downloader;
+    std::shared_ptr<Downloader> _downloader;
     
     //! The reference to the local assets
     const std::unordered_map<std::string, Manifest::Asset> *_assets;
     
-    //! The path to store successfully downloaded version.
+    //! The path to store downloaded resources.
     std::string _storagePath;
     
-    //! The path to store downloading version.
-    std::string _tempStoragePath;
-    
-    //! The local path of cached temporary version file
-    std::string _tempVersionPath;
+    //! The local path of cached version file
+    std::string _cacheVersionPath;
     
     //! The local path of cached manifest file
     std::string _cacheManifestPath;
@@ -264,29 +228,16 @@ private:
     Manifest *_remoteManifest;
     
     //! Whether user have requested to update
-    enum class UpdateEntry : char
-    {
-        NONE,
-        CHECK_UPDATE,
-        DO_UPDATE
-    };
-
-    UpdateEntry _updateEntry;
+    bool _waitToUpdate;
     
     //! All assets unit to download
-    DownloadUnits _downloadUnits;
+    Downloader::DownloadUnits _downloadUnits;
     
     //! All failed units
-    DownloadUnits _failedUnits;
+    Downloader::DownloadUnits _failedUnits;
     
-    //! Download queue
-    std::vector<std::string> _queue;
-    
-    //! Max concurrent task count for downloading
-    int _maxConcurrentTask;
-    
-    //! Current concurrent task count
-    int _currConcurrentTask;
+    //! All files to be decompressed
+    std::vector<std::string> _compressedFiles;
     
     //! Download percent
     float _percent;
@@ -310,14 +261,6 @@ private:
     int _totalToDownload;
     //! Total number of assets still waiting to be downloaded
     int _totalWaitToDownload;
-    //! Next target percent for saving the manifest file
-    float _nextSavePoint;
-    
-    //! Handle function to compare versions between different manifests
-    std::function<int(const std::string& versionA, const std::string& versionB)> _versionCompareHandle;
-    
-    //! Callback function to verify the downloaded assets
-    std::function<bool(const std::string& path, Manifest::Asset asset)> _verifyCallback;
     
     //! Marker for whether the assets manager is inited
     bool _inited;

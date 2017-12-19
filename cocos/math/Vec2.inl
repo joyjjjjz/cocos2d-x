@@ -139,7 +139,7 @@ inline void Vec2::smooth(const Vec2& target, float elapsedTime, float responseTi
     }
 }
 
-inline Vec2 Vec2::operator+(const Vec2& v) const
+inline const Vec2 Vec2::operator+(const Vec2& v) const
 {
     Vec2 result(*this);
     result.add(v);
@@ -152,7 +152,7 @@ inline Vec2& Vec2::operator+=(const Vec2& v)
     return *this;
 }
 
-inline Vec2 Vec2::operator-(const Vec2& v) const
+inline const Vec2 Vec2::operator-(const Vec2& v) const
 {
     Vec2 result(*this);
     result.subtract(v);
@@ -165,14 +165,14 @@ inline Vec2& Vec2::operator-=(const Vec2& v)
     return *this;
 }
 
-inline Vec2 Vec2::operator-() const
+inline const Vec2 Vec2::operator-() const
 {
     Vec2 result(*this);
     result.negate();
     return result;
 }
 
-inline Vec2 Vec2::operator*(float s) const
+inline const Vec2 Vec2::operator*(float s) const
 {
     Vec2 result(*this);
     result.scale(s);
@@ -185,7 +185,7 @@ inline Vec2& Vec2::operator*=(float s)
     return *this;
 }
 
-inline Vec2 Vec2::operator/(const float s) const
+inline const Vec2 Vec2::operator/(const float s) const
 {
     return Vec2(this->x / s, this->y / s);
 }
@@ -218,7 +218,7 @@ inline bool Vec2::operator!=(const Vec2& v) const
     return x!=v.x || y!=v.y;
 }
 
-inline Vec2 operator*(float x, const Vec2& v)
+inline const Vec2 operator*(float x, const Vec2& v)
 {
     Vec2 result(v);
     result.scale(x);

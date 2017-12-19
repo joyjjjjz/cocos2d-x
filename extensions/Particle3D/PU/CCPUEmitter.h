@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -111,85 +111,85 @@ public:
 
         /** Todo
     */
-    const std::string& getEmitterType() const { return _emitterType; }
+    inline const std::string& getEmitterType(void) const {return _emitterType;};
     void setEmitterType(const std::string& emitterType) {_emitterType = emitterType;};
 
     /** Todo
     */
-    const std::string& getName() const { return _name; }
+    inline const std::string& getName(void) const {return _name;};
     void setName(const std::string& name) {_name = name;};
 
     /** Todo
     */
-    PUDynamicAttribute* getDynAngle() const { return _dynAngle; }
+    inline PUDynamicAttribute* getDynAngle(void) const {return _dynAngle;};
     void setDynAngle(PUDynamicAttribute* dynAngle);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynEmissionRate() const { return _dynEmissionRate; }
+    inline PUDynamicAttribute* getDynEmissionRate(void) const {return _dynEmissionRate;};
     void setDynEmissionRate(PUDynamicAttribute* dynEmissionRate);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynTotalTimeToLive() const { return _dynTotalTimeToLive; }
+    inline PUDynamicAttribute* getDynTotalTimeToLive(void) const {return _dynTotalTimeToLive;};
     void setDynTotalTimeToLive(PUDynamicAttribute* dynTotalTimeToLive);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynParticleMass() const { return _dynParticleMass; }
+    inline PUDynamicAttribute* getDynParticleMass(void) const {return _dynParticleMass;};
     void setDynParticleMass(PUDynamicAttribute* dynParticleMass);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynVelocity() const { return _dynVelocity; }
+    inline PUDynamicAttribute* getDynVelocity(void) const {return _dynVelocity;};
     void setDynVelocity(PUDynamicAttribute* dynVelocity);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynDuration() const { return _dynDuration; }
+    inline PUDynamicAttribute* getDynDuration(void) const {return _dynDuration;};
     void setDynDuration(PUDynamicAttribute* dynDuration);
     void setDynDurationSet(bool durationSet);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynRepeatDelay() const { return _dynRepeatDelay; }
+    inline PUDynamicAttribute* getDynRepeatDelay(void) const {return _dynRepeatDelay;};
     void setDynRepeatDelay(PUDynamicAttribute* dynRepeatDelay);
     void setDynRepeatDelaySet(bool repeatDelaySet);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynParticleAllDimensions() const { return _dynParticleAllDimensions; }
+    inline PUDynamicAttribute* getDynParticleAllDimensions(void) const {return _dynParticleAllDimensions;};
     void setDynParticleAllDimensions(PUDynamicAttribute* dynParticleAllDimensions);
     void setDynParticleAllDimensionsSet(bool particleAllDimensionsSet);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynParticleWidth() const { return _dynParticleWidth; }
+    inline PUDynamicAttribute* getDynParticleWidth(void) const {return _dynParticleWidth;};
     void setDynParticleWidth(PUDynamicAttribute* dynParticleWidth);
     void setDynParticleWidthSet(bool particleWidthSet);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynParticleHeight() const { return _dynParticleHeight; }
+    inline PUDynamicAttribute* getDynParticleHeight(void) const {return _dynParticleHeight;};
     void setDynParticleHeight(PUDynamicAttribute* dynParticleHeight);
     void setDynParticleHeightSet(bool particleHeightSet);
 
     /** Todo
     */
-    PUDynamicAttribute* getDynParticleDepth() const { return _dynParticleDepth; }
+    inline PUDynamicAttribute* getDynParticleDepth(void) const {return _dynParticleDepth;};
     void setDynParticleDepth(PUDynamicAttribute* dynParticleDepth);
     void setDynParticleDepthSet(bool particleDepthSet);
 
     ///** Todo
     //*/
-    //ParticleType getEmitsType() const { return mEmitsType; }
+    //inline ParticleType getEmitsType(void) const {return mEmitsType;};
     //void setEmitsType(ParticleType emitsType) {mEmitsType = emitsType;};
 
     /** Todo
     */
-    const std::string& getEmitsName() const { return _emitsName; }
+    inline const std::string& getEmitsName(void) const {return _emitsName;};
     void setEmitsName(const std::string& emitsName);
-    PUParticle3D::ParticleType getEmitsType() const { return _emitsType; }
+    inline PUParticle3D::ParticleType getEmitsType() const {return _emitsType;};
     void setEmitsType(PUParticle3D::ParticleType type) {_emitsType = type;};
     Ref* getEmitsEntityPtr() const;
     bool isMarkedForEmission() const {return _isMarkedForEmission;};
@@ -238,7 +238,7 @@ public:
     /** Sets the direction of the particle that the emitter is emitting.
     @remarks
         Don't confuse this with the emitters own direction.
-    @param direction The base direction of emitted particles.
+    @param dir The base direction of emitted particles.
     */
     void setParticleDirection(const Vec3& direction);
 

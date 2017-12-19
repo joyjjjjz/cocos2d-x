@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies
+Copyright (c) 2013-2014 Chukong Technologies
 
 http://www.cocos2d-x.org
 
@@ -26,7 +26,6 @@ THE SOFTWARE.
 #include "math/CCGeometry.h"
 
 #include <algorithm>
-#include <cmath>
 #include "base/ccMacros.h"
 
 // implementation of Vec2
@@ -91,8 +90,8 @@ void Size::setSize(float w, float h)
 
 bool Size::equals(const Size& target) const
 {
-    return (std::abs(this->width  - target.width)  < FLT_EPSILON)
-        && (std::abs(this->height - target.height) < FLT_EPSILON);
+    return (fabs(this->width  - target.width)  < FLT_EPSILON)
+        && (fabs(this->height - target.height) < FLT_EPSILON);
 }
 
 const Size Size::ZERO = Size(0, 0);
@@ -107,10 +106,6 @@ Rect::Rect(void)
 Rect::Rect(float x, float y, float width, float height)
 {
     setRect(x, y, width, height);
-}
-Rect::Rect(const Vec2& pos, const Size& dimension)
-{
-    setRect(pos.x, pos.y, dimension.width, dimension.height);
 }
 
 Rect::Rect(const Rect& other)
@@ -193,7 +188,7 @@ bool Rect::intersectsRect(const Rect& rect) const
              rect.getMaxY() <      getMinY());
 }
 
-bool Rect::intersectsCircle(const Vec2& center, float radius) const
+bool Rect::intersectsCircle(const cocos2d::Vec2 &center, float radius) const
 {
     Vec2 rectangleCenter((origin.x + size.width / 2),
                          (origin.y + size.height / 2));
@@ -201,16 +196,16 @@ bool Rect::intersectsCircle(const Vec2& center, float radius) const
     float w = size.width / 2;
     float h = size.height / 2;
     
-    float dx = std::abs(center.x - rectangleCenter.x);
-    float dy = std::abs(center.y - rectangleCenter.y);
+    float dx = fabs(center.x - rectangleCenter.x);
+    float dy = fabs(center.y - rectangleCenter.y);
     
     if (dx > (radius + w) || dy > (radius + h))
     {
         return false;
     }
     
-    Vec2 circleDistance(std::abs(center.x - origin.x - w),
-                        std::abs(center.y - origin.y - h));
+    Vec2 circleDistance(fabs(center.x - origin.x - w),
+                        fabs(center.y - origin.y - h));
     
     if (circleDistance.x <= (w))
     {
@@ -229,11 +224,19 @@ bool Rect::intersectsCircle(const Vec2& center, float radius) const
 
 void Rect::merge(const Rect& rect)
 {
-    float minX = std::min(getMinX(), rect.getMinX());
-    float minY = std::min(getMinY(), rect.getMinY());
-    float maxX = std::max(getMaxX(), rect.getMaxX());
-    float maxY = std::max(getMaxY(), rect.getMaxY());
-    setRect(minX, minY, maxX - minX, maxY - minY);
+    float top1    = getMaxY();
+    float left1   = getMinX();
+    float right1  = getMaxX();
+    float bottom1 = getMinY();
+    
+    float top2    = rect.getMaxY();
+    float left2   = rect.getMinX();
+    float right2  = rect.getMaxX();
+    float bottom2 = rect.getMinY();
+    origin.x = std::min(left1, left2);
+    origin.y = std::min(bottom1, bottom2);
+    size.width = std::max(right1, right2) - origin.x;
+    size.height = std::max(top1, top2) - origin.y;
 }
 
 Rect Rect::unionWithRect(const Rect & rect) const

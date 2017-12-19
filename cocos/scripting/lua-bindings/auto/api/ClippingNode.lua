@@ -5,7 +5,7 @@
 -- @parent_module cc
 
 --------------------------------
---  If stencil has no children it will not be drawn.<br>
+--  If stencil has no childre it will not be drawn.<br>
 -- If you have custom stencil-based node with stencil drawing mechanics other then children-based,<br>
 -- then this method should return true every time you wish stencil to be visited.<br>
 -- By default returns true if has any children attached.<br>
@@ -42,14 +42,6 @@
 -- @function [parent=#ClippingNode] getAlphaThreshold 
 -- @param self
 -- @return float#float ret (return value: float)
-        
---------------------------------
---  Initializes a clipping node with an other node as its stencil.<br>
--- The stencil node will be retained, and its parent will be set to this clipping node.
--- @function [parent=#ClippingNode] init 
--- @param self
--- @param #cc.Node stencil
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 --  The Node to use as a stencil to do the clipping.<br>
@@ -101,11 +93,5 @@
 -- @param #mat4_table parentTransform
 -- @param #unsigned int parentFlags
 -- @return ClippingNode#ClippingNode self (return value: cc.ClippingNode)
-        
---------------------------------
---  Initializes a clipping node without a stencil.
--- @function [parent=#ClippingNode] init 
--- @param self
--- @return bool#bool ret (return value: bool)
         
 return nil

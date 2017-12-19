@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -39,8 +39,7 @@ NS_CC_BEGIN
 class DrawNode;
 class LayerColor;
 class LayerGradient;
-class StencilStateManager;
-struct CC_DLL ResourceData;
+
 
 namespace ui {
     
@@ -93,7 +92,7 @@ public:
     virtual void doLayout() = 0;
 };
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #ifdef RELATIVE
 #undef RELATIVE
 #endif
@@ -210,7 +209,7 @@ public:
     
     /**
      * Query background image scale9 enable status.
-     *@return Whether background image is scale9 enabled or not.
+     *@return Whehter background image is scale9 enabled or not.
      */
     bool isBackGroundImageScale9Enabled()const;
     
@@ -370,7 +369,7 @@ public:
      *
      * @param child     A child node
      * @param localZOrder    Z order for drawing priority. Please refer to setLocalZOrder(int)
-     * @param tag       A integer to identify the node easily. Please refer to setTag(int)
+     * @param tag       A interger to identify the node easily. Please refer to setTag(int)
      */
     virtual void addChild(Node* child, int localZOrder, int tag) override;
     virtual void addChild(Node* child, int localZOrder, const std::string &name) override;
@@ -388,7 +387,7 @@ public:
     /**
      * Removes all children from the container, and do a cleanup to all running actions depending on the cleanup parameter.
      *
-     * @param cleanup   true if all running actions on all children nodes should be cleanup, false otherwise.
+     * @param cleanup   true if all running actions on all children nodes should be cleanup, false oterwise.
      * @js removeAllChildren
      * @lua removeAllChildren
      */
@@ -402,7 +401,7 @@ public:
     /**
      * request to refresh widget layout
      */
-    virtual void requestDoLayout();
+    void requestDoLayout();
     
     /**
      * @lua NA
@@ -413,8 +412,6 @@ public:
      * @lua NA
      */
     virtual void onExit() override;
-    
-    virtual void setGlobalZOrder(float globalZOrder) override;
     
     /**
      * If a layout is loop focused which means that the focus movement will be inside the layout
@@ -453,15 +450,6 @@ public:
      * @return return the index of widget in the layout
      */
     std::function<int(FocusDirection, Widget*)> onPassFocusToChild;
-    
-    /** 
-     * Override function. Set camera mask, the node is visible by the camera whose camera flag & node's camera mask is true. 
-     * @param mask Mask being set
-     * @param applyChildren If true call this function recursively from this node to its children.
-     */
-    virtual void setCameraMask(unsigned short mask, bool applyChildren = true) override;
-
-    ResourceData getRenderFile();
 
 CC_CONSTRUCTOR_ACCESS:
     //override "init" method of widget.
@@ -491,6 +479,12 @@ protected:
     virtual const Vector<Node*>& getLayoutElements()const override;
     
     //clipping
+    void onBeforeVisitStencil();
+    void onAfterDrawStencil();
+    void onAfterVisitStencil();
+    /**draw fullscreen quad to clear stencil bits
+     */
+    void drawFullScreenQuadClearStencil();
     
     void onBeforeVisitScissor();
     void onAfterVisitScissor();
@@ -506,7 +500,7 @@ protected:
     /**
      * When the layout get focused, it the layout pass the focus to its child, it will use this method to determine which child 
      * will get the focus.  The current algorithm to determine which child will get focus is nearest-distance-priority algorithm
-     *@param direction The next focused widget direction
+     *@param dir next focused widget direction
      *@return The index of child widget in the container
      */
      int findNearestChildWidgetIndex(FocusDirection direction, Widget* baseWidget);
@@ -514,21 +508,21 @@ protected:
     /**
      * When the layout get focused, it the layout pass the focus to its child, it will use this method to determine which child
      * will get the focus.  The current algorithm to determine which child will get focus is farthest-distance-priority algorithm
-     *@param direction The next focused widget direction
+     *@param dir next focused widget direction
      *@return The index of child widget in the container
      */
     int findFarthestChildWidgetIndex(FocusDirection direction, Widget* baseWidget);
     
     /**
-     * calculate the nearest distance between the baseWidget and the children of the layout
-     *@param the base widget which will be used to calculate the distance between the layout's children and itself
+     * caculate the nearest distance between the baseWidget and the children of the layout
+     *@param the base widget which will be used to caculate the distance between the layout's children and itself
      *@return return the nearest distance between the baseWidget and the layout's children
      */
     float calculateNearestDistance(Widget* baseWidget);
     
     /**
-     * calculate the farthest distance between the baseWidget and the children of the layout
-     *@param the base widget which will be used to calculate the distance between the layout's children and itself
+     * caculate the farthest distance between the baseWidget and the children of the layout
+     *@param the base widget which will be used to caculate the distance between the layout's children and itself
      *@return return the farthest distance between the baseWidget and the layout's children
      */
 
@@ -545,7 +539,7 @@ protected:
     Widget *findFirstNonLayoutWidget();
     
     /**
-     * find the first focus enabled widget index in the layout, it will recursive searching the child widget
+     * find the fisrt focus enabled widget index in the layout, it will recusive searching the child widget
      */
     int findFirstFocusEnabledWidgetIndex();
     
@@ -561,7 +555,7 @@ protected:
     
     /**
      * this method is called internally by nextFocusedWidget. When the dir is Right/Down, then this method will be called
-     *@param direction  the direction.
+     *@param dir  the direction.
      *@param current  the current focused widget
      *@return the next focused widget
      */
@@ -569,14 +563,14 @@ protected:
     
     /**
      * this method is called internally by nextFocusedWidget. When the dir is Left/Up, then this method will be called
-     *@param direction  the direction.
+     *@param dir  the direction.
      *@param current  the current focused widget
      *@return the next focused widget
      */
     Widget* getPreviousFocusedWidget(FocusDirection direction, Widget *current);
     
     /**
-     * find the nth element in the _children array. Only the Widget descendant object will be returned
+     * find the nth elment in the _children array. Only the Widget descendant object will be returned
      *@param index  The index of a element in the _children array
      */
     Widget* getChildWidgetByIndex(ssize_t index)const;
@@ -627,15 +621,29 @@ protected:
     Type _layoutType;
     ClippingType _clippingType;
     DrawNode* _clippingStencil;
-    bool _scissorOldState;
-    Rect _clippingOldRect;
+    bool _scissorRectDirty;
     Rect _clippingRect;
     Layout* _clippingParent;
     bool _clippingRectDirty;
     
     //clipping
-    StencilStateManager *_stencilStateManager;
 
+    GLboolean _currentStencilEnabled;
+    GLuint _currentStencilWriteMask;
+    GLenum _currentStencilFunc;
+    GLint _currentStencilRef;
+    GLuint _currentStencilValueMask;
+    GLenum _currentStencilFail;
+    GLenum _currentStencilPassDepthFail;
+    GLenum _currentStencilPassDepthPass;
+    GLboolean _currentDepthWriteMask;
+    
+    GLboolean _currentAlphaTestEnabled;
+    GLenum _currentAlphaTestFunc;
+    GLclampf _currentAlphaTestRef;
+ 
+    
+    GLint _mask_layer_le;
     GroupCommand _groupCommand;
     CustomCommand _beforeVisitCmdStencil;
     CustomCommand _afterDrawStencilCmd;

@@ -17,14 +17,6 @@
 -- @return TransitionScene#TransitionScene self (return value: cc.TransitionScene)
         
 --------------------------------
---  initializes a transition with duration and incoming scene 
--- @function [parent=#TransitionScene] initWithDuration 
--- @param self
--- @param #float t
--- @param #cc.Scene scene
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- 
 -- @function [parent=#TransitionScene] getDuration 
 -- @param self
@@ -59,12 +51,6 @@
 --------------------------------
 -- 
 -- @function [parent=#TransitionScene] cleanup 
--- @param self
--- @return TransitionScene#TransitionScene self (return value: cc.TransitionScene)
-        
---------------------------------
--- 
--- @function [parent=#TransitionScene] TransitionScene 
 -- @param self
 -- @return TransitionScene#TransitionScene self (return value: cc.TransitionScene)
         

@@ -1,5 +1,10 @@
+cc.FileUtils:getInstance():addSearchPath("src")
+cc.FileUtils:getInstance():addSearchPath("res")
 -- CC_USE_DEPRECATED_API = true
+-- require "E:/git/cocos2d-x-3.6/build/Debug.win32/lua-empty-test/src/reload"
+require "reload"
 require "cocos.init"
+require "type_check"
 
 -- cclog
 cclog = function(...)
@@ -33,6 +38,15 @@ local function initGLView()
     director:setAnimationInterval(1.0 / 60)
 end
 
+function onKeyReleased(KeyCode, event)
+    print("KeyCode", KeyCode)
+    if KeyCode == cc.KeyCode.KEY_B then
+        print("KeyCode 1.2", KeyCode)
+        reload.Reload("test_joy")
+        hello_test()
+    end
+end
+
 local function main()
     -- avoid memory leak
     collectgarbage("setpause", 100)
@@ -63,12 +77,6 @@ local function main()
         local spriteDog = cc.Sprite:createWithSpriteFrame(frame0)
         spriteDog.isPaused = false
         spriteDog:setPosition(origin.x, origin.y + visibleSize.height / 4 * 3)
---[[
-        local animFrames = CCArray:create()
-
-        animFrames:addObject(frame0)
-        animFrames:addObject(frame1)
-]]--
 
         local animation = cc.Animation:createWithSpriteFrames({frame0,frame1}, 0.5)
         local animate = cc.Animate:create(animation)
@@ -158,7 +166,12 @@ local function main()
         listener:registerScriptHandler(onTouchMoved,cc.Handler.EVENT_TOUCH_MOVED )
         listener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED )
         local eventDispatcher = layerFarm:getEventDispatcher()
-        eventDispatcher:addEventListenerWithSceneGraphPriority(listener, layerFarm)
+        -- eventDispatcher:addEventListenerWithSceneGraphPriority(listener, layerFarm)
+
+        KeyMoveListener = cc.EventListenerKeyboard:create()
+        KeyMoveListener:registerScriptHandler(onKeyReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        -- cc.Director:getInstance():getEventDispatcher():addEventListenerWithFixedPriority(KeyMoveListener,1)
+        eventDispatcher:addEventListenerWithSceneGraphPriority(KeyMoveListener, layerFarm)
 
         return layerFarm
     end

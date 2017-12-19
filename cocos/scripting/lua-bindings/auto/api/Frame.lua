@@ -12,13 +12,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#Frame] setTweenType 
--- @param self
--- @param #int tweenType
--- @return Frame#Frame self (return value: ccs.Frame)
-        
---------------------------------
--- 
 -- @function [parent=#Frame] setNode 
 -- @param self
 -- @param #cc.Node node
@@ -36,12 +29,6 @@
 -- @function [parent=#Frame] isEnterWhenPassed 
 -- @param self
 -- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
--- @function [parent=#Frame] getTweenType 
--- @param self
--- @return int#int ret (return value: int)
         
 --------------------------------
 -- 

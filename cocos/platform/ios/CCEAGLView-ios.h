@@ -71,7 +71,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import <OpenGLES/ES2/glext.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-#import "platform/ios/CCESRenderer-ios.h"
+#import "CCESRenderer-ios.h"
 
 //CLASS INTERFACE:
 
@@ -80,7 +80,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
  * The view content is basically an EAGL surface you render your OpenGL scene into.
  * Note that setting the view non-opaque will only work if the EAGL surface has an alpha channel.
  */
-@interface CCEAGLView : UIView <UIKeyInput, UITextInput, UITextInputTraits>
+@interface CCEAGLView : UIView <UIKeyInput, UITextInput>
 {
     id                        <CCESRenderer> renderer_;    
     EAGLContext                *context_; // weak ref
@@ -113,15 +113,13 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @property(nonatomic, readonly) id<UITextInputTokenizer> tokenizer;
 @property(nonatomic, readonly, getter = isKeyboardShown) BOOL isKeyboardShown;
 @property(nonatomic, copy) NSNotification* keyboardShowNotification;
-@property(nonatomic) UITextAutocorrectionType autocorrectionType;         // default is UITextAutocorrectionTypeDefault
-
 /** creates an initializes an CCEAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer */
 + (id) viewWithFrame:(CGRect)frame;
 /** creates an initializes an CCEAGLView with a frame, a color buffer format, and 0-bit depth buffer */
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format;
 /** creates an initializes an CCEAGLView with a frame, a color buffer format, and a depth buffer format */
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format depthFormat:(GLuint)depth;
-/** creates an initializes an CCEAGLView with a frame, a color buffer format, a depth buffer format, a sharegroup, and multisampling */
+/** creates an initializes an CCEAGLView with a frame, a color buffer format, a depth buffer format, a sharegroup, and multisamping */
 + (id) viewWithFrame:(CGRect)frame pixelFormat:(NSString*)format depthFormat:(GLuint)depth preserveBackbuffer:(BOOL)retained sharegroup:(EAGLSharegroup*)sharegroup multiSampling:(BOOL)multisampling numberOfSamples:(unsigned int)samples;
 
 /** Initializes an CCEAGLView with a frame and 0-bit depth buffer, and a RGB565 color buffer */

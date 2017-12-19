@@ -65,10 +65,4 @@
 -- @param #float time
 -- @return FadeOutTRTiles#FadeOutTRTiles self (return value: cc.FadeOutTRTiles)
         
---------------------------------
--- 
--- @function [parent=#FadeOutTRTiles] FadeOutTRTiles 
--- @param self
--- @return FadeOutTRTiles#FadeOutTRTiles self (return value: cc.FadeOutTRTiles)
-        
 return nil

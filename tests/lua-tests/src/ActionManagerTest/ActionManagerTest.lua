@@ -190,8 +190,6 @@ function ActionManagerTestMain()
         RemoveTest,
         ResumeTest
     }
-    Helper.index = 1
-    
     scene:addChild(CrashTest())
     scene:addChild(CreateBackMenuItem())
     return scene

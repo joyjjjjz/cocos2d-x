@@ -6,4 +6,4 @@
 //
 //
 
-#include "editor-support/cocostudio/WidgetReader/NodeReaderProtocol.h"
+#include "NodeReaderProtocol.h"

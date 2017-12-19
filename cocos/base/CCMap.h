@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies
+ Copyright (c) 2013-2015 Chukong Technologies
  
  http://www.cocos2d-x.org
  
@@ -192,9 +192,9 @@ public:
         {
             keys.reserve(_data.size());
             
-            for (const auto& iter : _data)
+            for (auto iter = _data.cbegin(); iter != _data.cend(); ++iter)
             {
-                keys.push_back(iter.first);
+                keys.push_back(iter->first);
             }
         }
         return keys;
@@ -209,11 +209,11 @@ public:
         {
             keys.reserve(_data.size() / 10);
             
-            for (const auto& iter : _data)
+            for (auto iter = _data.cbegin(); iter != _data.cend(); ++iter)
             {
-                if (iter.second == object)
+                if (iter->second == object)
                 {
-                    keys.push_back(iter.first);
+                    keys.push_back(iter->first);
                 }
             }
         }
@@ -274,9 +274,9 @@ public:
     void insert(const K& key, V object)
     {
         CCASSERT(object != nullptr, "Object is nullptr!");
-        object->retain();
         erase(key);
-        _data.emplace(key, object);
+        _data.insert(std::make_pair(key, object));
+        object->retain();
     }
     
     /** 
@@ -308,6 +308,7 @@ public:
             _data.erase(iter);
             return 1;
         }
+        
         return 0;
     }
     
@@ -330,9 +331,9 @@ public:
      */
     void clear()
     {
-        for (const auto& iter : _data)
+        for (auto iter = _data.cbegin(); iter != _data.cend(); ++iter)
         {
-            iter.second->release();
+            iter->second->release();
         }
         
         _data.clear();
@@ -346,7 +347,7 @@ public:
     {
         if (!_data.empty())
         {
-            ssize_t randIdx = RandomHelper::random_int<int>(0, static_cast<int>(_data.size()) - 1);
+            ssize_t randIdx = rand() % _data.size();
             const_iterator randIter = _data.begin();
             std::advance(randIter , randIdx);
             return randIter->second;
@@ -407,9 +408,9 @@ protected:
     /** Retains all the objects in the map */
     void addRefForAllObjects()
     {
-        for (auto& iter : _data)
+        for (auto iter = _data.begin(); iter != _data.end(); ++iter)
         {
-            iter.second->retain();
+            iter->second->retain();
         }
     }
     

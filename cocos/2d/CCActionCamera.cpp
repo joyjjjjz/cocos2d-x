@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
  
 http://www.cocos2d-x.org
 
@@ -46,15 +46,10 @@ void ActionCamera::startWithTarget(Node *target)
 
 ActionCamera* ActionCamera::clone() const
 {
-    auto action = new (std::nothrow) ActionCamera();
-    if (action)
-    {
-        action->autorelease();
-        return action;
-    }
-    
-    delete action;
-    return nullptr;
+	// no copy constructor
+	auto a = new (std::nothrow) ActionCamera();
+	a->autorelease();
+	return a;
 }
 
 ActionCamera * ActionCamera::reverse() const
@@ -105,8 +100,7 @@ void ActionCamera::updateTransform()
 
     Mat4 mv = Mat4::IDENTITY;
 
-    if(needsTranslation)
-    {
+    if(needsTranslation) {
         Mat4 t;
         Mat4::createTranslation(anchorPoint.x, anchorPoint.y, 0, &t);
         mv = mv * t;
@@ -114,15 +108,15 @@ void ActionCamera::updateTransform()
     
     mv = mv * lookupMatrix;
 
-    if(needsTranslation)
-    {
+    if(needsTranslation) {
+        
         Mat4 t;
         Mat4::createTranslation(-anchorPoint.x, -anchorPoint.y, 0, &t);
         mv = mv * t;
     }
 
     // FIXME: Using the AdditionalTransform is a complete hack.
-    // This should be done by multiplying the lookup-Matrix with the Node's MV matrix
+    // This should be done by multipliying the lookup-Matrix with the Node's MV matrix
     // And then setting the result as the new MV matrix
     // But that operation needs to be done after all the 'updates'.
     // So the Director should emit an 'director_after_update' event.
@@ -154,20 +148,22 @@ OrbitCamera::~OrbitCamera()
 OrbitCamera * OrbitCamera::create(float t, float radius, float deltaRadius, float angleZ, float deltaAngleZ, float angleX, float deltaAngleX)
 {
     OrbitCamera * obitCamera = new (std::nothrow) OrbitCamera();
-    if(obitCamera && obitCamera->initWithDuration(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX))
+    if(obitCamera->initWithDuration(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX))
     {
         obitCamera->autorelease();
         return obitCamera;
     }
-    
-    delete obitCamera;
+    CC_SAFE_DELETE(obitCamera);
     return nullptr;
 }
 
 OrbitCamera* OrbitCamera::clone() const
 {
-    // no copy constructor
-    return OrbitCamera::create(_duration, _radius, _deltaRadius, _angleZ, _deltaAngleZ, _angleX, _deltaAngleX);
+    // no copy constructor	
+    auto a = new (std::nothrow) OrbitCamera();
+    a->initWithDuration(_duration, _radius, _deltaRadius, _angleZ, _deltaAngleZ, _angleX, _deltaAngleX);
+    a->autorelease();
+    return a;
 }
 
 bool OrbitCamera::initWithDuration(float t, float radius, float deltaRadius, float angleZ, float deltaAngleZ, float angleX, float deltaAngleX)
@@ -194,11 +190,11 @@ void OrbitCamera::startWithTarget(Node *target)
 
     float r, zenith, azimuth;
     this->sphericalRadius(&r, &zenith, &azimuth);
-    if( std::isnan(_radius) )
+    if( isnan(_radius) )
         _radius = r;
-    if( std::isnan(_angleZ) )
+    if( isnan(_angleZ) )
         _angleZ = (float)CC_RADIANS_TO_DEGREES(zenith);
-    if( std::isnan(_angleX) )
+    if( isnan(_angleX) )
         _angleX = (float)CC_RADIANS_TO_DEGREES(azimuth);
 
     _radZ = (float)CC_DEGREES_TO_RADIANS(_angleZ);

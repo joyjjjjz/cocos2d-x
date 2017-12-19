@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2012 cocos2d-x.org
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -37,6 +37,8 @@ enum {
 
 Texture2DTests::Texture2DTests()
 {
+    ADD_TEST_CASE(TexturePVRv3Premult);
+
     ADD_TEST_CASE(TextureMipMap);
     ADD_TEST_CASE(TextureMemoryAlloc);
     ADD_TEST_CASE(TextureAlias);
@@ -79,9 +81,8 @@ Texture2DTests::Texture2DTests()
     ADD_TEST_CASE(TextureJPEG);
     ADD_TEST_CASE(TextureTIFF);
     ADD_TEST_CASE(TextureTGA);
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WP8) && (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     ADD_TEST_CASE(TextureWEBP);
-    ADD_TEST_CASE(TextureWEBPNoAlpha)
 #endif
     ADD_TEST_CASE(TexturePixelFormat);
     ADD_TEST_CASE(TextureBlend);
@@ -262,36 +263,11 @@ void TextureWEBP::onEnter()
     img->setPosition(Vec2( s.width/2.0f, s.height/2.0f));
     addChild(img);
     log("%s\n", Director::getInstance()->getTextureCache()->getCachedTextureInfo().c_str());
-    Texture2D* texture = Director::getInstance()->getTextureCache()->getTextureForKey("Images/test_image.webp");
-    log("pixel format:%d, premultiplied alpha:%d\n", static_cast<int>(texture->getPixelFormat()), texture->hasPremultipliedAlpha());
 }
 
 std::string TextureWEBP::title() const
 {
-    return "WEBP with alpha Test";
-}
-
-//------------------------------------------------------------------
-//
-// TextureWEBPNoAlpha
-//
-//------------------------------------------------------------------
-void TextureWEBPNoAlpha::onEnter()
-{
-    TextureDemo::onEnter();
-    auto s = Director::getInstance()->getWinSize();
-    
-    auto img = Sprite::create("Images/test_image_no_alpha.webp");
-    img->setPosition(Vec2( s.width/2.0f, s.height/2.0f));
-    addChild(img);
-    log("%s\n", Director::getInstance()->getTextureCache()->getCachedTextureInfo().c_str());
-    Texture2D* texture = Director::getInstance()->getTextureCache()->getTextureForKey("Images/test_image_no_alpha.webp");
-    log("pixel format:%d, premultiplied alpha:%d\n", static_cast<int>(texture->getPixelFormat()), texture->hasPremultipliedAlpha());
-}
-
-std::string TextureWEBPNoAlpha::title() const
-{
-    return "WEBP without alpha Test";
+    return "WEBP Test";
 }
 
 //------------------------------------------------------------------
@@ -1302,7 +1278,7 @@ void TextureAlias::onEnter()
     sprite->setPosition(Vec2( s.width/3.0f, s.height/2.0f));
     addChild(sprite);
     
-    // this is the default filtering
+    // this is the default filterting
     sprite->getTexture()->setAntiAliasTexParameters();
     
     //
@@ -1749,7 +1725,7 @@ std::string TextureCache1::title() const
 
 std::string TextureCache1::subtitle() const
 {
-    return "4 images should appear: alias, antialias, alias, antialias";
+    return "4 images should appear: alias, antialias, alias, antilias";
 }
 
 // TextureDrawAtPoint
@@ -1793,7 +1769,7 @@ void TextureDrawAtPoint::draw(Renderer *renderer, const Mat4 &transform, uint32_
 void TextureDrawAtPoint::onDraw(const Mat4 &transform, uint32_t flags)
 {
     Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when setting matrix stack");
+    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
 
@@ -1835,7 +1811,7 @@ void TextureDrawInRect::draw(Renderer *renderer, const Mat4 &transform, uint32_t
 void TextureDrawInRect::onDraw(const Mat4 &transform, uint32_t flags)
 {
     Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when setting matrix stack");
+    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
     
@@ -2167,7 +2143,7 @@ std::string TextureATITCInterpolated::title() const
 }
 std::string TextureATITCInterpolated::subtitle() const
 {
-    return "ATITC RGBA Interpolated Alpha compressed texture test";
+    return "ATITC RGBA Interpolated Alpha comrpessed texture test";
 }
 
 static void addImageToDemo(TextureDemo& demo, float x, float y, const char* path, Texture2D::PixelFormat format)

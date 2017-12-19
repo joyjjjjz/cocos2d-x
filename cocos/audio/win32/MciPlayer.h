@@ -18,16 +18,12 @@ public:
     void Close();
 
     /**
-    @brief Open audio file
-    @param pFileName The file name which includes the file path.
-    @param uId  The audio ID
+    @brief  Play sound file
+    @param pFileName    Sound's file name,include the file path.
+    @param nTimes    Play mode£¬default value is 1,paly once
     */
     void Open(const char* pFileName, UINT uId);
 
-    /**
-    @brief Play audio file
-    @param nTimes The repeat times, its default value is 1 which means only play once
-    */
     void Play(UINT uTimes = 1);
 
     /**

@@ -128,10 +128,6 @@ public:
      * @param dt        The animation duration.
      */
     void setContentOffsetInDuration(Vec2 offset, float dt); 
-    /**
-     * Halts the movement animation of the inner content started with setContentOffset() or setContentOffsetInDuration()
-     */
-    void stopAnimatedContentOffset();
 
     void setZoomScale(float s);
     /**
@@ -257,9 +253,6 @@ public:
     virtual void addChild(Node * child, int zOrder, int tag) override;
     virtual void addChild(Node * child, int zOrder, const std::string &name) override;
 
-    virtual void removeAllChildren() override;
-    virtual void removeAllChildrenWithCleanup(bool cleanup) override;
-    virtual void removeChild(Node* child, bool cleanup = true) override;
     /**
      * CCActionTweenDelegate
      */
@@ -327,7 +320,7 @@ protected:
      */
     Node* _container;
     /**
-     * Determines whether user touch is moved after begin phase.
+     * Determiens whether user touch is moved after begin phase.
      */
     bool _touchMoved;
     /**
@@ -382,11 +375,6 @@ protected:
     
     CustomCommand _beforeDrawCommand;
     CustomCommand _afterDrawCommand;
-
-    /**
-     * Action created with setContentOffsetInDuration(), saved so it can be halted
-     */
-    Action* _animatedScrollAction;
 };
 
 

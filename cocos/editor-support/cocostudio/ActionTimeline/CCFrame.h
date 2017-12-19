@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
 Copyright (c) 2013 cocos2d-x.org
 
 http://www.cocos2d-x.org
@@ -31,8 +31,10 @@ THE SOFTWARE.
 #include "2d/CCNode.h"
 #include "2d/CCSprite.h"
 #include "2d/CCTweenFunction.h"
-#include "editor-support/cocostudio/ActionTimeline/CCTimelineMacro.h"
-#include "editor-support/cocostudio/CocosStudioExport.h"
+#include "CCTimelineMacro.h"
+#include "cocostudio/CocosStudioExport.h"
+
+using namespace cocos2d;
 
 NS_TIMELINE_BEGIN
 
@@ -55,8 +57,8 @@ public:
     virtual void setTween(bool tween) { _tween = tween; }
     virtual bool isTween() const { return _tween; }
 
-    virtual void setTweenType(const cocos2d::tweenfunc::TweenType& tweenType) { _tweenType = tweenType; }
-    virtual cocos2d::tweenfunc::TweenType getTweenType() const { return _tweenType; }
+    virtual void setTweenType(const tweenfunc::TweenType& tweenType) { _tweenType = tweenType; }
+    virtual tweenfunc::TweenType getTweenType() const { return _tweenType; }
     
     // !to make easing with params, need setTweenType(TweenType::CUSTOM_EASING)
     virtual void setEasingParams(const std::vector<float>& easingParams);
@@ -84,7 +86,7 @@ protected:
     bool            _tween;
     bool            _enterWhenPassed;
     
-    cocos2d::tweenfunc::TweenType _tweenType;
+    tweenfunc::TweenType _tweenType;
     std::vector<float>   _easingParam;
     Timeline* _timeline;
     cocos2d::Node*  _node;
@@ -260,10 +262,7 @@ public:
     inline cocos2d::Point getAnchorPoint() const { return _anchorPoint; }
 
 protected:
-    virtual void onApply(float percent) override;
-
-    cocos2d::Vec2 _betweenAnchorPoint;
-    cocos2d::Vec2 _anchorPoint;
+    cocos2d::Point _anchorPoint;
 };
 
 
@@ -407,33 +406,13 @@ public:
     virtual void onEnter(Frame *nextFrame, int currentFrameIndex) override;
     virtual Frame* clone() override;
     
-    inline cocos2d::BlendFunc getBlendFunc() const { return _blendFunc; }
-    inline void setBlendFunc(cocos2d::BlendFunc blendFunc) { _blendFunc = blendFunc; }
+    inline BlendFunc getBlendFunc() const { return _blendFunc; }
+    inline void setBlendFunc(BlendFunc blendFunc) { _blendFunc = blendFunc; }
     
 protected:
-    cocos2d::BlendFunc  _blendFunc;
-};
-
-class CC_STUDIO_DLL PlayableFrame : public Frame
-{
-public:
-    static PlayableFrame* create();
-    
-    PlayableFrame();
-    
-    virtual void onEnter(Frame* nextFrame, int currentFrameINdex) override;
-    virtual Frame* clone() override;
-
-    inline std::string getPlayableAct() const { return _playableAct; }
-    // @param playact, express the interface in PlayableProtocol, should be "start"  or "stop"
-    inline void setPlayableAct(std::string playact) { _playableAct = playact; }
-
-    static const std::string PLAYABLE_EXTENTION;
-private:
-    std::string _playableAct;  // express the interface in PlayableProtocol
-    static const std::string START_ACT;
-    static const std::string STOP_ACT;
+    BlendFunc  _blendFunc;
 };
 NS_TIMELINE_END
+
 
 #endif /*__CCFRAME_H__*/

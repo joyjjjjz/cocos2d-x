@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -36,7 +36,6 @@ NS_CC_BEGIN
 
 class Label;
 class SpriteFrame;
-struct CC_DLL ResourceData;
 
 namespace ui{
 
@@ -210,7 +209,7 @@ public:
      * Query the button title content.
      *@return Get the button's title content.
      */
-    std::string getTitleText() const;
+    const std::string getTitleText() const;
 
     /**
      * Change the color of button's title.
@@ -246,29 +245,7 @@ public:
      * Query the font name of button's title
      *@return font name in std::string
      */
-    std::string getTitleFontName() const;
-
-    /**
-     * Sets the title's text horizontal alignment.
-     *
-     * @param hAlignment see TextHAlignment
-     */
-    void setTitleAlignment(TextHAlignment hAlignment);
-
-    /**
-     * Sets the title's text vertical alignment.
-     *
-     * @param hAlignment see TextHAlignment.
-     * @param vAlignment see TextVAlignment.
-     */
-    void setTitleAlignment(TextHAlignment hAlignment, TextVAlignment vAlignment);
-
-    /** replaces the current Label node with a new one */
-    void setTitleLabel(Label* label);
-
-    /** returns the current Label being used */
-    Label* getTitleLabel() const;
-
+    const std::string getTitleFontName() const;
 
     /** @brief When user pressed the button, the button will zoom to a scale.
      * The final scale of the button  equals (button original scale + _zoomScale)
@@ -282,35 +259,6 @@ public:
      * @since v3.3
      */
     float getZoomScale()const;
-    
-    /**
-     * @brief Return the nine-patch sprite of normal state
-     * @return the nine-patch sprite of normal state
-     * @since v3.9
-     */
-    Scale9Sprite* getRendererNormal() const { return _buttonNormalRenderer; }
-    
-    /**
-     * @brief Return the nine-patch sprite of clicked state
-     * @return the nine-patch sprite of clicked state
-     * @since v3.9
-     */
-    Scale9Sprite* getRendererClicked() const { return _buttonClickedRenderer; }
-    
-    /**
-     * @brief Return the nine-patch sprite of disabled state
-     * @return the nine-patch sprite of disabled state
-     * @since v3.9
-     */
-    Scale9Sprite* getRendererDisabled() const { return _buttonDisabledRenderer; }
-
-    void resetNormalRender();
-    void resetPressedRender();
-    void resetDisabledRender();
-
-    ResourceData getNormalFile();
-    ResourceData getPressedFile();
-    ResourceData getDisabledFile();
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
@@ -329,11 +277,11 @@ protected:
     virtual void onSizeChanged() override;
 
     void loadTextureNormal(SpriteFrame* normalSpriteFrame);
-    void setupNormalTexture(bool textureLoaded);
+    void setupNormalTexture();
     void loadTexturePressed(SpriteFrame* pressedSpriteFrame);
-    void setupPressedTexture(bool textureLoaded);
+    void setupPressedTexture();
     void loadTextureDisabled(SpriteFrame* disabledSpriteFrame);
-    void setupDisabledTexture(bool textureLoaded);
+    void setupDisabledTexture();
 
     void normalTextureScaleChangedWithSize();
     void pressedTextureScaleChangedWithSize();
@@ -351,7 +299,7 @@ protected:
 protected:
     Scale9Sprite* _buttonNormalRenderer;
     Scale9Sprite* _buttonClickedRenderer;
-    Scale9Sprite* _buttonDisabledRenderer;
+    Scale9Sprite* _buttonDisableRenderer;
     Label* _titleRenderer;
 
     float _zoomScale;
@@ -367,6 +315,11 @@ protected:
     Size _pressedTextureSize;
     Size _disabledTextureSize;
 
+    float _normalTextureScaleXInSize;
+    float _normalTextureScaleYInSize;
+    float _pressedTextureScaleXInSize;
+    float _pressedTextureScaleYInSize;
+
     bool _normalTextureLoaded;
     bool _pressedTextureLoaded;
     bool _disabledTextureLoaded;
@@ -374,24 +327,15 @@ protected:
     bool _pressedTextureAdaptDirty;
     bool _disabledTextureAdaptDirty;
 
-    std::string _normalFileName;
-    std::string _clickedFileName;
-    std::string _disabledFileName;
-    TextureResType _normalTexType;
-    TextureResType _pressedTexType;
-    TextureResType _disabledTexType;
-
 private:
     enum class FontType
     {
         SYSTEM,
-        TTF,
-        BMFONT
+        TTF
     };
 
     int _fontSize;
     FontType _type;
-    std::string _fontName;
 };
 
 }

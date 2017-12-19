@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -51,8 +51,7 @@ public:
     @brief    Callback by Director to limit FPS.
     @param interval The time, expressed in seconds, between current frame and next.
     */
-    virtual void setAnimationInterval(float interval) override;
-    virtual void setAnimationInterval(float interval, SetIntervalReason reason) override;
+    void setAnimationInterval(double interval);
 
     /**
     @brief    Run the message loop.
@@ -72,37 +71,32 @@ public:
     @brief Get current language config
     @return Current language config
     */
-    virtual LanguageType getCurrentLanguage() override;
+    virtual LanguageType getCurrentLanguage();
     
     /**
     @brief Get current language iso 639-1 code
     @return Current language iso 639-1 code
     */
-    virtual const char * getCurrentLanguageCode() override;
+    virtual const char * getCurrentLanguageCode();
     
     /**
      @brief Get target platform
      */
-    virtual Platform getTargetPlatform() override;
+    virtual Platform getTargetPlatform();
     
-    /**
-     @brief Get application version.
-     */
-    virtual std::string getVersion() override;
-
     /**
      @brief Open url in default browser
      @param String with url to open.
      @return true if the resource located by the URL was successfully opened; otherwise false.
      */
-    virtual bool openURL(const std::string &url) override;
+    virtual bool openURL(const std::string &url);
 
-    /**
-    @brief  This function will be called when the application screen size is changed.
-    @param new width
-    @param new height
-    */
-    virtual void applicationScreenSizeChanged(int newWidth, int newHeight);
+	/**
+	@brief  This function will be called when the application screen size is changed.
+	@param new width
+	@param new height
+	*/
+	virtual void applicationScreenSizeChanged(int newWidth, int newHeight);
 
 protected:
     static Application * sm_pSharedApplication;

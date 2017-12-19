@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
  
 http://www.cocos2d-x.org
 
@@ -30,16 +30,10 @@ THE SOFTWARE.
 
 #include "base/CCRef.h"
 #include "math/CCGeometry.h"
-#include "base/CCScriptSupport.h"
 
 NS_CC_BEGIN
 
 class Node;
-
-enum {
-    kActionUpdate
-};
-
 /**
  * @addtogroup actions
  * @{
@@ -69,9 +63,9 @@ public:
         return nullptr;
     }
 
-    /** Returns a new action that performs the exact reverse of the action. 
+    /** Returns a new action that performs the exactly the reverse action. 
      *
-     * @return A new action that performs the exact reverse of the action.
+     * @return A new action that performs the exactly the reverse action.
      * @js NA
      */
     virtual Action* reverse() const
@@ -119,17 +113,17 @@ public:
      *
      * @return A certain target.
      */
-    Node* getTarget() const { return _target; }
+    inline Node* getTarget() const { return _target; }
     /** The action will modify the target properties. 
      *
      * @param target A certain target.
      */
-    void setTarget(Node *target) { _target = target; }
+    inline void setTarget(Node *target) { _target = target; }
     /** Return a original Target. 
      *
      * @return A original Target.
      */
-    Node* getOriginalTarget() const { return _originalTarget; }
+    inline Node* getOriginalTarget() const { return _originalTarget; }
     /** 
      * Set the original target, since target can be nil.
      * Is the target that were used to run the action. Unless you are doing something complex, like ActionManager, you should NOT call this method.
@@ -138,27 +132,17 @@ public:
      *
      * @param originalTarget Is 'assigned', it is not 'retained'.
      */
-    void setOriginalTarget(Node *originalTarget) { _originalTarget = originalTarget; }
+    inline void setOriginalTarget(Node *originalTarget) { _originalTarget = originalTarget; }
     /** Returns a tag that is used to identify the action easily. 
      *
      * @return A tag.
      */
-    int getTag() const { return _tag; }
+    inline int getTag() const { return _tag; }
     /** Changes the tag that is used to identify the action easily. 
      *
      * @param tag Used to identify the action easily.
      */
-    void setTag(int tag) { _tag = tag; }
-    /** Returns a flag field that is used to group the actions easily.
-     *
-     * @return A tag.
-     */
-    unsigned int getFlags() const { return _flags; }
-    /** Changes the flag field that is used to group the actions easily.
-     *
-     * @param flags Used to group the actions easily.
-     */
-    void setFlags(unsigned int flags) { _flags = flags; }
+    inline void setTag(int tag) { _tag = tag; }
 
 CC_CONSTRUCTOR_ACCESS:
     Action();
@@ -175,12 +159,7 @@ protected:
     Node    *_target;
     /** The action tag. An identifier of the action. */
     int     _tag;
-    /** The action flag field. To categorize action into certain groups.*/
-    unsigned int _flags;
 
-#if CC_ENABLE_SCRIPT_BINDING
-    ccScriptType _scriptType;         ///< type of script binding, lua or javascript
-#endif
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(Action);
 };
@@ -200,12 +179,12 @@ public:
      *
      * @return The duration in seconds of the action.
      */
-    float getDuration() const { return _duration; }
+    inline float getDuration() const { return _duration; }
     /** Set duration in seconds of the action. 
      *
      * @param duration In seconds of the action.
      */
-    void setDuration(float duration) { _duration = duration; }
+    inline void setDuration(float duration) { _duration = duration; }
 
     //
     // Overrides
@@ -230,6 +209,7 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
     //! Duration in seconds.
     float _duration;
+
 private:
     CC_DISALLOW_COPY_AND_ASSIGN(FiniteTimeAction);
 };
@@ -239,7 +219,7 @@ class RepeatForever;
 
 /** @class Speed
  * @brief Changes the speed of an action, making it take longer (speed>1)
- * or shorter (speed<1) time.
+ * or less (speed<1) time.
  * Useful to simulate 'slow motion' or 'fast forward' effect.
  * @warning This action can't be Sequenceable because it is not an IntervalAction.
  */
@@ -256,12 +236,12 @@ public:
      *
      * @return The action speed.
      */
-    float getSpeed() const { return _speed; }
+    inline float getSpeed(void) const { return _speed; }
     /** Alter the speed of the inner function in runtime. 
      *
      * @param speed Alter the speed of the inner function in runtime.
      */
-    void setSpeed(float speed) { _speed = speed; }
+    inline void setSpeed(float speed) { _speed = speed; }
 
     /** Replace the interior action.
      *
@@ -272,7 +252,7 @@ public:
      *
      * @return The interior action.
      */
-    ActionInterval* getInnerAction() const { return _innerAction; }
+    inline ActionInterval* getInnerAction() const { return _innerAction; }
 
     //
     // Override
@@ -309,7 +289,7 @@ private:
  * @brief Follow is an action that "follows" a node.
  * Eg:
  * @code
- * layer->runAction(Follow::create(hero));
+ * layer->runAction(Follow::actionWithTarget(hero));
  * @endcode
  * Instead of using Camera as a "follower", use this action instead.
  * @since v0.99.2
@@ -323,43 +303,24 @@ public:
      * @param followedNode  The node to be followed.
      * @param rect  The boundary. If \p rect is equal to Rect::ZERO, it'll work
      *              with no boundary.
-    */
-    
-    static Follow* create(Node *followedNode, const Rect& rect = Rect::ZERO);
-    
-    /**
-     * Creates the action with a set boundary or with no boundary with offsets.
-     *
-     * @param followedNode  The node to be followed.
-     * @param rect  The boundary. If \p rect is equal to Rect::ZERO, it'll work
-     *              with no boundary.
-     * @param xOffset The horizontal offset from the center of the screen from which the
-     *               node  is to be followed.It can be positive,negative or zero.If
-     *               set to zero the node will be horizontally centered followed.
-     *  @param yOffset The vertical offset from the center of the screen from which the
-     *                 node is to be followed.It can be positive,negative or zero.
-     *                 If set to zero the node will be vertically centered followed.
-     *   If both xOffset and yOffset are set to zero,then the node will be horizontally and vertically centered followed.
      */
-
-    static Follow* createWithOffset(Node* followedNode,float xOffset,float yOffset,const Rect& rect = Rect::ZERO);
-    
+    static Follow* create(Node *followedNode, const Rect& rect = Rect::ZERO);
     /** Return boundarySet.
      *
      * @return Return boundarySet.
      */
-    bool isBoundarySet() const { return _boundarySet; }
+    inline bool isBoundarySet() const { return _boundarySet; }
     /** Alter behavior - turn on/off boundary. 
      *
      * @param value Turn on/off boundary.
      */
-    void setBoundarySet(bool value) { _boundarySet = value; }
+    inline void setBoundarySet(bool value) { _boundarySet = value; }
     
     /** @deprecated Alter behavior - turn on/off boundary. 
      *
      * @param value Turn on/off boundary.
      */
-    CC_DEPRECATED_ATTRIBUTE void setBoudarySet(bool value) { setBoundarySet(value); }
+    CC_DEPRECATED_ATTRIBUTE inline void setBoudarySet(bool value) { setBoundarySet(value); }
 
     //
     // Override
@@ -386,8 +347,6 @@ CC_CONSTRUCTOR_ACCESS:
     , _rightBoundary(0.0)
     , _topBoundary(0.0)
     , _bottomBoundary(0.0)
-    , _offsetX(0.0)
-    , _offsetY(0.0)
     , _worldRect(Rect::ZERO)
     {}
     /**
@@ -402,26 +361,8 @@ CC_CONSTRUCTOR_ACCESS:
      * @param followedNode  The node to be followed.
      * @param rect  The boundary. If \p rect is equal to Rect::ZERO, it'll work
      *              with no boundary.
-    */
-    bool initWithTarget(Node *followedNode, const Rect& rect = Rect::ZERO);
-    
-    
-    /**
-     * Initializes the action with a set boundary or with no boundary with offsets.
-     *
-     * @param followedNode  The node to be followed.
-     * @param rect  The boundary. If \p rect is equal to Rect::ZERO, it'll work
-     *              with no boundary.
-     * @param xOffset The horizontal offset from the center of the screen from which the
-     *                node  is to be followed.It can be positive,negative or zero.If
-     *                set to zero the node will be horizontally centered followed.
-     * @param yOffset The vertical offset from the center of the screen from which the
-     *                node is to be followed.It can be positive,negative or zero.
-     *                If set to zero the node will be vertically centered followed.
-     *   If both xOffset and yOffset are set to zero,then the node will be horizontally and vertically centered followed.
-
      */
-    bool initWithTargetAndOffset(Node *followedNode,float xOffset,float yOffset,const Rect& rect = Rect::ZERO);
+    bool initWithTarget(Node *followedNode, const Rect& rect = Rect::ZERO);
 
 protected:
     /** Node to follow. */
@@ -442,11 +383,6 @@ protected:
     float _rightBoundary;
     float _topBoundary;
     float _bottomBoundary;
-    
-    /** Horizontal (x) and vertical (y) offset values. */
-    float _offsetX;
-    float _offsetY;
-    
     Rect _worldRect;
 
 private:

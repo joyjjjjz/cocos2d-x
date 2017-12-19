@@ -16,10 +16,4 @@
 -- @param self
 -- @return bool#bool ret (return value: bool)
         
---------------------------------
---  Constructor 
--- @function [parent=#EventListenerCustom] EventListenerCustom 
--- @param self
--- @return EventListenerCustom#EventListenerCustom self (return value: cc.EventListenerCustom)
-        
 return nil

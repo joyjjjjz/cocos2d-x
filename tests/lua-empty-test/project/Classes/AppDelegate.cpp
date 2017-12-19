@@ -2,8 +2,8 @@
 #include "AppDelegate.h"
 #include "audio/include/SimpleAudioEngine.h"
 #include "base/CCScriptSupport.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
-#include "scripting/lua-bindings/manual/lua_module_register.h"
+#include "CCLuaEngine.h"
+#include "lua_module_register.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -37,18 +37,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     lua_module_register(L);
     //The call was commented because it will lead to ZeroBrane Studio can't find correct context when debugging
     //engine->executeScriptFile("src/hello.lua");
-    
-#if CC_64BITS
-    FileUtils::getInstance()->addSearchPath("src/64bit");
-#endif
-    FileUtils::getInstance()->addSearchPath("src");
-    FileUtils::getInstance()->addSearchPath("res");
-    engine->executeString("require 'hello.lua'");
+    engine->executeString("require 'src/hello.lua'");
 
     return true;
 }
 
-// This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
+// This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground()
 {
     Director::getInstance()->stopAnimation();

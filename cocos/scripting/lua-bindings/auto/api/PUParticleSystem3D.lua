@@ -5,13 +5,6 @@
 -- @parent_module cc
 
 --------------------------------
--- 
--- @function [parent=#PUParticleSystem3D] initWithFilePath 
--- @param self
--- @param #string filePath
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- Returns the velocity scale, defined in the particle system, but passed to the technique for convenience.
 -- @function [parent=#PUParticleSystem3D] getParticleSystemScaleVelocity 
 -- @param self
@@ -35,14 +28,6 @@
 -- @function [parent=#PUParticleSystem3D] getEmittedSystemQuota 
 -- @param self
 -- @return unsigned int#unsigned int ret (return value: unsigned int)
-        
---------------------------------
--- 
--- @function [parent=#PUParticleSystem3D] initWithFilePathAndMaterialPath 
--- @param self
--- @param #string filePath
--- @param #string materialPath
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- 
@@ -95,7 +80,7 @@
         
 --------------------------------
 --  Forces emission of particles.<br>
--- remarks The number of requested particles are the exact number that are emitted. No down-scaling is applied.
+-- remarks The number of requested particles are the exact number that are emitted. No down-scalling is applied.
 -- @function [parent=#PUParticleSystem3D] forceEmission 
 -- @param self
 -- @param #cc.PUEmitter emitter
@@ -249,13 +234,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#PUParticleSystem3D] initSystem 
--- @param self
--- @param #string filePath
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
 -- @function [parent=#PUParticleSystem3D] makeParticleLocal 
 -- @param self
 -- @param #cc.PUParticle3D particle
@@ -336,11 +314,5 @@
 -- @function [parent=#PUParticleSystem3D] getAliveParticleCount 
 -- @param self
 -- @return int#int ret (return value: int)
-        
---------------------------------
--- 
--- @function [parent=#PUParticleSystem3D] PUParticleSystem3D 
--- @param self
--- @return PUParticleSystem3D#PUParticleSystem3D self (return value: cc.PUParticleSystem3D)
         
 return nil

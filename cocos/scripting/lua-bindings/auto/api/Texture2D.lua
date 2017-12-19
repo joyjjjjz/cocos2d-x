@@ -11,13 +11,6 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
--- 
--- @function [parent=#Texture2D] setAlphaTexture 
--- @param self
--- @param #cc.Texture2D alphaTexture
--- @return Texture2D#Texture2D self (return value: cc.Texture2D)
-        
---------------------------------
 --  Returns the pixel format.<br>
 -- since v2.0
 -- @function [parent=#Texture2D] getStringForFormat 
@@ -60,12 +53,6 @@
 -- @return int#int ret (return value: int)
         
 --------------------------------
--- 
--- @function [parent=#Texture2D] getAlphaTextureName 
--- @param self
--- @return unsigned int#unsigned int ret (return value: unsigned int)
-        
---------------------------------
 -- @overload self, int         
 -- @overload self         
 -- @function [parent=#Texture2D] getBitsPerPixelForFormat
@@ -81,7 +68,7 @@
         
 --------------------------------
 -- @overload self, char, cc.FontDefinition         
--- @overload self, char, string, float, size_table, int, int, bool, int         
+-- @overload self, char, string, float, size_table, int, int         
 -- @function [parent=#Texture2D] initWithString
 -- @param self
 -- @param #char text
@@ -90,8 +77,6 @@
 -- @param #size_table dimensions
 -- @param #int hAlignment
 -- @param #int vAlignment
--- @param #bool enableWrap
--- @param #int overflow
 -- @return bool#bool ret (return value: bool)
 
 --------------------------------
@@ -100,12 +85,6 @@
 -- @param self
 -- @param #float maxT
 -- @return Texture2D#Texture2D self (return value: cc.Texture2D)
-        
---------------------------------
--- 
--- @function [parent=#Texture2D] getPath 
--- @param self
--- @return string#string ret (return value: string)
         
 --------------------------------
 --  Draws a texture inside a rect.
@@ -149,13 +128,7 @@
 -- @return Texture2D#Texture2D self (return value: cc.Texture2D)
         
 --------------------------------
--- 
--- @function [parent=#Texture2D] getAlphaTexture 
--- @param self
--- @return Texture2D#Texture2D ret (return value: cc.Texture2D)
-        
---------------------------------
--- Get texture name, dimensions and coordinates message by a string.<br>
+-- Get texutre name, dimensions and coordinates message by a string.<br>
 -- js NA<br>
 -- lua NA
 -- @function [parent=#Texture2D] getDescription 

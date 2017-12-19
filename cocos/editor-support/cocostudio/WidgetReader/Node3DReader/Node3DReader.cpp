@@ -22,13 +22,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "editor-support/cocostudio/WidgetReader/Node3DReader/Node3DReader.h"
+#include "Node3DReader.h"
 
-#include "editor-support/cocostudio/CSParseBinary_generated.h"
-#include "editor-support/cocostudio/CSParse3DBinary_generated.h"
+#include "cocostudio/CSParseBinary_generated.h"
+#include "cocostudio/CSParse3DBinary_generated.h"
 
-#include "editor-support/cocostudio/FlatBuffersSerialize.h"
-#include "editor-support/cocostudio/WidgetReader/NodeReader/NodeReader.h"
+#include "cocostudio/FlatBuffersSerialize.h"
+#include "cocostudio/WidgetReader/NodeReader/NodeReader.h"
 
 #include "tinyxml2.h"
 #include "flatbuffers/flatbuffers.h"
@@ -56,7 +56,7 @@ namespace cocostudio
     {
         if (!_instanceNode3DReader)
         {
-            _instanceNode3DReader = new (std::nothrow) Node3DReader();
+            _instanceNode3DReader = new Node3DReader();
         }
         
         return _instanceNode3DReader;
@@ -85,15 +85,15 @@ namespace cocostudio
             attriname = attribute->Name();
             std::string value = attribute->Value();
             
-            if (attriname == "X")
+            if (attriname == "ValueX")
             {
                 ret.x = atof(value.c_str());
             }
-            else if (attriname == "Y")
+            else if (attriname == "ValueY")
             {
                 ret.y = atof(value.c_str());
             }
-            else if(attriname == "Z")
+            else if(attriname == "ValueZ")
             {
                 ret.z = atof(value.c_str());
             }
@@ -196,11 +196,11 @@ namespace cocostudio
                     attriname = attribute->Name();
                     std::string value = attribute->Value();
 
-                    if (attriname == "X")
+                    if (attriname == "ValueX")
                     {
                         position.x = atof(value.c_str());
                     }
-                    else if (attriname == "Y")
+                    else if (attriname == "ValueY")
                     {
                         position.y = atof(value.c_str());
                     }
@@ -217,11 +217,11 @@ namespace cocostudio
                     attriname = attribute->Name();
                     std::string value = attribute->Value();
 
-                    if (attriname == "X")
+                    if (attriname == "ValueX")
                     {
                         scale.x = atof(value.c_str());
                     }
-                    else if (attriname == "Y")
+                    else if (attriname == "ValueY")
                     {
                         scale.y = atof(value.c_str());
                     }
@@ -359,13 +359,13 @@ namespace cocostudio
             child = child->NextSiblingElement();
         }
         
-        Vector3 position3D(position.x, position.y, position.z);
+        Vector3 postion3D(position.x, position.y, position.z);
         Vector3 rotation3D(rotation.x, rotation.y, rotation.z);
         Vector3 scale3D(scale.x, scale.y, scale.z);
 
         auto options = CreateNode3DOption(*builder,
                                            nodeOptions,
-                                           &position3D,
+                                           &postion3D,
                                            &rotation3D,
                                            &scale3D,
                                            cameraMask

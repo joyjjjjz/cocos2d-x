@@ -1,7 +1,7 @@
 #ifndef _CCB_CCLAYERCOLORLOADER_H_
 #define _CCB_CCLAYERCOLORLOADER_H_
 
-#include "editor-support/cocosbuilder/CCLayerLoader.h"
+#include "CCLayerLoader.h"
 
 namespace cocosbuilder {
 

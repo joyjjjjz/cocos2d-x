@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -22,8 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "ui/UILayoutManager.h"
-#include "ui/UILayout.h"
+#include "UILayoutManager.h"
+#include "UILayout.h"
 
 NS_CC_BEGIN
 
@@ -57,7 +57,7 @@ void LinearHorizontalLayoutManager::doLayout(LayoutProtocol* layout)
             {
                 LinearLayoutParameter::LinearGravity childGravity = layoutParameter->getGravity();
                 Vec2 ap = child->getAnchorPoint();
-                Size cs = child->getBoundingBox().size;
+                Size cs = child->getContentSize();
                 float finalPosX = leftBoundary + (ap.x * cs.width);
                 float finalPosY = layoutSize.height - (1.0f - ap.y) * cs.height;
                 switch (childGravity)
@@ -115,7 +115,7 @@ void LinearVerticalLayoutManager::doLayout(LayoutProtocol* layout)
             {
                 LinearLayoutParameter::LinearGravity childGravity = layoutParameter->getGravity();
                 Vec2 ap = subWidget->getAnchorPoint();
-                Size cs = subWidget->getBoundingBox().size;
+                Size cs = subWidget->getContentSize();
                 float finalPosX = ap.x * cs.width;
                 float finalPosY = topBoundary - ((1.0f-ap.y) * cs.height);
                 switch (childGravity)
@@ -136,7 +136,7 @@ void LinearVerticalLayoutManager::doLayout(LayoutProtocol* layout)
                 finalPosX += mg.left;
                 finalPosY -= mg.top;
                 subWidget->setPosition(finalPosX, finalPosY);
-                topBoundary = subWidget->getPosition().y - subWidget->getAnchorPoint().y * subWidget->getBoundingBox().size.height - mg.bottom;
+                topBoundary = subWidget->getPosition().y - subWidget->getAnchorPoint().y * subWidget->getContentSize().height - mg.bottom;
             }
         }
     }
@@ -203,10 +203,10 @@ Widget* RelativeLayoutManager::getRelativeWidget(Widget* widget)
     return relativeWidget;
 }
     
-bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProtocol *layout)
+bool RelativeLayoutManager::caculateFinalPositionWithRelativeWidget(LayoutProtocol *layout)
 {
     Vec2 ap = _widget->getAnchorPoint();
-    Size cs = _widget->getBoundingBox().size;
+    Size cs = _widget->getContentSize();
     
     _finalPositionX = 0.0f;
     _finalPositionY = 0.0f;
@@ -280,7 +280,7 @@ bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProto
                 {
                     return false;
                 }
-                Size rbs = relativeWidget->getBoundingBox().size;
+                Size rbs = relativeWidget->getContentSize();
                 float locationTop = relativeWidget->getTopBoundary();
                 
                 _finalPositionY = locationTop + ap.y * cs.height;
@@ -320,7 +320,7 @@ bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProto
                 {
                     return false;
                 }
-                Size rbs = relativeWidget->getBoundingBox().size;
+                Size rbs = relativeWidget->getContentSize();
                 float locationLeft = relativeWidget->getLeftBoundary();
                 _finalPositionX = locationLeft - (1.0f - ap.x) * cs.width;
                 
@@ -360,7 +360,7 @@ bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProto
                 {
                     return false;
                 }
-                Size rbs = relativeWidget->getBoundingBox().size;
+                Size rbs = relativeWidget->getContentSize();
                 float locationRight = relativeWidget->getRightBoundary();
                 _finalPositionX = locationRight + ap.x * cs.width;
                 
@@ -400,7 +400,7 @@ bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProto
                 {
                     return false;
                 }
-                Size rbs = relativeWidget->getBoundingBox().size;
+                Size rbs = relativeWidget->getContentSize();
                 float locationBottom = relativeWidget->getBottomBoundary();
                 
                 _finalPositionY = locationBottom - (1.0f - ap.y) * cs.height;
@@ -426,7 +426,7 @@ bool RelativeLayoutManager::calculateFinalPositionWithRelativeWidget(LayoutProto
     return true;
 }
     
-void RelativeLayoutManager::calculateFinalPositionWithRelativeAlign()
+void RelativeLayoutManager::caculateFinalPositionWithRelativeAlign()
 {
     RelativeLayoutParameter* layoutParameter = dynamic_cast<RelativeLayoutParameter*>(_widget->getLayoutParameter());
     
@@ -522,16 +522,6 @@ void RelativeLayoutManager::calculateFinalPositionWithRelativeAlign()
     }
 }
 
-bool RelativeLayoutManager::caculateFinalPositionWithRelativeWidget(LayoutProtocol *layout)
-{
-    return calculateFinalPositionWithRelativeWidget(layout);
-}
-
-void RelativeLayoutManager::caculateFinalPositionWithRelativeAlign()
-{
-    calculateFinalPositionWithRelativeAlign();
-}
-
 void RelativeLayoutManager::doLayout(LayoutProtocol *layout)
 {
     
@@ -553,12 +543,12 @@ void RelativeLayoutManager::doLayout(LayoutProtocol *layout)
                 }
                 
                
-                bool ret = this->calculateFinalPositionWithRelativeWidget(layout);
+                bool ret = this->caculateFinalPositionWithRelativeWidget(layout);
                 if (!ret) {
                     continue;
                 }
                 
-                this->calculateFinalPositionWithRelativeAlign();
+                this->caculateFinalPositionWithRelativeAlign();
             
             
                 _widget->setPosition(Vec2(_finalPositionX, _finalPositionY));

@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -21,18 +21,18 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#include "scripting/lua-bindings/manual/network/lua_cocos2dx_network_manual.h"
+#include "lua_cocos2dx_network_manual.h"
 extern "C" {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-#include "scripting/lua-bindings/manual/network/lua_extensions.h"
+#include "lua_extensions.h"
 #endif
 }
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-#include "scripting/lua-bindings/manual/network/Lua_web_socket.h"
+#include "Lua_web_socket.h"
 #endif
 
-#include "scripting/lua-bindings/manual/network/lua_xml_http_request.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
+#include "lua_xml_http_request.h"
+#include "CCLuaEngine.h"
 
 
 int register_network_module(lua_State* L)

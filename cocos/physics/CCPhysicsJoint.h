@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -40,9 +40,7 @@ class PhysicsBody;
 class PhysicsWorld;
 
 /**
- * @addtogroup physics
- * @{
- * @addtogroup physics_2d
+ * @addtogroup core
  * @{
  */
 
@@ -57,36 +55,36 @@ protected:
 
 public:
     /**Get physics body a connected to this joint.*/
-    PhysicsBody* getBodyA() const { return _bodyA; }
+    inline PhysicsBody* getBodyA() const { return _bodyA; }
     
     /**Get physics body b connected to this joint.*/
-    PhysicsBody* getBodyB() const { return _bodyB; }
+    inline PhysicsBody* getBodyB() const { return _bodyB; }
 
     /**Get the physics world.*/
-    PhysicsWorld* getWorld() const { return _world; }
+    inline PhysicsWorld* getWorld() const { return _world; }
     
     /**
      * Get this joint's tag.
      *
-     * @return An integer number.
+     * @return An interger number.
      */
-    int getTag() const { return _tag; }
+    inline int getTag() const { return _tag; }
     
     /**
      * Set this joint's tag.
      *
-     * @param tag An integer number that identifies a PhysicsJoint.
+     * @param tag An interger number that identifies a PhysicsJoint.
      */
-    void setTag(int tag) { _tag = tag; }
+    inline void setTag(int tag) { _tag = tag; }
     
     /** Determines if the joint is enable. */
-    bool isEnabled() const { return _enable; }
+    inline bool isEnabled() const { return _enable; }
 
     /** Enable/Disable the joint. */
     void setEnable(bool enable);
     
-    /** Determines if the collision is enable. */
-    bool isCollisionEnabled() const { return _collisionEnable; }
+    /** Determines if the collsion is enable. */
+    inline bool isCollisionEnabled() const { return _collisionEnable; }
     
     /** Enable/disable the collision between two bodies. */
     void setCollisionEnable(bool enable);
@@ -115,7 +113,7 @@ protected:
 
     bool _enable;
     bool _collisionEnable;
-    bool _destroyMark;
+    bool _destoryMark;
     int _tag;
     float _maxForce;
 
@@ -569,8 +567,6 @@ protected:
 };
 
 /** @} */
-/** @} */
-
 
 NS_CC_END
 

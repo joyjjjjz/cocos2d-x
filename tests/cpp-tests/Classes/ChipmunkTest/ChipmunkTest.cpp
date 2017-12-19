@@ -4,7 +4,7 @@
 // http://www.cocos2d-x.org
 //
 
-#include "chipmunk/chipmunk.h"
+#include "chipmunk.h"
 
 #include "ChipmunkTest.h"
 
@@ -95,11 +95,7 @@ ChipmunkTest::~ChipmunkTest()
         cpShapeFree( _walls[i] );
     }
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	cpSpaceFree(_space);
-#else
-	cpHastySpaceFree(_space);
-#endif
+    cpSpaceFree( _space );
 
     Device::setAccelerometerEnabled(false);
 #endif
@@ -111,44 +107,38 @@ void ChipmunkTest::initPhysics()
     // init chipmunk
     //cpInitChipmunk();
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	_space = cpSpaceNew();
-#else
-	_space = cpHastySpaceNew();
-	cpHastySpaceSetThreads(_space, 0);
-#endif
+    _space = cpSpaceNew();
 
-    cpSpaceSetGravity(_space, cpv(0, -100));
+    _space->gravity = cpv(0, -100);
 
     //
     // rogue shapes
     // We have to free them manually
     //
     // bottom
-    _walls[0] = cpSegmentShapeNew( cpSpaceGetStaticBody(_space),
+    _walls[0] = cpSegmentShapeNew( _space->staticBody,
         cpv(VisibleRect::leftBottom().x,VisibleRect::leftBottom().y),
         cpv(VisibleRect::rightBottom().x, VisibleRect::rightBottom().y), 0.0f);
 
     // top
-    _walls[1] = cpSegmentShapeNew( cpSpaceGetStaticBody(_space),
+    _walls[1] = cpSegmentShapeNew( _space->staticBody, 
         cpv(VisibleRect::leftTop().x, VisibleRect::leftTop().y),
         cpv(VisibleRect::rightTop().x, VisibleRect::rightTop().y), 0.0f);
 
     // left
-    _walls[2] = cpSegmentShapeNew( cpSpaceGetStaticBody(_space),
+    _walls[2] = cpSegmentShapeNew( _space->staticBody,
         cpv(VisibleRect::leftBottom().x,VisibleRect::leftBottom().y),
         cpv(VisibleRect::leftTop().x,VisibleRect::leftTop().y), 0.0f);
 
     // right
-    _walls[3] = cpSegmentShapeNew( cpSpaceGetStaticBody(_space), 
+    _walls[3] = cpSegmentShapeNew( _space->staticBody, 
         cpv(VisibleRect::rightBottom().x, VisibleRect::rightBottom().y),
         cpv(VisibleRect::rightTop().x, VisibleRect::rightTop().y), 0.0f);
 
     for( int i=0;i<4;i++) {
-        
-        cpShapeSetElasticity(_walls[i], 1.0f);
-        cpShapeSetFriction(_walls[i], 1.0f);
-        cpSpaceAddShape(_space, _walls[i]);
+        _walls[i]->e = 1.0f;
+        _walls[i]->u = 1.0f;
+        cpSpaceAddStaticShape(_space, _walls[i] );
     }
 
     // Physics debug layer
@@ -164,12 +154,7 @@ void ChipmunkTest::update(float delta)
     float dt = Director::getInstance()->getAnimationInterval()/(float)steps;
 
     for(int i=0; i<steps; i++){
-
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-		cpSpaceStep(_space, dt);
-#else
-		cpHastySpaceStep(_space, dt);
-#endif
+        cpSpaceStep(_space, dt);
     }
 }
 
@@ -210,14 +195,13 @@ void ChipmunkTest::addNewSpriteAtPosition(cocos2d::Vec2 pos)
         cpv( 24,-54),
     };
 
-    cpBody *body = cpBodyNew(1.0f, cpMomentForPoly(1.0f, num, verts, cpvzero, 0.0f));
+    cpBody *body = cpBodyNew(1.0f, cpMomentForPoly(1.0f, num, verts, cpvzero));
 
-    cpBodySetPosition(body, cpv(pos.x, pos.y));
+    body->p = cpv(pos.x, pos.y);
     cpSpaceAddBody(_space, body);
 
-    cpShape* shape = cpPolyShapeNew(body, num, verts, cpTransformIdentity, 0.0f);
-    cpShapeSetElasticity(shape, 0.5f);
-    cpShapeSetFriction(shape, 0.5f);
+    cpShape* shape = cpPolyShapeNew(body, num, verts, cpvzero);
+    shape->e = 0.5f; shape->u = 0.5f;
     cpSpaceAddShape(_space, shape);
 
     auto sprite = PhysicsSprite::createWithTexture(_spriteTexture, cocos2d::Rect(posx, posy, 85, 121));
@@ -259,7 +243,7 @@ void ChipmunkTest::onAcceleration(Acceleration* acc, Event* event)
 
     auto v = cocos2d::Vec2( accelX, accelY);
     v = v * 200;
-    cpSpaceSetGravity(_space, cpv(v.x, v.y));
+    _space->gravity = cpv(v.x, v.y);
 }
 
 ChipmunkTests::ChipmunkTests()

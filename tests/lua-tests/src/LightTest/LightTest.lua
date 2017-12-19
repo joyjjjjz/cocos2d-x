@@ -234,7 +234,6 @@ function LightTestMain()
     {
         LightTest.create,
     }
-    Helper.index = 1
 
     scene:addChild(LightTest.create(), 0)
     scene:addChild(CreateBackMenuItem())

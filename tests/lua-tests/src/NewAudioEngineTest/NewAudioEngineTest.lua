@@ -519,8 +519,6 @@ function AudioEngineTest()
         InvalidAudioFileTest.create,
         LargeAudioFileTest.create
     }
-    Helper.index = 1
-    
     scene:addChild(AudioControlTest.create())
     scene:addChild(CreateBackMenuItem())
     return scene

@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "editor-support/cocostudio/CCComAttribute.h"
+#include "cocostudio/CCComAttribute.h"
 #include "platform/CCFileUtils.h"
 
 using namespace cocos2d;
@@ -30,15 +30,12 @@ using namespace cocos2d;
 namespace cocostudio {
 
 IMPLEMENT_CLASS_COMPONENT_INFO(ComAttribute)
-
-const std::string ComAttribute::COMPONENT_NAME = "CCComAttribute";
-
-ComAttribute::ComAttribute()
+ComAttribute::ComAttribute(void)
 {
-    _name = COMPONENT_NAME;
+    _name = "CCComAttribute";
 }
 
-ComAttribute::~ComAttribute()
+ComAttribute::~ComAttribute(void)
 {
     _dict.clear();
 }
@@ -131,7 +128,7 @@ std::string ComAttribute::getString(const std::string& key, const std::string& d
     return DICTOOL->getStringValue_json(_doc, key.c_str());
 }
 
-ComAttribute* ComAttribute::create()
+ComAttribute* ComAttribute::create(void)
 {
 	ComAttribute * pRet = new (std::nothrow) ComAttribute();
 	if (pRet && pRet->init())
@@ -196,7 +193,7 @@ bool ComAttribute::serialize(void* r)
 		{
 			filePath.assign(cocos2d::FileUtils::getInstance()->fullPathForFilename(file));
 		}
-		if (parse(filePath))
+		if (parse(filePath.c_str()))
 		{
             ret = true;
 		}

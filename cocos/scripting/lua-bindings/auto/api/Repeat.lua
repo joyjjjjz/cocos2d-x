@@ -13,14 +13,6 @@
 -- @return Repeat#Repeat self (return value: cc.Repeat)
         
 --------------------------------
---  initializes a Repeat action. Times is an unsigned integer between 1 and pow(2,30) 
--- @function [parent=#Repeat] initWithAction 
--- @param self
--- @param #cc.FiniteTimeAction pAction
--- @param #unsigned int times
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 --  Gets the inner action.<br>
 -- return The inner action.
 -- @function [parent=#Repeat] getInnerAction 
@@ -75,11 +67,5 @@
 -- @function [parent=#Repeat] isDone 
 -- @param self
 -- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
--- @function [parent=#Repeat] Repeat 
--- @param self
--- @return Repeat#Repeat self (return value: cc.Repeat)
         
 return nil

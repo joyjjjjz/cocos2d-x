@@ -3,379 +3,376 @@
 
 USING_NS_CC;
 
+enum {
+    kTagTextLayer = 1,
+
+    kTagBackground = 1,
+    kTagLabel = 2,
+};
+
+static std::string effectsList[] =
+{
+    "Shaky3D",
+    "Waves3D",
+    "FlipX3D",
+    "FlipY3D",
+    "Lens3D",
+    "Ripple3D",
+    "Liquid",
+    "Waves",
+    "Twirl",
+    "ShakyTiles3D",
+    "ShatteredTiles3D",
+    "ShuffleTiles",
+    "FadeOutTRTiles",
+    "FadeOutBLTiles",
+    "FadeOutUpTiles",
+    "FadeOutDownTiles",
+    "TurnOffTiles",
+    "WavesTiles3D",
+    "JumpTiles3D",
+    "SplitRows",
+    "SplitCols",
+    "PageTurn3D",
+}; 
+
 EffectTests::EffectTests()
 {
-    ADD_TEST_CASE(Shaky3DDemo);
-    ADD_TEST_CASE(Waves3DDemo);
-    ADD_TEST_CASE(FlipX3DDemo);
-    ADD_TEST_CASE(FlipY3DDemo);
-    ADD_TEST_CASE(Lens3DDemo);
-    ADD_TEST_CASE(Ripple3DDemo);
-    ADD_TEST_CASE(LiquidDemo);
-    ADD_TEST_CASE(WavesDemo);
-    ADD_TEST_CASE(TwirlDemo);
-    ADD_TEST_CASE(ShakyTiles3DDemo);
-    ADD_TEST_CASE(ShatteredTiles3DDemo);
-    ADD_TEST_CASE(ShuffleTilesDemo);
-    ADD_TEST_CASE(FadeOutTRTilesDemo);
-    ADD_TEST_CASE(FadeOutBLTilesDemo);
-    ADD_TEST_CASE(FadeOutUpTilesDemo);
-    ADD_TEST_CASE(FadeOutDownTilesDemo);
-    ADD_TEST_CASE(TurnOffTilesDemo);
-    ADD_TEST_CASE(WavesTiles3DDemo);
-    ADD_TEST_CASE(JumpTiles3DDemo);
-    ADD_TEST_CASE(SplitRowsDemo);
-    ADD_TEST_CASE(SplitColsDemo);
-    ADD_TEST_CASE(PageTurn3DDemo);
-    ADD_TEST_CASE(PageTurn3DRectDemo);
+    int index = 0;
+    for (auto& effectName : effectsList)
+    {
+        addTestCase(effectName, [index](){return EffectBaseTest::create(index); });
+        index++;
+    }
 }
 
-Shaky3DDemo::Shaky3DDemo()
+class Shaky3DDemo : public Shaky3D 
 {
-    _title = "Shaky3D";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return Shaky3D::create(t, Size(15,10), 5, false);
+    }
+};
 
-cocos2d::ActionInterval* Shaky3DDemo::createEffect(float t)
+class Waves3DDemo : public Waves3D 
 {
-    return Shaky3D::create(t, Size(15,10), 5, false);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return Waves3D::create(t, Size(15,10), 5, 40);
+    }
+};
 
-Waves3DDemo::Waves3DDemo()
+class FlipX3DDemo : public FlipX3D 
 {
-    _title = "Waves3D";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto flipx  = FlipX3D::create(t);
+        auto flipx_back = flipx->reverse();
+        auto delay = DelayTime::create(2);
+        
+        return Sequence::create(flipx, delay, flipx_back, nullptr);
+    }
+};
 
-cocos2d::ActionInterval* Waves3DDemo::createEffect(float t)
+class FlipY3DDemo : public FlipY3D 
 {
-    return Waves3D::create(t, Size(15,10), 5, 40);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto flipy  = FlipY3D::create(t);
+        auto flipy_back = flipy->reverse();
+        auto delay = DelayTime::create(2);
+        
+        return Sequence::create(flipy, delay, flipy_back, nullptr);
+    }
+};
 
-cocos2d::ActionInterval* FlipX3DDemo::createEffect(float t)
+class Lens3DDemo : public Lens3D 
 {
-    auto flipx  = FlipX3D::create(t);
-    auto flipx_back = flipx->reverse();
-    auto delay = DelayTime::create(2);
-    return Sequence::create(flipx, delay, flipx_back, nullptr);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto size = Director::getInstance()->getWinSize();
+        return Lens3D::create(t, Size(15,10), Vec2(size.width/2,size.height/2), 240); 
+    }
+};
 
-FlipX3DDemo::FlipX3DDemo()
-{
-    _title = "FlipX3D";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* FlipY3DDemo::createEffect(float t)
+class Ripple3DDemo : public Ripple3D 
 {
-    auto flipy  = FlipY3D::create(t);
-    auto flipy_back = flipy->reverse();
-    auto delay = DelayTime::create(2);
-    
-    return Sequence::create(flipy, delay, flipy_back, nullptr);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto size = Director::getInstance()->getWinSize();
+        return Ripple3D::create(t, Size(32,24), Vec2(size.width/2,size.height/2), 240, 4, 160);
+    }
+};
 
-FlipY3DDemo::FlipY3DDemo()
-{
-    _title = "FlipY3D";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* Lens3DDemo::createEffect(float t)
+class LiquidDemo : public Liquid
 {
-    auto size = Director::getInstance()->getWinSize();
-    return Lens3D::create(t, Size(15,10), Vec2(size.width/2,size.height/2), 240);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return Liquid::create(t, Size(16,12), 4, 20); 
+    }
+};
 
-Lens3DDemo::Lens3DDemo()
-{
-    _title = "Lens3D";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* Ripple3DDemo::createEffect(float t)
+class WavesDemo : public Waves 
 {
-    auto size = Director::getInstance()->getWinSize();
-    return Ripple3D::create(t, Size(32,24), Vec2(size.width/2,size.height/2), 240, 4, 160);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return Waves::create(t, Size(16,12), 4, 20, true, true);  
+    }
+};
 
-Ripple3DDemo::Ripple3DDemo()
-{
-    _title = "Ripple3D";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* LiquidDemo::createEffect(float t)
+class TwirlDemo : public Twirl 
 {
-    return Liquid::create(t, Size(16,12), 4, 20);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto size = Director::getInstance()->getWinSize();
+        return Twirl::create(t, Size(12,8), Vec2(size.width/2, size.height/2), 1, 2.5f); 
+    }
+};
 
-LiquidDemo::LiquidDemo()
-{
-    _title = "Liquid";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* WavesDemo::createEffect(float t)
+class ShakyTiles3DDemo : public ShakyTiles3D
 {
-    return Waves::create(t, Size(16,12), 4, 20, true, true);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return ShakyTiles3D::create(t, Size(16,12), 5, false) ;
+    }
+};
 
-WavesDemo::WavesDemo()
-{
-    _title = "Waves";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* TwirlDemo::createEffect(float t)
+class ShatteredTiles3DDemo : public ShatteredTiles3D
 {
-    auto size = Director::getInstance()->getWinSize();
-    return Twirl::create(t, Size(12,8), Vec2(size.width/2, size.height/2), 1, 2.5f);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return ShatteredTiles3D::create(t, Size(16,12), 5, false); 
+    }
+};
 
-TwirlDemo::TwirlDemo()
-{
-    _title = "Twirl";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* ShakyTiles3DDemo::createEffect(float t)
+class ShuffleTilesDemo : public ShuffleTiles
 {
-    return ShakyTiles3D::create(t, Size(16,12), 5, false) ;
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto shuffle = ShuffleTiles::create(t, Size(16,12), 25);
+        auto shuffle_back = shuffle->reverse();
+        auto delay = DelayTime::create(2);
 
-ShakyTiles3DDemo::ShakyTiles3DDemo()
-{
-    _title = "ShakyTiles3D";
-    _subtitle = "";
-}
+        return Sequence::create(shuffle, delay, shuffle_back, nullptr);
+    }
+};
 
-cocos2d::ActionInterval* ShatteredTiles3DDemo::createEffect(float t)
-{
-    return ShatteredTiles3D::create(t, Size(16,12), 5, false);
-}
 
-ShatteredTiles3DDemo::ShatteredTiles3DDemo()
+class FadeOutTRTilesDemo : public FadeOutTRTiles
 {
-    _title = "ShatteredTiles3D";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto fadeout = FadeOutTRTiles::create(t, Size(16,12));
+        auto back = fadeout->reverse();
+        auto delay = DelayTime::create(0.5f);
 
-cocos2d::ActionInterval* ShuffleTilesDemo::createEffect(float t)
-{
-    auto shuffle = ShuffleTiles::create(t, Size(16,12), 25);
-    auto shuffle_back = shuffle->reverse();
-    auto delay = DelayTime::create(2);
-    
-    return Sequence::create(shuffle, delay, shuffle_back, nullptr);
-}
+        return Sequence::create(fadeout, delay, back, nullptr);
+    }
+};
 
-ShuffleTilesDemo::ShuffleTilesDemo()
-{
-    _title = "ShuffleTiles";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* FadeOutTRTilesDemo::createEffect(float t)
+class FadeOutBLTilesDemo : public FadeOutBLTiles
 {
-    auto fadeout = FadeOutTRTiles::create(t, Size(16,12));
-    auto back = fadeout->reverse();
-    auto delay = DelayTime::create(0.5f);
-    
-    return Sequence::create(fadeout, delay, back, nullptr);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto fadeout = FadeOutBLTiles::create(t, Size(16,12));
+        auto back = fadeout->reverse();
+        auto delay = DelayTime::create(0.5f);
 
-FadeOutTRTilesDemo::FadeOutTRTilesDemo()
-{
-    _title = "FadeOutTRTiles";
-    _subtitle = "";
-}
+        return Sequence::create(fadeout, delay, back, nullptr);
+    }
+};
 
-cocos2d::ActionInterval* FadeOutBLTilesDemo::createEffect(float t)
-{
-    auto fadeout = FadeOutBLTiles::create(t, Size(16,12));
-    auto back = fadeout->reverse();
-    auto delay = DelayTime::create(0.5f);
-    
-    return Sequence::create(fadeout, delay, back, nullptr);
-}
 
-FadeOutBLTilesDemo::FadeOutBLTilesDemo()
+class FadeOutUpTilesDemo : public FadeOutUpTiles
 {
-    _title = "FadeOutBLTiles";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto fadeout = FadeOutUpTiles::create(t, Size(16,12));
+        auto back = fadeout->reverse();
+        auto delay = DelayTime::create(0.5f);
 
-cocos2d::ActionInterval* FadeOutUpTilesDemo::createEffect(float t)
-{
-    auto fadeout = FadeOutUpTiles::create(t, Size(16,12));
-    auto back = fadeout->reverse();
-    auto delay = DelayTime::create(0.5f);
-    
-    return Sequence::create(fadeout, delay, back, nullptr);
-}
+        return Sequence::create(fadeout, delay, back, nullptr);
+    }
+};
 
-FadeOutUpTilesDemo::FadeOutUpTilesDemo()
+class FadeOutDownTilesDemo : public FadeOutDownTiles
 {
-    _title = "FadeOutUpTiles";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto fadeout = FadeOutDownTiles::create(t, Size(16,12));
+        auto back = fadeout->reverse();
+        auto delay = DelayTime::create(0.5f);
 
-cocos2d::ActionInterval* FadeOutDownTilesDemo::createEffect(float t)
-{
-    auto fadeout = FadeOutDownTiles::create(t, Size(16,12));
-    auto back = fadeout->reverse();
-    auto delay = DelayTime::create(0.5f);
-    
-    return Sequence::create(fadeout, delay, back, nullptr);
-}
+        return Sequence::create(fadeout, delay, back, nullptr);
+    }
+};
 
-FadeOutDownTilesDemo::FadeOutDownTilesDemo()
+class TurnOffTilesDemo : public TurnOffTiles
 {
-    _title = "FadeOutDownTiles";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        auto fadeout = TurnOffTiles::create(t, Size(48,32), 25);
+        auto back = fadeout->reverse();
+        auto delay = DelayTime::create(0.5f);
 
-cocos2d::ActionInterval* TurnOffTilesDemo::createEffect(float t)
-{
-    auto fadeout = TurnOffTiles::create(t, Size(48,32), 25);
-    auto back = fadeout->reverse();
-    auto delay = DelayTime::create(0.5f);
-    
-    return Sequence::create(fadeout, delay, back, nullptr);
-}
+        return Sequence::create(fadeout, delay, back, nullptr);
+    }
+};
 
-TurnOffTilesDemo::TurnOffTilesDemo()
+class WavesTiles3DDemo : public WavesTiles3D
 {
-    _title = "TurnOffTiles";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return WavesTiles3D::create(t, Size(15,10), 4, 120); 
+    }
+};
 
-cocos2d::ActionInterval* WavesTiles3DDemo::createEffect(float t)
+class JumpTiles3DDemo : public JumpTiles3D
 {
-    return WavesTiles3D::create(t, Size(15,10), 4, 120);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return JumpTiles3D::create(t, Size(15,10), 2, 30); 
+    }
+};
 
-WavesTiles3DDemo::WavesTiles3DDemo()
+class SplitRowsDemo : public SplitRows
 {
-    _title = "WavesTiles3D";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return SplitRows::create(t, 9); 
+    }
+};
 
-cocos2d::ActionInterval* JumpTiles3DDemo::createEffect(float t)
+class SplitColsDemo : public SplitCols
 {
-    return JumpTiles3D::create(t, Size(15,10), 2, 30);
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return SplitCols::create(t, 9); 
+    }
+};
 
-JumpTiles3DDemo::JumpTiles3DDemo()
+class PageTurn3DDemo : public PageTurn3D
 {
-    _title = "JumpTiles3D";
-    _subtitle = "";
-}
+public:
+    static ActionInterval* create(float t)
+    {
+        return PageTurn3D::create(t, Size(15,10)); 
+    }
+};
 
-cocos2d::ActionInterval* SplitRowsDemo::createEffect(float t)
-{
-    return SplitRows::create(t, 9);
-}
+//------------------------------------------------------------------
+//
+// EffectBaseTest
+//
+//------------------------------------------------------------------
 
-SplitRowsDemo::SplitRowsDemo()
+ActionInterval* createEffect(int nIndex, float t)
 {
-    _title = "SplitRows";
-    _subtitle = "";
-}
 
-cocos2d::ActionInterval* SplitColsDemo::createEffect(float t)
-{
-    return SplitCols::create(t, 9);
-}
+    Director::getInstance()->setDepthTest(false);
 
-SplitColsDemo::SplitColsDemo()
-{
-    _title = "SplitCols";
-    _subtitle = "";
-}
+    switch(nIndex)
+    {
+        case 0: return Shaky3DDemo::create(t);
+        case 1: return Waves3DDemo::create(t);
+        case 2: return FlipX3DDemo::create(t);
+        case 3: return FlipY3DDemo::create(t);
+        case 4: return Lens3DDemo::create(t);
+        case 5: return Ripple3DDemo::create(t);
+        case 6: return LiquidDemo::create(t);
+        case 7: return WavesDemo::create(t);
+        case 8: return TwirlDemo::create(t);
+        case 9: return ShakyTiles3DDemo::create(t);
+        case 10: return ShatteredTiles3DDemo::create(t);
+        case 11: return ShuffleTilesDemo::create(t);
+        case 12: return FadeOutTRTilesDemo::create(t);
+        case 13: return FadeOutBLTilesDemo::create(t);
+        case 14: return FadeOutUpTilesDemo::create(t);
+        case 15: return FadeOutDownTilesDemo::create(t);
+        case 16: return TurnOffTilesDemo::create(t);
+        case 17: return WavesTiles3DDemo::create(t);
+        case 18: return JumpTiles3DDemo::create(t);
+        case 19: return SplitRowsDemo::create(t);
+        case 20: return SplitColsDemo::create(t);
+        case 21: return PageTurn3DDemo::create(t);
+    }
 
-cocos2d::ActionInterval* PageTurn3DDemo::createEffect(float t)
-{
-    return PageTurn3D::create(t, Size(15,10));
-}
-
-PageTurn3DDemo::PageTurn3DDemo()
-{
-    _title = "PageTurn3D";
-    _subtitle = "";
-}
-
-cocos2d::ActionInterval* PageTurn3DRectDemo::createEffect(float t)
-{
-    return PageTurn3D::create(t, Size(15,10));
-}
-
-PageTurn3DRectDemo::PageTurn3DRectDemo()
-{
-    _title = "PageTurn3D-Rect";
-    _subtitle = "";
+    return nullptr;
 }
 
 #define SID_RESTART        1
 
-EffectBaseTest::EffectBaseTest()
-: _gridNodeTarget(nullptr)
+EffectBaseTest::EffectBaseTest(int actionIdx)
 {
+	LayerColor *background = LayerColor::create( Color4B(32,128,32,255) );
+	this->addChild(background,-20);
     
-}
+    _gridNodeTarget = NodeGrid::create();
+    auto effect = createEffect(actionIdx, 3); 
+    _gridNodeTarget->runAction(effect);
+    addChild(_gridNodeTarget, 0, kTagBackground);
+    
+    auto bg = Sprite::create(s_back3);
+    _gridNodeTarget->addChild(bg, 0);
+    bg->setPosition(VisibleRect::center());
 
-bool EffectBaseTest::init()
-{
-    if(TestCase::init())
-    {
-        LayerColor *background = LayerColor::create( Color4B(32,128,32,255) );
-        this->addChild(background,-20);
-        if(isRectEffect())
-        {
-            Size visibleSize = Director::getInstance()->getVisibleSize();
-            Rect gridRect = Rect(visibleSize.width * 0.2,
-                                 visibleSize.height * 0.2,
-                                 visibleSize.width * 0.6,
-                                 visibleSize.height * 0.6);
-            _gridNodeTarget = NodeGrid::create(gridRect);
-        }
-        else
-        {
-            _gridNodeTarget = NodeGrid::create();
-        }
-        addChild(_gridNodeTarget, 0);
-        _gridNodeTarget->runAction(createEffect(3));
-        
-        auto bg = Sprite::create(s_back3);
-        _gridNodeTarget->addChild(bg, 0);
-        bg->setPosition(VisibleRect::center());
-        
-        auto grossini = Sprite::create(s_pathSister2);
-        _gridNodeTarget->addChild(grossini, 1);
-        grossini->setPosition(VisibleRect::left().x+VisibleRect::getVisibleRect().size.width/3,VisibleRect::center().y);
-        auto sc = ScaleBy::create(2, 5);
-        auto sc_back = sc->reverse();
-        grossini->runAction( RepeatForever::create(Sequence::create(sc, sc_back, nullptr) ) );
-        
-        auto tamara = Sprite::create(s_pathSister1);
-        _gridNodeTarget->addChild(tamara, 1);
-        tamara->setPosition(VisibleRect::left().x+2*VisibleRect::getVisibleRect().size.width/3,VisibleRect::center().y);
-        auto sc2 = ScaleBy::create(2, 5);
-        auto sc2_back = sc2->reverse();
-        tamara->runAction( RepeatForever::create(Sequence::create(sc2, sc2_back, nullptr)) );
-        
-        schedule( CC_SCHEDULE_SELECTOR(EffectBaseTest::checkAnim) );
-        
-        return true;
-    }
-    return false;
+    auto grossini = Sprite::create(s_pathSister2);
+    _gridNodeTarget->addChild(grossini, 1);
+    grossini->setPosition(VisibleRect::left().x+VisibleRect::getVisibleRect().size.width/3,VisibleRect::center().y);
+    auto sc = ScaleBy::create(2, 5);
+    auto sc_back = sc->reverse();
+    grossini->runAction( RepeatForever::create(Sequence::create(sc, sc_back, nullptr) ) );
+
+    auto tamara = Sprite::create(s_pathSister1);
+    _gridNodeTarget->addChild(tamara, 1);
+    tamara->setPosition(VisibleRect::left().x+2*VisibleRect::getVisibleRect().size.width/3,VisibleRect::center().y);
+    auto sc2 = ScaleBy::create(2, 5);
+    auto sc2_back = sc2->reverse();
+    tamara->runAction( RepeatForever::create(Sequence::create(sc2, sc2_back, nullptr)) );
+    
+    auto label = Label::createWithTTF((effectsList[actionIdx]).c_str(), "fonts/Marker Felt.ttf", 32);
+    
+    label->setPosition(VisibleRect::center().x,VisibleRect::top().y-80);
+    addChild(label);
+    label->setTag( kTagLabel );
+    
+    schedule( CC_SCHEDULE_SELECTOR(EffectBaseTest::checkAnim) );
 }
 
 void EffectBaseTest::checkAnim(float dt)
 {
+    //auto s2 = getChildByTag(kTagBackground);
     if ( _gridNodeTarget->getNumberOfRunningActions() == 0 && _gridNodeTarget->getGrid() != nullptr)
-        _gridNodeTarget->setGrid(nullptr);
+        _gridNodeTarget->setGrid(nullptr);;
 }
 
 EffectBaseTest::~EffectBaseTest(void)

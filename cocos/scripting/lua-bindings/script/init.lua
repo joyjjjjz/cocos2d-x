@@ -1,6 +1,6 @@
 --[[
 
-Copyright (c) 2014-2017 Chukong Technologies Inc.
+Copyright (c) 2011-2015 chukong-incc.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +92,7 @@ require "cocos.network.DeprecatedNetworkClass"
 require "cocos.network.DeprecatedNetworkEnum"
 require "cocos.network.DeprecatedNetworkFunc"
 
--- register_ui_module
+-- register_ui_moudle
 if nil ~= ccui then
     require "cocos.ui.DeprecatedUIEnum"
     require "cocos.ui.DeprecatedUIFunc"
@@ -100,9 +100,6 @@ end
 
 -- cocosbuilder
 require "cocos.cocosbuilder.CCBReaderLoad"
-
--- physics3d
-require "cocos.physics3d.physics3d-constants"
 
 if CC_USE_FRAMEWORK then
     require "cocos.framework.init"

@@ -1,7 +1,7 @@
 
 --------------------------------
 -- @module ParticleSystem
--- @extend Node,TextureProtocol,PlayableProtocol
+-- @extend Node,TextureProtocol
 -- @parent_module cc
 
 --------------------------------
@@ -130,17 +130,11 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
---  Gets the gravity.<br>
+--  Gets the garvity.<br>
 -- return The gravity.
 -- @function [parent=#ParticleSystem] getGravity 
 -- @param self
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
-        
---------------------------------
--- 
--- @function [parent=#ParticleSystem] resumeEmissions 
--- @param self
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
 --  Gets the tangential acceleration.<br>
@@ -163,12 +157,6 @@
 -- @function [parent=#ParticleSystem] getSpeed 
 -- @param self
 -- @return float#float ret (return value: float)
-        
---------------------------------
--- 
--- @function [parent=#ParticleSystem] pauseEmissions 
--- @param self
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
 --  Gets the angle of each particle. <br>
@@ -202,20 +190,6 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
---  Initializes a system with a fixed number of particles
--- @function [parent=#ParticleSystem] initWithTotalParticles 
--- @param self
--- @param #int numberOfParticles
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
--- @function [parent=#ParticleSystem] addParticles 
--- @param self
--- @param #int count
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
-        
---------------------------------
 -- 
 -- @function [parent=#ParticleSystem] setTexture 
 -- @param self
@@ -230,7 +204,7 @@
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
         
 --------------------------------
---  Call the update method with no time..
+--  Call the update mathod with no time..
 -- @function [parent=#ParticleSystem] updateWithNoTime 
 -- @param self
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
@@ -259,7 +233,7 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
--- 
+--  Stop emitting particles. Running particles will continue to run until they die.
 -- @function [parent=#ParticleSystem] stopSystem 
 -- @param self
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
@@ -393,12 +367,6 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
--- 
--- @function [parent=#ParticleSystem] getResourceFile 
--- @param self
--- @return string#string ret (return value: string)
-        
---------------------------------
 --  Gets the number of degrees to rotate a particle around the source pos per second.<br>
 -- return The number of degrees to rotate a particle around the source pos per second.
 -- @function [parent=#ParticleSystem] getRotatePerSecond 
@@ -426,19 +394,6 @@
 -- @function [parent=#ParticleSystem] setSourcePosition 
 -- @param self
 -- @param #vec2_table pos
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
-        
---------------------------------
--- 
--- @function [parent=#ParticleSystem] stop 
--- @param self
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
-        
---------------------------------
---  Update the verts position data of particle,<br>
--- should be overridden by subclasses. 
--- @function [parent=#ParticleSystem] updateParticleQuads 
--- @param self
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
@@ -478,12 +433,6 @@
 -- @function [parent=#ParticleSystem] setRotationIsDir 
 -- @param self
 -- @param #bool t
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
-        
---------------------------------
--- / @{/ @name implement Playable Protocol
--- @function [parent=#ParticleSystem] start 
--- @param self
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
@@ -535,16 +484,6 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
---  initializes a ParticleSystem from a plist file.<br>
--- This plist files can be created manually or with Particle Designer:<br>
--- http:particledesigner.71squared.com/<br>
--- since v0.99.3
--- @function [parent=#ParticleSystem] initWithFile 
--- @param self
--- @param #string plistFile
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 --  Gets the angle variance of each particle.<br>
 -- return The angle variance of each particle.
 -- @function [parent=#ParticleSystem] getAngleVar 
@@ -579,13 +518,6 @@
 -- @function [parent=#ParticleSystem] getLife 
 -- @param self
 -- @return float#float ret (return value: float)
-        
---------------------------------
---  Are the emissions paused<br>
--- return True if the emissions are paused, else false
--- @function [parent=#ParticleSystem] isPaused 
--- @param self
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 --  Sets the speed variance.<br>
@@ -670,6 +602,14 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
+--  Add a particle to the emitter.<br>
+-- return True if add success.<br>
+-- js ctor
+-- @function [parent=#ParticleSystem] addParticle 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
 --  Gets the start radius.<br>
 -- return The start radius.
 -- @function [parent=#ParticleSystem] getStartRadius 
@@ -721,15 +661,6 @@
 -- @param #float t
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
---------------------------------
--- @overload self, map_table, string         
--- @overload self, map_table         
--- @function [parent=#ParticleSystem] initWithDictionary
--- @param self
--- @param #map_table dictionary
--- @param #string dirname
--- @return bool#bool ret (return value: bool)
-
 --------------------------------
 --  Whether or not the particle system removed self on finish.<br>
 -- return True if the particle system removed self on finish.
@@ -800,12 +731,6 @@
 -- @return ParticleSystem#ParticleSystem ret (return value: cc.ParticleSystem)
         
 --------------------------------
---  Gets all ParticleSystem references
--- @function [parent=#ParticleSystem] getAllParticleSystems 
--- @param self
--- @return array_table#array_table ret (return value: array_table)
-        
---------------------------------
 -- 
 -- @function [parent=#ParticleSystem] setScaleY 
 -- @param self
@@ -847,22 +772,10 @@
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 --------------------------------
---  initializes a ParticleSystem
--- @function [parent=#ParticleSystem] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 -- 
 -- @function [parent=#ParticleSystem] setRotation 
 -- @param self
 -- @param #float newRotation
--- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
-        
---------------------------------
--- js ctor
--- @function [parent=#ParticleSystem] ParticleSystem 
--- @param self
 -- @return ParticleSystem#ParticleSystem self (return value: cc.ParticleSystem)
         
 return nil

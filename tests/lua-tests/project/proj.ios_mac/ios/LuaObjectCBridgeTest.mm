@@ -1,8 +1,8 @@
 #import "LuaObjectCBridgeTest.h"
 
 #include "cocos2d.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
-#include "scripting/lua-bindings/manual/CCLuaBridge.h"
+#include "CCLuaEngine.h"
+#include "CCLuaBridge.h"
 
 using namespace cocos2d;
 

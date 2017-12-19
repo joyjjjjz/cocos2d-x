@@ -1,14 +1,13 @@
 
-#include "scripting/lua-bindings/manual/platform/android/CCLuaJavaBridge.h"
+#include "CCLuaJavaBridge.h"
 #include "platform/android/jni/JniHelper.h"
 #include <android/log.h>
-#include "base/ccUTF8.h"
 
 #define  LOG_TAG    "luajc"
 #define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
 
 extern "C" {
-#include "scripting/lua-bindings/manual/tolua_fix.h"
+#include "tolua_fix.h"
 }
 
 LuaJavaBridge::CallInfo::~CallInfo(void)
@@ -40,18 +39,11 @@ bool LuaJavaBridge::CallInfo::execute(void)
             break;
 
         case TypeString:
-        {
             m_retjs = (jstring)m_env->CallStaticObjectMethod(m_classID, m_methodID);
-            bool bValidStr = true;
-            std::string strValue = cocos2d::StringUtils::getStringUTFCharsJNI(m_env, m_retjs, &bValidStr);
-            m_ret.stringValue = (false == bValidStr) ? nullptr : new string(strValue);
+            const char *stringBuff = m_env->GetStringUTFChars(m_retjs, 0);
+            m_ret.stringValue = new string(stringBuff);
+            m_env->ReleaseStringUTFChars(m_retjs, stringBuff);
            break;
-        }
-
-        default:
-            m_error = LUAJ_ERR_TYPE_NOT_SUPPORT;
-            LOGD("Return type '%d' is not supported", static_cast<int>(m_returnType));
-            return false;
     }
 
 	if (m_env->ExceptionCheck() == JNI_TRUE)
@@ -87,18 +79,11 @@ bool LuaJavaBridge::CallInfo::executeWithArgs(jvalue *args)
              break;
 
          case TypeString:
-        {
-       		m_retjs = (jstring)m_env->CallStaticObjectMethodA(m_classID, m_methodID, args);
-        	bool bValidStr = true;
-            	std::string strValue = cocos2d::StringUtils::getStringUTFCharsJNI(m_env, m_retjs, &bValidStr);
-            	m_ret.stringValue = (false == bValidStr) ? nullptr : new string(strValue);
+        	 m_retjs = (jstring)m_env->CallStaticObjectMethodA(m_classID, m_methodID, args);
+			 const char *stringBuff = m_env->GetStringUTFChars(m_retjs, 0);
+			 m_ret.stringValue = new string(stringBuff);
+			 m_env->ReleaseStringUTFChars(m_retjs, stringBuff);
             break;
-        }
-
-        default:
-            m_error = LUAJ_ERR_TYPE_NOT_SUPPORT;
-            LOGD("Return type '%d' is not supported", static_cast<int>(m_returnType));
-            return false;
      }
 
 	if (m_env->ExceptionCheck() == JNI_TRUE)
@@ -132,14 +117,8 @@ int LuaJavaBridge::CallInfo::pushReturnValue(lua_State *L)
 			lua_pushboolean(L, m_ret.boolValue);
 			return 1;
 		case TypeString:
-			if(m_ret.stringValue == nullptr){
-				lua_pushnil(L);
-			}else{
-				lua_pushstring(L, m_ret.stringValue->c_str());
-			}
+			lua_pushstring(L, m_ret.stringValue->c_str());
 			return 1;
-        default:
-            break;
 	}
 
 	return 0;
@@ -370,7 +349,7 @@ int LuaJavaBridge::callJavaStaticMethod(lua_State *L)
 	return 1 + call.pushReturnValue(L);
 }
 
-// increase lua function reference counter, return counter
+// increase lua function refernece counter, return counter
 int LuaJavaBridge::retainLuaFunctionById(int functionId)
 {
     lua_State *L = s_luaState;

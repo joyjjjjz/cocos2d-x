@@ -18,7 +18,7 @@
 #include <string.h>
 #include <assert.h>
 #include <cstdint>
-#include "base/pvr.h"
+#include "pvr.h"
 
 #define PVRT_MIN(a,b)            (((a) < (b)) ? (a) : (b))
 #define PVRT_MAX(a,b)            (((a) > (b)) ? (a) : (b))

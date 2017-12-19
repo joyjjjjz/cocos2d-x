@@ -5,11 +5,17 @@
 -- @parent_module cc
 
 --------------------------------
--- 
--- @function [parent=#ActionInstant] startWithTarget 
+-- param dt In seconds.
+-- @function [parent=#ActionInstant] step 
 -- @param self
--- @param #cc.Node target
+-- @param #float dt
 -- @return ActionInstant#ActionInstant self (return value: cc.ActionInstant)
+        
+--------------------------------
+-- 
+-- @function [parent=#ActionInstant] clone 
+-- @param self
+-- @return ActionInstant#ActionInstant ret (return value: cc.ActionInstant)
         
 --------------------------------
 -- 
@@ -19,9 +25,9 @@
         
 --------------------------------
 -- 
--- @function [parent=#ActionInstant] clone 
+-- @function [parent=#ActionInstant] isDone 
 -- @param self
--- @return ActionInstant#ActionInstant ret (return value: cc.ActionInstant)
+-- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- param time In seconds.
@@ -29,18 +35,5 @@
 -- @param self
 -- @param #float time
 -- @return ActionInstant#ActionInstant self (return value: cc.ActionInstant)
-        
---------------------------------
--- param dt In seconds.
--- @function [parent=#ActionInstant] step 
--- @param self
--- @param #float dt
--- @return ActionInstant#ActionInstant self (return value: cc.ActionInstant)
-        
---------------------------------
--- 
--- @function [parent=#ActionInstant] isDone 
--- @param self
--- @return bool#bool ret (return value: bool)
         
 return nil

@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -50,18 +50,21 @@ class CC_DLL Timer : public Ref
 protected:
     Timer();
 public:
-    void setupTimerWithInterval(float seconds, unsigned int repeat, float delay);
-    void setAborted() { _aborted = true; }
-    bool isAborted() const { return _aborted; }
-    bool isExhausted() const;
+    /** get interval in seconds */
+    inline float getInterval() const { return _interval; };
+    /** set interval in seconds */
+    inline void setInterval(float interval) { _interval = interval; };
     
-    virtual void trigger(float dt) = 0;
+    void setupTimerWithInterval(float seconds, unsigned int repeat, float delay);
+    
+    virtual void trigger() = 0;
     virtual void cancel() = 0;
     
     /** triggers the timer */
     void update(float dt);
     
 protected:
+    
     Scheduler* _scheduler; // weak ref
     float _elapsed;
     bool _runForever;
@@ -70,7 +73,6 @@ protected:
     unsigned int _repeat; //0 = once, 1 is 2 x executed
     float _delay;
     float _interval;
-    bool _aborted;
 };
 
 
@@ -82,9 +84,9 @@ public:
     /** Initializes a timer with a target, a selector and an interval in seconds, repeat in number of times to repeat, delay in seconds. */
     bool initWithSelector(Scheduler* scheduler, SEL_SCHEDULE selector, Ref* target, float seconds, unsigned int repeat, float delay);
     
-    SEL_SCHEDULE getSelector() const { return _selector; }
+    inline SEL_SCHEDULE getSelector() const { return _selector; };
     
-    virtual void trigger(float dt) override;
+    virtual void trigger() override;
     virtual void cancel() override;
     
 protected:
@@ -101,10 +103,10 @@ public:
     // Initializes a timer with a target, a lambda and an interval in seconds, repeat in number of times to repeat, delay in seconds.
     bool initWithCallback(Scheduler* scheduler, const ccSchedulerFunc& callback, void *target, const std::string& key, float seconds, unsigned int repeat, float delay);
     
-    const ccSchedulerFunc& getCallback() const { return _callback; }
-    const std::string& getKey() const { return _key; }
+    inline const ccSchedulerFunc& getCallback() const { return _callback; };
+    inline const std::string& getKey() const { return _key; };
     
-    virtual void trigger(float dt) override;
+    virtual void trigger() override;
     virtual void cancel() override;
     
 protected:
@@ -119,9 +121,9 @@ class CC_DLL TimerScriptHandler : public Timer
 {
 public:
     bool initWithScriptHandler(int handler, float seconds);
-    int getScriptHandler() const { return _scriptHandler; }
+    inline int getScriptHandler() const { return _scriptHandler; };
     
-    virtual void trigger(float dt) override;
+    virtual void trigger() override;
     virtual void cancel() override;
     
 private:
@@ -194,7 +196,7 @@ public:
      * Gets the time scale of schedule callbacks.
      * @see Scheduler::setTimeScale()
      */
-    float getTimeScale() { return _timeScale; }
+    inline float getTimeScale() { return _timeScale; }
     /** Modifies the time of all scheduled callbacks.
     You can use this property to create a 'slow motion' or 'fast forward' effect.
     Default is 1.0. To create a 'slow motion' effect, use values below 1.0.
@@ -202,7 +204,7 @@ public:
     @since v0.8
     @warning It will affect EVERY scheduled selector / action.
     */
-    void setTimeScale(float timeScale) { _timeScale = timeScale; }
+    inline void setTimeScale(float timeScale) { _timeScale = timeScale; }
 
     /** 'update' the scheduler.
      * You should NEVER call this method, unless you know what you are doing.
@@ -309,7 +311,7 @@ public:
     void unschedule(const std::string& key, void *target);
 
     /** Unschedules a selector for a given target.
-     If you want to unschedule the "update", use `unscheduleUpdate()`.
+     If you want to unschedule the "update", use `unscheudleUpdate()`.
      @param selector The selector that is unscheduled.
      @param target The target of the unscheduled selector.
      @since v3.0
@@ -363,15 +365,15 @@ public:
      @return True if the specified callback is invoked, false if not.
      @since v3.0.0
      */
-    bool isScheduled(const std::string& key, const void *target) const;
+    bool isScheduled(const std::string& key, void *target);
     
-    /** Checks whether a selector for a given target is scheduled.
+    /** Checks whether a selector for a given taget is scheduled.
      @param selector The selector to be checked.
      @param target The target of the callback.
      @return True if the specified selector is invoked, false if not.
      @since v3.0
      */
-    bool isScheduled(SEL_SCHEDULE selector, const Ref *target) const;
+    bool isScheduled(SEL_SCHEDULE selector, Ref *target);
     
     /////////////////////////////////////
     
@@ -426,16 +428,7 @@ public:
      @since v3.0
      @js NA
      */
-    void performFunctionInCocosThread(std::function<void()> function);
-    
-    /**
-     * Remove all pending functions queued to be performed with Scheduler::performFunctionInCocosThread
-     * Functions unscheduled in this manner will not be executed
-     * This function is thread safe
-     * @since v3.14
-     * @js NA
-     */
-    void removeAllFunctionsToBePerformedInCocosThread();
+    void performFunctionInCocosThread( const std::function<void()> &function);
     
     /////////////////////////////////////
     
@@ -454,7 +447,7 @@ public:
     CC_DEPRECATED_ATTRIBUTE void scheduleSelector(SEL_SCHEDULE selector, Ref *target, float interval, unsigned int repeat, float delay, bool paused)
     {
         schedule(selector, target, interval, repeat, delay, paused);
-    }
+    };
     
     /** Calls scheduleSelector with CC_REPEAT_FOREVER and a 0 delay.
      *  @deprecated Please use `Scheduler::schedule` instead.
@@ -463,7 +456,7 @@ public:
     CC_DEPRECATED_ATTRIBUTE void scheduleSelector(SEL_SCHEDULE selector, Ref *target, float interval, bool paused)
     {
         schedule(selector, target, interval, paused);
-    }
+    };
     
     /** Schedules the 'update' selector for a given target with a given priority.
      The 'update' selector will be called every frame.
@@ -475,14 +468,14 @@ public:
     CC_DEPRECATED_ATTRIBUTE void scheduleUpdateForTarget(T* target, int priority, bool paused) { scheduleUpdate(target, priority, paused); };
     
     /** Unschedule a selector for a given target.
-     If you want to unschedule the "update", use unscheduleUpdateForTarget.
+     If you want to unschedule the "update", use unscheudleUpdateForTarget.
      @deprecated Please use 'Scheduler::unschedule' instead.
      @since v0.99.3
      @js NA
      */
     CC_DEPRECATED_ATTRIBUTE void unscheduleSelector(SEL_SCHEDULE selector, Ref *target) { unschedule(selector, target); };
     
-    /** Checks whether a selector for a given target is scheduled.
+    /** Checks whether a selector for a given taget is scheduled.
      @deprecated Please use 'Scheduler::isScheduled' instead.
      @since v0.99.3
      @js NA
@@ -524,7 +517,6 @@ protected:
     struct _listEntry *_updates0List;            // list priority == 0
     struct _listEntry *_updatesPosList;        // list priority > 0
     struct _hashUpdateEntry *_hashForUpdates; // hash used to fetch quickly the list entries for pause,delete,etc
-    std::vector<struct _listEntry *> _updateDeleteVector; // the vector holds list entries that needs to be deleted after update
 
     // Used for "selectors with interval"
     struct _hashSelectorEntry *_hashForTimers;

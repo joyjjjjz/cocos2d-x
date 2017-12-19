@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2010-2012 cocos2d-x.org
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
 
  http://www.cocos2d-x.org
 
@@ -48,7 +48,7 @@ public:
     static GLViewImpl* create(const std::string& viewName);
 
     /** creates a GLViewImpl with a title name, a rect and the zoom factor */
-    static GLViewImpl* createWithRect(const std::string& viewName, const Rect& rect, float frameZoomFactor = 1.0f);
+    static GLViewImpl* createWithRect(const std::string& viewName, Rect rect, float frameZoomFactor = 1.0f);
 
     /** creates a GLViewImpl with a name in fullscreen mode */
     static GLViewImpl* createWithFullScreen(const std::string& viewName);
@@ -58,16 +58,16 @@ public:
     static int _depthFormat;
 
     /** sets the content scale factor */
-    virtual bool setContentScaleFactor(float contentScaleFactor) override;
+    bool setContentScaleFactor(float contentScaleFactor);
 
     /** returns the content scale factor */
-    virtual float getContentScaleFactor() const override;
+    float getContentScaleFactor() const;
 
     /** returns whether or not the view is in Retina Display mode */
-    virtual bool isRetinaDisplay() const override { return getContentScaleFactor() == 2.0; }
+    bool isRetinaDisplay() const { return getContentScaleFactor() == 2.0; }
 
     /** returns the objective-c CCEAGLView instance */
-    virtual void* getEAGLView() const override { return _eaglview; }
+    void* getEAGLView() const { return _eaglview; }
 
     // overrides
     virtual bool isOpenGLReady() override;
@@ -80,7 +80,7 @@ protected:
     virtual ~GLViewImpl();
 
     bool initWithEAGLView(void* eaGLView);
-    bool initWithRect(const std::string& viewName, const Rect& rect, float frameZoomFactor);
+    bool initWithRect(const std::string& viewName, Rect rect, float frameZoomFactor);
     bool initWithFullScreen(const std::string& viewName);
 
     // the objective-c CCEAGLView instance

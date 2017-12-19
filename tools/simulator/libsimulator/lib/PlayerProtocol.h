@@ -12,11 +12,10 @@
 #include "PlayerTaskServiceProtocol.h"
 
 #include "ProjectConfig/ProjectConfig.h"
-#include "SimulatorExport.h"
 
 PLAYER_NS_BEGIN
 
-class CC_LIBSIM_DLL PlayerProtocol
+class PlayerProtocol
 {
 public:
     virtual ~PlayerProtocol();

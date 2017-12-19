@@ -1,6 +1,6 @@
 /* Copyright (c) 2012 Scott Lembcke and Howling Moon Software
  * Copyright (c) 2012 cocos2d-x.org
- * Copyright (c) 2013-2017 Chukong Technologies Inc.
+ * Copyright (c) 2013-2014 Chukong Technologies Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -76,6 +76,11 @@ static inline float v2fdot(const Vec2 &p0, const Vec2 &p1)
     return  p0.x * p1.x + p0.y * p1.y;
 }
 
+static inline Vec2 v2fforangle(float _a_)
+{
+    return v2f(cosf(_a_), sinf(_a_));
+}
+
 static inline Vec2 v2fnormalize(const Vec2 &p)
 {
     Vec2 r(p.x, p.y);
@@ -99,7 +104,7 @@ static inline Tex2F __t(const Vec2 &v)
 
 // implementation of DrawNode
 
-DrawNode::DrawNode(GLfloat lineWidth)
+DrawNode::DrawNode()
 : _vao(0)
 , _vbo(0)
 , _vaoGLPoint(0)
@@ -118,8 +123,6 @@ DrawNode::DrawNode(GLfloat lineWidth)
 , _dirty(false)
 , _dirtyGLPoint(false)
 , _dirtyGLLine(false)
-, _lineWidth(lineWidth)
-, _defaultLineWidth(lineWidth)
 {
     _blendFunc = BlendFunc::ALPHA_PREMULTIPLIED;
 }
@@ -150,9 +153,9 @@ DrawNode::~DrawNode()
     }
 }
 
-DrawNode* DrawNode::create(GLfloat defaultLineWidth)
+DrawNode* DrawNode::create()
 {
-    DrawNode* ret = new (std::nothrow) DrawNode(defaultLineWidth);
+    DrawNode* ret = new (std::nothrow) DrawNode();
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -221,7 +224,7 @@ bool DrawNode::init()
         // color
         glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_COLOR);
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, colors));
-        // texcoord
+        // texcood
         glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_TEX_COORD);
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
         
@@ -236,7 +239,7 @@ bool DrawNode::init()
         // color
         glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_COLOR);
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, colors));
-        // texcoord
+        // texcood
         glEnableVertexAttribArray(GLProgram::VERTEX_ATTRIB_TEX_COORD);
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
         
@@ -319,11 +322,12 @@ void DrawNode::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
     }
 }
 
-void DrawNode::onDraw(const Mat4 &transform, uint32_t /*flags*/)
+void DrawNode::onDraw(const Mat4 &transform, uint32_t flags)
 {
-    getGLProgramState()->apply(transform);
-    auto glProgram = this->getGLProgram();
-    glProgram->setUniformLocationWith1f(glProgram->getUniformLocation("u_alpha"), _displayedOpacity / 255.0);
+    auto glProgram = getGLProgram();
+    glProgram->use();
+    glProgram->setUniformsForBuiltins(transform);
+    
     GL::blendFunc(_blendFunc.src, _blendFunc.dst);
 
     if (_dirty)
@@ -346,7 +350,7 @@ void DrawNode::onDraw(const Mat4 &transform, uint32_t /*flags*/)
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, vertices));
         // color
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, colors));
-        // texcoord
+        // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
 
@@ -362,15 +366,12 @@ void DrawNode::onDraw(const Mat4 &transform, uint32_t /*flags*/)
     CHECK_GL_ERROR_DEBUG();
 }
 
-void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t /*flags*/)
+void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t flags)
 {
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_LENGTH_TEXTURE_COLOR);
     glProgram->use();
     glProgram->setUniformsForBuiltins(transform);
-    glProgram->setUniformLocationWith1f(glProgram->getUniformLocation("u_alpha"), _displayedOpacity / 255.0);
-
-    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
-
+    
     if (_dirtyGLLine)
     {
         glBindBuffer(GL_ARRAY_BUFFER, _vboGLLine);
@@ -389,11 +390,10 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t /*flags*/)
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, vertices));
         // color
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, colors));
-        // texcoord
+        // texcood
         glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, sizeof(V2F_C4B_T2F), (GLvoid *)offsetof(V2F_C4B_T2F, texCoords));
     }
-
-    glLineWidth(_lineWidth);
+    glLineWidth(2);
     glDrawArrays(GL_LINES, 0, _bufferCountGLLine);
     
     if (Configuration::getInstance()->supportsShareableVAO())
@@ -402,20 +402,17 @@ void DrawNode::onDrawGLLine(const Mat4 &transform, uint32_t /*flags*/)
     }
     
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1,_bufferCountGLLine);
-
     CHECK_GL_ERROR_DEBUG();
 }
 
-void DrawNode::onDrawGLPoint(const Mat4 &transform, uint32_t /*flags*/)
+void DrawNode::onDrawGLPoint(const Mat4 &transform, uint32_t flags)
 {
     auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_COLOR_TEXASPOINTSIZE);
     glProgram->use();
     glProgram->setUniformsForBuiltins(transform);
-    glProgram->setUniformLocationWith1f(glProgram->getUniformLocation("u_alpha"), _displayedOpacity / 255.0);
-
-    GL::blendFunc(_blendFunc.src, _blendFunc.dst);
-
+    
     if (_dirtyGLPoint)
     {
         glBindBuffer(GL_ARRAY_BUFFER, _vboGLPoint);
@@ -509,16 +506,16 @@ void DrawNode::drawRect(const Vec2 &origin, const Vec2 &destination, const Color
 
 void DrawNode::drawPoly(const Vec2 *poli, unsigned int numberOfPoints, bool closePolygon, const Color4F &color)
 {
-    unsigned int vertex_count;
+    unsigned int vertext_count;
     if(closePolygon)
     {
-        vertex_count = 2 * numberOfPoints;
-        ensureCapacityGLLine(vertex_count);
+        vertext_count = 2 * numberOfPoints;
+        ensureCapacityGLLine(vertext_count);
     }
     else
     {
-        vertex_count = 2 * (numberOfPoints - 1);
-        ensureCapacityGLLine(vertex_count);
+        vertext_count = 2 * (numberOfPoints - 1);
+        ensureCapacityGLLine(vertext_count);
     }
     
     V2F_C4B_T2F *point = (V2F_C4B_T2F*)(_bufferGLLine + _bufferCountGLLine);
@@ -541,7 +538,7 @@ void DrawNode::drawPoly(const Vec2 *poli, unsigned int numberOfPoints, bool clos
         *(point+1) = b;
     }
     
-    _bufferCountGLLine += vertex_count;
+    _bufferCountGLLine += vertext_count;
 }
 
 void DrawNode::drawCircle(const Vec2& center, float radius, float angle, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY, const Color4F &color)
@@ -769,7 +766,7 @@ void DrawNode::drawPolygon(const Vec2 *verts, int count, const Color4F &fillColo
 {
     CCASSERT(count >= 0, "invalid count value");
     
-    bool outline = (borderColor.a > 0.0f && borderWidth > 0.0f);
+    bool outline = (borderColor.a > 0.0 && borderWidth > 0.0);
     
     auto  triangle_count = outline ? (3*count - 2) : (count - 2);
     auto vertex_count = 3*triangle_count;
@@ -804,7 +801,7 @@ void DrawNode::drawPolygon(const Vec2 *verts, int count, const Color4F &fillColo
             Vec2 n1 = v2fnormalize(v2fperp(v2fsub(v1, v0)));
             Vec2 n2 = v2fnormalize(v2fperp(v2fsub(v2, v1)));
             
-            Vec2 offset = v2fmult(v2fadd(n1, n2), 1.0f / (v2fdot(n1, n2) + 1.0f));
+            Vec2 offset = v2fmult(v2fadd(n1, n2), 1.0/(v2fdot(n1, n2) + 1.0));
             struct ExtrudeVerts tmp = {offset, n2};
             extrude[i] = tmp;
         }
@@ -924,7 +921,6 @@ void DrawNode::clear()
     _dirtyGLLine = true;
     _bufferCountGLPoint = 0;
     _dirtyGLPoint = true;
-    _lineWidth = _defaultLineWidth;
 }
 
 const BlendFunc& DrawNode::getBlendFunc() const
@@ -936,16 +932,5 @@ void DrawNode::setBlendFunc(const BlendFunc &blendFunc)
 {
     _blendFunc = blendFunc;
 }
-
-void DrawNode::setLineWidth(GLfloat lineWidth)
-{
-    _lineWidth = lineWidth;
-}
-
-GLfloat DrawNode::getLineWidth()
-{
-    return this->_lineWidth;
-}
-
 
 NS_CC_END

@@ -8,7 +8,6 @@
 using namespace std;
 
 #include "cocos2d.h"
-#include "SimulatorExport.h"
 
 #if defined(_WINDOWS)
 #define DIRECTORY_SEPARATOR "\\"
@@ -34,7 +33,7 @@ typedef struct _SimulatorScreenSize {
 typedef vector<SimulatorScreenSize> ScreenSizeArray;
 typedef ScreenSizeArray::iterator ScreenSizeArrayIterator;
 
-class CC_LIBSIM_DLL SimulatorConfig
+class SimulatorConfig
 {
 public:
     static SimulatorConfig *getInstance();

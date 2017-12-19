@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2014-2017 Chukong Technologies Inc.
+ Copyright (c) 2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -24,14 +24,13 @@
 #ifndef __CCANIMATIONCURVE_H__
 #define __CCANIMATIONCURVE_H__
 
-#include <cmath>
 #include <functional>
 
 #include "platform/CCPlatformMacros.h"
 #include "base/CCRef.h"
 #include "math/CCMath.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 #undef NEAR
 #endif
 
@@ -67,7 +66,7 @@ public:
     static AnimationCurve* create(float* keytime, float* value, int count);
     
     /**
-     * evaluate value of time
+     * evalute value of time
      * @param time Time to be estimated
      * @param dst Estimated value of that time
      * @param type EvaluateType
@@ -108,6 +107,6 @@ protected:
 
 NS_CC_END
 
-#include "3d/CCAnimationCurve.inl"
+#include "CCAnimationCurve.inl"
 
 #endif

@@ -1580,7 +1580,6 @@ function SpriteTest()
         SpriteBatchNodeOffsetAnchorRotationalSkewScale.create,
         SpriteOffsetAnchorFlip.create
     }
-    Helper.index = 1
 
 	scene:addChild(Sprite1.create())
 	scene:addChild(CreateBackMenuItem())

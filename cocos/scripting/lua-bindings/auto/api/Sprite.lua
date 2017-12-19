@@ -43,22 +43,6 @@
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
 --------------------------------
--- / @}
--- @function [parent=#Sprite] getResourceType 
--- @param self
--- @return int#int ret (return value: int)
-        
---------------------------------
--- / @{/ @name Animation methods<br>
--- Changes the display frame with animation name and index.<br>
--- The animation name will be get from the AnimationCache.
--- @function [parent=#Sprite] setDisplayFrameWithAnimationName 
--- @param self
--- @param #string animationName
--- @param #int frameIndex
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
 -- Returns the batch node object if this sprite is rendered by SpriteBatchNode.<br>
 -- return The SpriteBatchNode object if this sprite is rendered by SpriteBatchNode,<br>
 -- nullptr if the sprite isn't used batch node.
@@ -73,38 +57,11 @@
 -- @return vec2_table#vec2_table ret (return value: vec2_table)
         
 --------------------------------
--- brief Returns the Cap Insets rect<br>
--- return Scale9Sprite's cap inset.
--- @function [parent=#Sprite] getCenterRect 
--- @param self
--- @return rect_table#rect_table ret (return value: rect_table)
-        
---------------------------------
 -- 
 -- @function [parent=#Sprite] removeAllChildrenWithCleanup 
 -- @param self
 -- @param #bool cleanup
 -- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
--- setCenterRectNormalized<br>
--- Useful to implement "9 sliced" sprites.<br>
--- The default value is (0,0) - (1,1), which means that only one "slice" will be used: From top-left (0,0) to bottom-right (1,1).<br>
--- If the value is different than (0,0), (1,1), then the sprite will be sliced into a 3 x 3 grid. The four corners of this grid are applied without<br>
--- performing any scaling. The upper- and lower-middle parts are scaled horizontally, and the left- and right-middle parts are scaled vertically.<br>
--- The center is scaled in both directions.<br>
--- Important: The scaling is based the Sprite's trimmed size.<br>
--- Limitations: Does not work when the sprite is part of `SpriteBatchNode`.
--- @function [parent=#Sprite] setCenterRectNormalized 
--- @param self
--- @param #rect_table rect
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
---  returns whether or not contentSize stretches the sprite's texture 
--- @function [parent=#Sprite] isStretchEnabled 
--- @param self
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- @overload self, rect_table, bool, size_table         
@@ -117,24 +74,6 @@
 -- @return Sprite#Sprite self (return value: cc.Sprite)
 
 --------------------------------
--- Initializes a sprite with an sprite frame name.<br>
--- A SpriteFrame will be fetched from the SpriteFrameCache by name.<br>
--- If the SpriteFrame doesn't exist it will raise an exception.<br>
--- param   spriteFrameName  A key string that can fetched a valid SpriteFrame from SpriteFrameCache.<br>
--- return  True if the sprite is initialized properly, false otherwise.
--- @function [parent=#Sprite] initWithSpriteFrameName 
--- @param self
--- @param #string spriteFrameName
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
---  whether or not contentSize stretches the sprite's texture 
--- @function [parent=#Sprite] setStretchEnabled 
--- @param self
--- @param #bool enabled
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
 -- Returns whether or not a SpriteFrame is being displayed.
 -- @function [parent=#Sprite] isFrameDisplayed 
 -- @param self
@@ -145,7 +84,7 @@
 -- Returns the index used on the TextureAtlas.
 -- @function [parent=#Sprite] getAtlasIndex 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return long#long ret (return value: long)
         
 --------------------------------
 -- Sets the batch node to sprite.<br>
@@ -169,10 +108,13 @@
 -- @return BlendFunc#BlendFunc ret (return value: cc.BlendFunc)
         
 --------------------------------
--- 
--- @function [parent=#Sprite] setCenterRect 
+-- / @{/ @name Animation methods<br>
+-- Changes the display frame with animation name and index.<br>
+-- The animation name will be get from the AnimationCache.
+-- @function [parent=#Sprite] setDisplayFrameWithAnimationName 
 -- @param self
--- @param #rect_table rect
+-- @param #string animationName
+-- @param #long frameIndex
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
 --------------------------------
@@ -189,12 +131,6 @@
 -- @return SpriteFrame#SpriteFrame ret (return value: cc.SpriteFrame)
         
 --------------------------------
--- 
--- @function [parent=#Sprite] getResourceName 
--- @param self
--- @return string#string ret (return value: string)
-        
---------------------------------
 -- Whether or not the Sprite needs to be updated in the Atlas.<br>
 -- return True if the sprite needs to be updated in the Atlas, false otherwise.
 -- @function [parent=#Sprite] isDirty 
@@ -202,31 +138,13 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- getCenterRectNormalized<br>
--- Returns the CenterRect in normalized coordinates
--- @function [parent=#Sprite] getCenterRectNormalized 
--- @param self
--- @return rect_table#rect_table ret (return value: rect_table)
-        
---------------------------------
 -- Sets the index used on the TextureAtlas.<br>
 -- warning Don't modify this value unless you know what you are doing.
 -- @function [parent=#Sprite] setAtlasIndex 
 -- @param self
--- @param #int atlasIndex
+-- @param #long atlasIndex
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
---------------------------------
--- @overload self, cc.Texture2D, rect_table         
--- @overload self, cc.Texture2D         
--- @overload self, cc.Texture2D, rect_table, bool         
--- @function [parent=#Sprite] initWithTexture
--- @param self
--- @param #cc.Texture2D texture
--- @param #rect_table rect
--- @param #bool rotated
--- @return bool#bool ret (return value: bool)
-
 --------------------------------
 -- Makes the Sprite to be updated in the Atlas.
 -- @function [parent=#Sprite] setDirty 
@@ -247,15 +165,6 @@
 -- @return rect_table#rect_table ret (return value: rect_table)
         
 --------------------------------
--- @overload self, string, rect_table         
--- @overload self, string         
--- @function [parent=#Sprite] initWithFile
--- @param self
--- @param #string filename
--- @param #rect_table rect
--- @return bool#bool ret (return value: bool)
-
---------------------------------
 -- / @{/ @name Functions inherited from TextureProtocol.<br>
 -- code<br>
 -- When this function bound into js or lua,the parameter will be changed.<br>
@@ -272,15 +181,6 @@
 -- @function [parent=#Sprite] getTextureAtlas 
 -- @param self
 -- @return TextureAtlas#TextureAtlas ret (return value: cc.TextureAtlas)
-        
---------------------------------
--- Initializes a sprite with an SpriteFrame. The texture and rect in SpriteFrame will be applied on this sprite.<br>
--- param   spriteFrame  A SpriteFrame object. It should includes a valid texture and a rect.<br>
--- return  True if the sprite is initialized properly, false otherwise.
--- @function [parent=#Sprite] initWithSpriteFrame 
--- @param self
--- @param #cc.SpriteFrame spriteFrame
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- Returns the flag which indicates whether the sprite is flipped horizontally or not.<br>
@@ -314,6 +214,16 @@
 -- @param #rect_table rect
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
+--------------------------------
+-- @overload self, string         
+-- @overload self         
+-- @overload self, string, rect_table         
+-- @function [parent=#Sprite] create
+-- @param self
+-- @param #string filename
+-- @param #rect_table rect
+-- @return Sprite#Sprite ret (return value: cc.Sprite)
+
 --------------------------------
 -- @overload self, cc.Texture2D, rect_table, bool         
 -- @overload self, cc.Texture2D         
@@ -386,13 +296,6 @@
 
 --------------------------------
 -- 
--- @function [parent=#Sprite] setContentSize 
--- @param self
--- @param #size_table size
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
--- 
 -- @function [parent=#Sprite] isOpacityModifyRGB 
 -- @param self
 -- @return bool#bool ret (return value: bool)
@@ -406,22 +309,9 @@
         
 --------------------------------
 -- 
--- @function [parent=#Sprite] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
 -- @function [parent=#Sprite] setRotation 
 -- @param self
 -- @param #float rotation
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
--- 
--- @function [parent=#Sprite] setIgnoreAnchorPointForPosition 
--- @param self
--- @param #bool value
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
 --------------------------------
@@ -469,6 +359,13 @@
         
 --------------------------------
 -- 
+-- @function [parent=#Sprite] ignoreAnchorPointForPosition 
+-- @param self
+-- @param #bool value
+-- @return Sprite#Sprite self (return value: cc.Sprite)
+        
+--------------------------------
+-- 
 -- @function [parent=#Sprite] setPositionZ 
 -- @param self
 -- @param #float positionZ
@@ -507,12 +404,6 @@
 -- @function [parent=#Sprite] setVisible 
 -- @param self
 -- @param #bool bVisible
--- @return Sprite#Sprite self (return value: cc.Sprite)
-        
---------------------------------
--- js ctor
--- @function [parent=#Sprite] Sprite 
--- @param self
 -- @return Sprite#Sprite self (return value: cc.Sprite)
         
 return nil

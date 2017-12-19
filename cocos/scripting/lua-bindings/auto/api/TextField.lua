@@ -42,13 +42,6 @@
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------
--- brief Query the text string color.<br>
--- return The color of the text.
--- @function [parent=#TextField] getTextColor 
--- @param self
--- @return color4b_table#color4b_table ret (return value: color4b_table)
-        
---------------------------------
 -- brief Get the placeholder of TextField.<br>
 -- return A placeholder string.
 -- @function [parent=#TextField] getPlaceHolder 
@@ -151,7 +144,7 @@
 -- @return int#int ret (return value: int)
         
 --------------------------------
--- brief Get the renderer size in auto mode.<br>
+-- brief Get the the renderer size in auto mode.<br>
 -- return A delimitation zone.
 -- @function [parent=#TextField] getAutoRenderSize 
 -- @param self
@@ -203,21 +196,6 @@
 -- @return TextField#TextField self (return value: ccui.TextField)
         
 --------------------------------
--- Set cursor position, if enabled<br>
--- js NA
--- @function [parent=#TextField] setCursorPosition 
--- @param self
--- @param #unsigned long cursorPosition
--- @return TextField#TextField self (return value: ccui.TextField)
-        
---------------------------------
--- brief Inquire the horizontal alignment<br>
--- return The horizontal alignment
--- @function [parent=#TextField] getTextHorizontalAlignment 
--- @param self
--- @return int#int ret (return value: int)
-        
---------------------------------
 -- brief Change font size of TextField.<br>
 -- param size The integer font size.
 -- @function [parent=#TextField] setFontSize 
@@ -231,15 +209,6 @@
 -- @function [parent=#TextField] setPlaceHolder 
 -- @param self
 -- @param #string value
--- @return TextField#TextField self (return value: ccui.TextField)
-        
---------------------------------
--- Set cursor position to hit letter, if enabled<br>
--- js NA
--- @function [parent=#TextField] setCursorFromPoint 
--- @param self
--- @param #vec2_table point
--- @param #cc.Camera camera
 -- @return TextField#TextField self (return value: ccui.TextField)
         
 --------------------------------
@@ -267,14 +236,6 @@
 -- @return TextField#TextField self (return value: ccui.TextField)
         
 --------------------------------
--- Set char showing cursor.<br>
--- js NA
--- @function [parent=#TextField] setCursorChar 
--- @param self
--- @param #char cursor
--- @return TextField#TextField self (return value: ccui.TextField)
-        
---------------------------------
 -- brief Query maximize input length of TextField.<br>
 -- return The integer value of maximize input length.
 -- @function [parent=#TextField] getMaxLength 
@@ -297,13 +258,6 @@
 -- @return TextField#TextField self (return value: ccui.TextField)
         
 --------------------------------
--- brief Inquire the horizontal alignment<br>
--- return The horizontal alignment
--- @function [parent=#TextField] getTextVerticalAlignment 
--- @param self
--- @return int#int ret (return value: int)
-        
---------------------------------
 -- brief Toggle enable touch area.<br>
 -- param enable True if enable touch area, false otherwise.
 -- @function [parent=#TextField] setTouchAreaEnabled 
@@ -317,14 +271,6 @@
 -- @function [parent=#TextField] setMaxLength 
 -- @param self
 -- @param #int length
--- @return TextField#TextField self (return value: ccui.TextField)
-        
---------------------------------
--- Set enable cursor use.<br>
--- js NA
--- @function [parent=#TextField] setCursorEnabled 
--- @param self
--- @param #bool enabled
 -- @return TextField#TextField self (return value: ccui.TextField)
         
 --------------------------------
@@ -383,14 +329,6 @@
 -- @function [parent=#TextField] hitTest 
 -- @param self
 -- @param #vec2_table pt
--- @param #cc.Camera camera
--- @param #vec3_table p
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
--- @function [parent=#TextField] init 
--- @param self
 -- @return bool#bool ret (return value: bool)
         
 --------------------------------

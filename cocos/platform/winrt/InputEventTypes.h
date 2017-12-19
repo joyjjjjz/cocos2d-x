@@ -30,7 +30,15 @@ THE SOFTWARE.
 NS_CC_BEGIN
 
 
-enum class Cocos2dKeyEvent : int 
+public enum class Cocos2dEvent
+{
+    ShowKeyboard,
+    HideKeyboard,
+    TerminateApp
+};
+
+
+public enum class Cocos2dKeyEvent : int 
 {
     Text,
     Escape,

@@ -3,7 +3,7 @@
 
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "editor-support/cocosbuilder/CCBKeyframe.h"
+#include "CCBKeyframe.h"
 
 namespace cocosbuilder {
 

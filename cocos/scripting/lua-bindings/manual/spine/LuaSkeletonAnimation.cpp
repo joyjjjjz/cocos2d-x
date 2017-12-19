@@ -1,6 +1,6 @@
  /****************************************************************************
  Copyright (c) 2013      Edward Zhou
- Copyright (c) 2013-2017 Chukong Technologies Inc.
+ Copyright (c) 2013-2014 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -23,17 +23,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scripting/lua-bindings/manual/spine/LuaSkeletonAnimation.h"
-
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
-#include "scripting/lua-bindings/manual/CCLuaStack.h"
-#include "scripting/lua-bindings/manual/CCLuaEngine.h"
+#include "LuaSkeletonAnimation.h"
+#include "cocos2d.h"
+#include "LuaScriptHandlerMgr.h"
+#include "CCLuaStack.h"
+#include "CCLuaEngine.h"
 
 using namespace spine;
 USING_NS_CC;
 
-LuaSkeletonAnimation::LuaSkeletonAnimation ()
-: spine::SkeletonAnimation()
+LuaSkeletonAnimation::LuaSkeletonAnimation (const char* skeletonDataFile, const char* atlasFile, float scale)
+: spine::SkeletonAnimation(skeletonDataFile, atlasFile, scale)
 {
 	
 }
@@ -46,9 +46,7 @@ LuaSkeletonAnimation::~LuaSkeletonAnimation()
 
 LuaSkeletonAnimation* LuaSkeletonAnimation::createWithFile (const char* skeletonDataFile, const char* atlasFile, float scale)
 {
-	LuaSkeletonAnimation* node = new (std::nothrow) LuaSkeletonAnimation();
-    spAtlas* atlas = spAtlas_createFromFile(atlasFile, nullptr);
-    node->initWithJsonFile(skeletonDataFile, atlas, scale);
+	LuaSkeletonAnimation* node = new (std::nothrow) LuaSkeletonAnimation(skeletonDataFile, atlasFile, scale);
 	node->autorelease();
 	return node;
 }

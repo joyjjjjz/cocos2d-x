@@ -75,7 +75,7 @@
 -- @return Control#Control self (return value: cc.Control)
         
 --------------------------------
--- Returns a point corresponding to the touch location converted into the<br>
+-- Returns a point corresponding to the touh location converted into the<br>
 -- control space coordinates.<br>
 -- param touch A Touch object that represents a touch.
 -- @function [parent=#Control] getTouchLocation 
@@ -126,12 +126,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#Control] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- 
 -- @function [parent=#Control] onTouchEnded 
 -- @param self
 -- @param #cc.Touch touch
@@ -145,11 +139,5 @@
 -- @param #cc.Touch touch
 -- @param #cc.Event event
 -- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- js ctor
--- @function [parent=#Control] Control 
--- @param self
--- @return Control#Control self (return value: cc.Control)
         
 return nil

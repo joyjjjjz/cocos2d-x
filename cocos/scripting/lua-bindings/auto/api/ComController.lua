@@ -17,11 +17,17 @@
 -- @return Ref#Ref ret (return value: cc.Ref)
         
 --------------------------------
--- js NA<br>
--- lua NA
--- @function [parent=#ComController] onRemove 
+-- 
+-- @function [parent=#ComController] setEnabled 
 -- @param self
+-- @param #bool b
 -- @return ComController#ComController self (return value: ccs.ComController)
+        
+--------------------------------
+-- 
+-- @function [parent=#ComController] isEnabled 
+-- @param self
+-- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- 
@@ -35,13 +41,6 @@
 -- @function [parent=#ComController] init 
 -- @param self
 -- @return bool#bool ret (return value: bool)
-        
---------------------------------
--- js NA<br>
--- lua NA
--- @function [parent=#ComController] onAdd 
--- @param self
--- @return ComController#ComController self (return value: ccs.ComController)
         
 --------------------------------
 -- js ctor

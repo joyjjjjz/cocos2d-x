@@ -1,6 +1,6 @@
 /****************************************************************************
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -26,10 +26,12 @@ THE SOFTWARE.
 #include "platform/CCPlatformConfig.h"
 #if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
-#include "platform/android/CCGLViewImpl-android.h"
+#include "CCGLViewImpl-android.h"
 #include "base/CCDirector.h"
 #include "base/ccMacros.h"
-#include "platform/android/jni/JniHelper.h"
+#include "jni/IMEJni.h"
+#include "jni/JniHelper.h"
+#include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 #include "CCGL.h"
 
 #include <stdlib.h>
@@ -56,7 +58,7 @@ GLViewImpl* GLViewImpl::createWithRect(const std::string& viewName, Rect rect, f
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+
     return nullptr;
 }
 
@@ -67,7 +69,7 @@ GLViewImpl* GLViewImpl::create(const std::string& viewName)
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+
     return nullptr;
 }
 
@@ -78,7 +80,7 @@ GLViewImpl* GLViewImpl::createWithFullScreen(const std::string& viewName)
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+
     return nullptr;
 }
 
@@ -110,7 +112,7 @@ bool GLViewImpl::isOpenGLReady()
 
 void GLViewImpl::end()
 {
-    JniHelper::callStaticVoidMethod("org/cocos2dx/lib/Cocos2dxHelper", "terminateProcess");
+    terminateProcessJNI();
 }
 
 void GLViewImpl::swapBuffers()
@@ -119,11 +121,7 @@ void GLViewImpl::swapBuffers()
 
 void GLViewImpl::setIMEKeyboardState(bool bOpen)
 {
-    if (bOpen) {
-        JniHelper::callStaticVoidMethod("org/cocos2dx/lib/Cocos2dxGLSurfaceView", "openIMEKeyboard");
-    } else {
-        JniHelper::callStaticVoidMethod("org/cocos2dx/lib/Cocos2dxGLSurfaceView", "closeIMEKeyboard");
-    }
+    setKeyboardStateJNI((int)bOpen);
 }
 
 NS_CC_END

@@ -41,10 +41,4 @@
 -- @param self
 -- @return int#int ret (return value: int)
         
---------------------------------
--- 
--- @function [parent=#DirectionLight] DirectionLight 
--- @param self
--- @return DirectionLight#DirectionLight self (return value: cc.DirectionLight)
-        
 return nil

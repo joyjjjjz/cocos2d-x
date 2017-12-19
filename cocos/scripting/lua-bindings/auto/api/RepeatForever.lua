@@ -13,13 +13,6 @@
 -- @return RepeatForever#RepeatForever self (return value: cc.RepeatForever)
         
 --------------------------------
---  initializes the action 
--- @function [parent=#RepeatForever] initWithAction 
--- @param self
--- @param #cc.ActionInterval action
--- @return bool#bool ret (return value: bool)
-        
---------------------------------
 --  Gets the inner action.<br>
 -- return The inner action.
 -- @function [parent=#RepeatForever] getInnerAction 
@@ -65,12 +58,6 @@
 -- @function [parent=#RepeatForever] step 
 -- @param self
 -- @param #float dt
--- @return RepeatForever#RepeatForever self (return value: cc.RepeatForever)
-        
---------------------------------
--- 
--- @function [parent=#RepeatForever] RepeatForever 
--- @param self
 -- @return RepeatForever#RepeatForever self (return value: cc.RepeatForever)
         
 return nil

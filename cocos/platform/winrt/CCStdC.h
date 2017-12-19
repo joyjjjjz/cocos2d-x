@@ -27,13 +27,12 @@ THE SOFTWARE.
 #define __CC_STD_C_H__
 
 #include "platform/CCPlatformConfig.h"
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WP8
 
 
 #include "platform/CCPlatformMacros.h"
 #include <float.h>
 #include <BaseTsd.h>
-#include <cmath>
 
 #ifndef __SSIZE_T
 #define __SSIZE_T
@@ -46,10 +45,12 @@ typedef SSIZE_T ssize_t;
     #define _USE_MATH_DEFINES       // make M_PI can be use
 #endif
 
-#if _MSC_VER < 1900
+#if !defined(isnan)
+    #define isnan   _isnan
+#endif
+
 #ifndef snprintf
 #define snprintf _snprintf
-#endif
 #endif
 
 #include <math.h>
@@ -107,7 +108,7 @@ struct timezone
 
 int CC_DLL gettimeofday(struct timeval *, struct timezone *);
 
-#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT
+#endif // CC_TARGET_PLATFORM == CC_PLATFORM_WINRT || CC_TARGET_PLATFORM == CC_PLATFORM_WP8
 
 #endif  // __CC_STD_C_H__
 

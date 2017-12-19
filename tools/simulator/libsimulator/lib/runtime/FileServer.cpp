@@ -62,8 +62,7 @@ void FileServer::readResFileFinfo()
     FILE * pFile = fopen (filecfg.c_str() , "r");
     if(pFile)
     {
-        char buffer[65536];
-        rapidjson::FileReadStream inputStream(pFile, buffer, sizeof(buffer));
+        rapidjson::FileStream inputStream(pFile);
         _filecfgjson.ParseStream<0>(inputStream);
         fclose(pFile);
     }
@@ -96,7 +95,7 @@ void FileServer::addResFileInfo(const char* filename, uint64_t u64)
     filetimeValue.SetString(filetime, _filecfgjson.GetAllocator());
     rapidjson::Value filenameValue(rapidjson::kStringType);
     filenameValue.SetString(filename,_filecfgjson.GetAllocator());
-    _filecfgjson.AddMember(filenameValue, filetimeValue, _filecfgjson.GetAllocator());
+    _filecfgjson.AddMember(filenameValue.GetString(), filetimeValue, _filecfgjson.GetAllocator());
 }
 
 void FileServer::removeResFileInfo(const char *filename)
@@ -223,17 +222,17 @@ void FileServer::stop()
 	_writeEndThread = true;
 	_responseEndThread = true;
 
-    if (_receiveRunning && _receiveThread.joinable())
+    if(_receiveRunning)
     {
         _receiveThread.join();
     }
 
-    if (_writeRunning && _writeThread.joinable())
+	if (_writeRunning)
 	{
 		_writeThread.join();
 	}
 
-    if (_responseRunning && _responseThread.joinable())
+	if (_responseRunning)
 	{
 		_responseThread.join();
 	}
@@ -258,7 +257,7 @@ _responseEndThread(false)
     _writePath = FileUtils::getInstance()->getWritablePath();
     
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-#include "Widget_mac.h"
+    std::string getCurAppName(void);
     _writePath += getCurAppName();
     _writePath += "/";
 #endif
@@ -509,7 +508,7 @@ void FileServer::loopResponse()
         char dataBuf[1024] = {0};
         struct ResponseHeaderStruct
         {
-            char startFlag[13]; // needs to store PROTO_START, which is 12+NULL long
+            char startFlag[12];
             unsigned short protoNum;
             unsigned short protoBufLen;
         };

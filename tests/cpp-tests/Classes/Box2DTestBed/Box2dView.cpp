@@ -21,12 +21,11 @@ Box2dTestBedSuite::Box2dTestBedSuite()
 {
     for (int entryId = 0; entryId < g_totalEntries; ++entryId)
     {
-        addTestCase(g_testEntries[entryId].name, [entryId](){
+        addTestCase(g_testEntries[entryId].name, [&](){
             return Box2dTestBed::createWithEntryID(entryId);
         });
     }
 }
-
 //------------------------------------------------------------------
 //
 // Box2dTestBed
@@ -53,10 +52,6 @@ Box2dTestBed* Box2dTestBed::createWithEntryID(int entryId)
 
 bool Box2dTestBed::initWithEntryID(int entryId)
 {
-    if (!TestCase::init())
-    {
-        return false;
-    }
     auto director = Director::getInstance();
 	Vec2 visibleOrigin = director->getVisibleOrigin();
 	Size visibleSize = director->getVisibleSize();
@@ -160,7 +155,7 @@ void Box2DView::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
 void Box2DView::onDraw(const Mat4 &transform, uint32_t flags)
 {
     Director* director = Director::getInstance();
-    CCASSERT(nullptr != director, "Director is null when setting matrix stack");
+    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
     director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
 
@@ -212,12 +207,12 @@ void Box2DView::onTouchEnded(Touch* touch, Event* event)
 
 void Box2DView::onKeyPressed(EventKeyboard::KeyCode code, Event* event)
 {
-    log("Box2dView:onKeyPressed, keycode: %d", static_cast<int>(code));
+    log("Box2dView:onKeyPressed, keycode: %d", code);
     m_test->Keyboard(static_cast<unsigned char>(code));
 }
 
 void Box2DView::onKeyReleased(EventKeyboard::KeyCode code, Event* event)
 {
-    log("onKeyReleased, keycode: %d", static_cast<int>(code));
+    log("onKeyReleased, keycode: %d", code);
     m_test->KeyboardUp(static_cast<unsigned char>(code));
 }

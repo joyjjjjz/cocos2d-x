@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -33,8 +33,6 @@ THE SOFTWARE.
  * @{
  */
 NS_CC_BEGIN
-
-struct CC_DLL ResourceData;
 
 namespace ui {
     class Scale9Sprite;
@@ -123,11 +121,7 @@ public:
     virtual std::string getDescription() const override;
     virtual Size getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
-
-    ResourceData getRenderFile();
-
-    virtual void setGLProgram(GLProgram* glProgram) override;
-    virtual void setGLProgramState(cocos2d::GLProgramState* glProgramState) override;
+    
 CC_CONSTRUCTOR_ACCESS:
     //initializes state of widget.
     virtual bool init() override;
@@ -138,8 +132,6 @@ protected:
     virtual void onSizeChanged() override;
     
     virtual void adaptRenderers() override;
-    void loadTexture(SpriteFrame* spriteframe);
-    void setupTexture();
     
     void imageTextureScaleChangedWithSize();
     virtual Widget* createCloneInstance() override;
@@ -149,10 +141,10 @@ protected:
     bool _prevIgnoreSize;
     Rect _capInsets;
     Scale9Sprite* _imageRenderer;
+    std::string _textureFile;
     TextureResType _imageTexType;
     Size _imageTextureSize;
     bool _imageRendererAdaptDirty;
-    std::string _textureFile;
 };
 
 }

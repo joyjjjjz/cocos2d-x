@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (C) 2013 Henry van Merode. All rights reserved.
- Copyright (c) 2015-2017 Chukong Technologies Inc.
+ Copyright (c) 2015 Chukong Technologies Inc.
  
  http://www.cocos2d-x.org
  
@@ -45,7 +45,7 @@ CCPUBoxEmitter::CCPUBoxEmitter(void) :
 {
 }
 //-----------------------------------------------------------------------
-float CCPUBoxEmitter::getHeight() const
+const float CCPUBoxEmitter::getHeight(void) const
 {
     return _height;
 }
@@ -56,7 +56,7 @@ void CCPUBoxEmitter::setHeight(const float height)
     _yRange = 0.5f * height;
 }
 //-----------------------------------------------------------------------
-float CCPUBoxEmitter::getWidth() const
+const float CCPUBoxEmitter::getWidth(void) const
 {
     return _width;
 }
@@ -67,7 +67,7 @@ void CCPUBoxEmitter::setWidth(const float width)
     _xRange = 0.5f * width;
 }
 //-----------------------------------------------------------------------
-float CCPUBoxEmitter::getDepth() const
+const float CCPUBoxEmitter::getDepth(void) const
 {
     return _depth;
 }

@@ -5,6 +5,12 @@
 -- @parent_module ccs
 
 --------------------------------
+-- js NA
+-- @function [parent=#BatchNode] init 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
 -- 
 -- @function [parent=#BatchNode] create 
 -- @param self
@@ -20,12 +26,6 @@
 -- @param #int tag
 -- @return BatchNode#BatchNode self (return value: ccs.BatchNode)
 
---------------------------------
--- js NA
--- @function [parent=#BatchNode] init 
--- @param self
--- @return bool#bool ret (return value: bool)
-        
 --------------------------------
 -- 
 -- @function [parent=#BatchNode] draw 

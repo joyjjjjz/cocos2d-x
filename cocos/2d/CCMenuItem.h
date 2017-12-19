@@ -2,7 +2,7 @@
 Copyright (c) 2008-2010 Ricardo Quesada
 Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -78,6 +78,11 @@ public:
     virtual void setEnabled(bool value);
     /** Returns whether or not the item is selected. */
     virtual bool isSelected() const;
+
+    /**
+     * @js NA
+     */
+    virtual void onExit() override;
 
     /** Set the callback to the menu item.
     * @code
@@ -155,17 +160,14 @@ public:
     /** Sets a new string to the inner label. */
     void setString(const std::string& label);
 
-    /** Get the inner string of the inner label. */
-    std::string getString() const;
+    /** Gets the color that will be used to disable the item. */
+    inline const Color3B& getDisabledColor() const { return _disabledColor; };
 
-    /** Gets the color that will be used when the item is disabled. */
-    const Color3B& getDisabledColor() const { return _disabledColor; }
-
-    /** Sets the color that will be used when the item is disabled. */
-    void setDisabledColor(const Color3B& color) { _disabledColor = color; }
+    /** Sets the color that will be used to disable the item. */
+    inline void setDisabledColor(const Color3B& color) { _disabledColor = color; };
     
     /** Gets the label that is rendered. */
-    Node* getLabel() const { return _label; }
+    inline Node* getLabel() const { return _label; };
     
     /** Sets the label that is rendered. */
     void setLabel(Node* node);
@@ -345,7 +347,7 @@ public:
     static MenuItemSprite * create(Node* normalSprite, Node* selectedSprite, Node* disabledSprite = nullptr);
     /** Creates a menu item with a normal and selected image with target/selector. */
     CC_DEPRECATED_ATTRIBUTE static MenuItemSprite * create(Node* normalSprite, Node* selectedSprite, Ref* target, SEL_MenuHandler selector);
-    /** Creates a menu item with a normal, selected and disabled image with target/selector. */
+    /** Creates a menu item with a normal,selected  and disabled image with target/selector. */
     CC_DEPRECATED_ATTRIBUTE static MenuItemSprite * create(Node* normalSprite, Node* selectedSprite, Node* disabledSprite, Ref* target, SEL_MenuHandler selector);
     /** Creates a menu item with a normal and selected image with a callable object. */
     static MenuItemSprite * create(Node* normalSprite, Node* selectedSprite, const ccMenuCallback& callback);
@@ -353,19 +355,19 @@ public:
     static MenuItemSprite * create(Node* normalSprite, Node* selectedSprite, Node* disabledSprite, const ccMenuCallback& callback);
 
     /** Gets the image used when the item is not selected. */
-    Node* getNormalImage() const { return _normalImage; }
+    inline Node* getNormalImage() const { return _normalImage; };
     
     /** Sets the image used when the item is not selected. */
     void setNormalImage(Node* image);
     
     /** Gets the image used when the item is selected. */
-    Node* getSelectedImage() const { return _selectedImage; }
+    inline Node* getSelectedImage() const { return _selectedImage; };
     
     /** Sets the image used when the item is selected. */
     void setSelectedImage(Node* image);
     
     /** Gets the image used when the item is disabled. */
-    Node* getDisabledImage() const { return _disabledImage; }
+    inline Node* getDisabledImage() const { return _disabledImage; };
     
     /** Sets the image used when the item is disabled. */
     void setDisabledImage(Node* image);
@@ -389,10 +391,10 @@ CC_CONSTRUCTOR_ACCESS:
     ,_disabledImage(nullptr)
     {}
     
-    /** Initializes a menu item with a normal, selected and disabled image with target/selector. */
+    /** Initializes a menu item with a normal, selected  and disabled image with target/selector. */
     CC_DEPRECATED_ATTRIBUTE bool initWithNormalSprite(Node* normalSprite, Node* selectedSprite, Node* disabledSprite, Ref* target, SEL_MenuHandler selector);
     
-    /** Initializes a menu item with a normal, selected and disabled image with a callable object. */
+    /** Initializes a menu item with a normal, selected  and disabled image with a callable object. */
     bool initWithNormalSprite(Node* normalSprite, Node* selectedSprite, Node* disabledSprite, const ccMenuCallback& callback);
     
 protected:
@@ -432,9 +434,9 @@ public:
     /** Creates a menu item with a normal and selected image with a callable object. */
     static MenuItemImage* create(const std::string&normalImage, const std::string&selectedImage, const ccMenuCallback& callback);
 
-    /** Creates a menu item with a normal,selected and disabled image with target/selector. */
+    /** Creates a menu item with a normal,selected  and disabled image with target/selector. */
     CC_DEPRECATED_ATTRIBUTE static MenuItemImage* create(const std::string& normalImage, const std::string& selectedImage, const std::string& disabledImage, Ref* target, SEL_MenuHandler selector);
-    /** Creates a menu item with a normal,selected and disabled image with a callable object. */
+    /** Creates a menu item with a normal,selected  and disabled image with a callable object. */
     static MenuItemImage* create(const std::string&normalImage, const std::string&selectedImage, const std::string&disabledImage, const ccMenuCallback& callback);
 
     /** Sets the sprite frame for the normal image. */
@@ -457,10 +459,10 @@ CC_CONSTRUCTOR_ACCESS:
     
     bool init();
     
-    /** Initializes a menu item with a normal, selected and disabled image with target/selector. */
+    /** Initializes a menu item with a normal, selected  and disabled image with target/selector. */
     CC_DEPRECATED_ATTRIBUTE bool initWithNormalImage(const std::string& normalImage, const std::string& selectedImage, const std::string& disabledImage, Ref* target, SEL_MenuHandler selector);
     
-    /** Initializes a menu item with a normal, selected and disabled image with a callable object. */
+    /** Initializes a menu item with a normal, selected  and disabled image with a callable object. */
     bool initWithNormalImage(const std::string& normalImage, const std::string& selectedImage, const std::string& disabledImage, const ccMenuCallback& callback);
 
 private:
@@ -491,8 +493,8 @@ public:
      */
     static MenuItemToggle * createWithCallback(const ccMenuCallback& callback, const Vector<MenuItem*>& menuItems);
     /** Creates a menu item from a list of items with a callable object. */
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-    // VS2013 does not support nullptr in variable args lists and variadic templates are also not supported.
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    // WP8 in VS2012 does not support nullptr in variable args lists and variadic templates are also not supported.
     typedef MenuItem* M;
     static MenuItemToggle* createWithCallback(const ccMenuCallback& callback, M m1, std::nullptr_t listEnd) { return createWithCallbackVA(callback, m1, NULL); }
     static MenuItemToggle* createWithCallback(const ccMenuCallback& callback, M m1, M m2, std::nullptr_t listEnd) { return createWithCallbackVA(callback, m1, m2, NULL); }
@@ -528,7 +530,7 @@ public:
     CC_DEPRECATED_ATTRIBUTE MenuItem* selectedItem() { return getSelectedItem(); }
 
     /** Gets the index of the selected item. */
-    unsigned int getSelectedIndex() const { return _selectedIndex; }
+    inline unsigned int getSelectedIndex() const { return _selectedIndex; };
     
     /** Sets the index of the selected item. */
     void setSelectedIndex(unsigned int index);
@@ -539,11 +541,11 @@ public:
      * @js NA
      * @lua NA
      */
-    const Vector<MenuItem*>& getSubItems() const { return _subItems; }
-    Vector<MenuItem*>& getSubItems() { return _subItems; }
+    inline const Vector<MenuItem*>& getSubItems() const { return _subItems; };
+    inline Vector<MenuItem*>& getSubItems() { return _subItems; };
 
     /** Sets the array that contains the subitems. */
-    void setSubItems(const Vector<MenuItem*>& items) {
+    inline void setSubItems(const Vector<MenuItem*>& items) {
         _subItems = items;
     }
     
@@ -552,7 +554,6 @@ public:
     virtual void selected() override;
     virtual void unselected() override;
     virtual void setEnabled(bool var) override;
-    virtual void cleanup() override;
     
 CC_CONSTRUCTOR_ACCESS:
     /**
@@ -560,8 +561,12 @@ CC_CONSTRUCTOR_ACCESS:
      */
     MenuItemToggle()
     : _selectedIndex(0)
-    , _selectedItem(nullptr)
     {}
+    /**
+     * @js NA
+     * @lua NA
+     */
+    virtual ~MenuItemToggle();
     
     /** Initializes a menu item from a list of items with a target selector.
      * @js NA
@@ -578,8 +583,6 @@ CC_CONSTRUCTOR_ACCESS:
 protected:
     /** Returns the selected item. */
     unsigned int _selectedIndex;
-    MenuItem* _selectedItem;
-
     /** Array that contains the subitems. You can add/remove items in runtime, and you can replace the array with a new one.
      @since v0.7.2
      */

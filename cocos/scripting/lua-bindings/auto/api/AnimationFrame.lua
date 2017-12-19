@@ -48,21 +48,12 @@
 -- @return float#float ret (return value: float)
         
 --------------------------------
---  Sets user information.<br>
+--  Sets user infomation.<br>
 -- param userInfo A dictionary as UserInfo.
 -- @function [parent=#AnimationFrame] setUserInfo 
 -- @param self
 -- @param #map_table userInfo
 -- @return AnimationFrame#AnimationFrame self (return value: cc.AnimationFrame)
-        
---------------------------------
---  initializes the animation frame with a spriteframe, number of delay units and a notification user info 
--- @function [parent=#AnimationFrame] initWithSpriteFrame 
--- @param self
--- @param #cc.SpriteFrame spriteFrame
--- @param #float delayUnits
--- @param #map_table userInfo
--- @return bool#bool ret (return value: bool)
         
 --------------------------------
 -- Creates the animation frame with a spriteframe, number of delay units and a notification user info.<br>
@@ -76,11 +67,5 @@
 -- @param #float delayUnits
 -- @param #map_table userInfo
 -- @return AnimationFrame#AnimationFrame ret (return value: cc.AnimationFrame)
-        
---------------------------------
--- js ctor
--- @function [parent=#AnimationFrame] AnimationFrame 
--- @param self
--- @return AnimationFrame#AnimationFrame self (return value: cc.AnimationFrame)
         
 return nil

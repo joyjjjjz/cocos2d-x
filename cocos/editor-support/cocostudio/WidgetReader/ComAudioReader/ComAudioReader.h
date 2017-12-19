@@ -1,4 +1,4 @@
-﻿/****************************************************************************
+/****************************************************************************
  Copyright (c) 2014 cocos2d-x.org
  
  http://www.cocos2d-x.org
@@ -25,11 +25,9 @@
 #ifndef __cocos2d_libs__ComAudioReader__
 #define __cocos2d_libs__ComAudioReader__
 
-#include "base/CCRef.h"
-#include "2d/CCComponent.h"
-#include "2d/CCNode.h"
-#include "editor-support/cocostudio/CocosStudioExport.h"
-#include "editor-support/cocostudio/WidgetReader/NodeReaderProtocol.h"
+#include "cocos2d.h"
+#include "cocostudio/CocosStudioExport.h"
+#include "cocostudio/WidgetReader/NodeReaderProtocol.h"
 
 
 namespace cocostudio
@@ -50,7 +48,7 @@ namespace cocostudio
                                                                              flatbuffers::FlatBufferBuilder* builder);
         void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* comAudioOptions);
         cocos2d::Component* createComAudioWithFlatBuffers(const flatbuffers::Table* comAudioOptions);
-        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions);
+        cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions) { return nullptr; };
     };
 }
 

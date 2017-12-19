@@ -23,18 +23,18 @@
  * THE SOFTWARE.
  */
 
-const char* ccPositionTextureColor_vert = R"(
+const char* ccPositionTextureColor_vert = STRINGIFY(
 attribute vec4 a_position;
 attribute vec2 a_texCoord;
 attribute vec4 a_color;
 
-#ifdef GL_ES
+\n#ifdef GL_ES\n
 varying lowp vec4 v_fragmentColor;
 varying mediump vec2 v_texCoord;
-#else
+\n#else\n
 varying vec4 v_fragmentColor;
 varying vec2 v_texCoord;
-#endif
+\n#endif\n
 
 void main()
 {
@@ -42,5 +42,5 @@ void main()
     v_fragmentColor = a_color;
     v_texCoord = a_texCoord;
 }
-)";
+);
 

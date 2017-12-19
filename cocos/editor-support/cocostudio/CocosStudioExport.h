@@ -1,4 +1,4 @@
-﻿#ifndef __CCCOCOSSTUDIO_H__
+#ifndef __CCCOCOSSTUDIO_H__
 #define __CCCOCOSSTUDIO_H__
 
 #if (defined(WIN32) && defined(_WINDOWS)) || defined(WINRT) || defined(WP8)
@@ -24,8 +24,6 @@
             #define NULL    ((void *)0)
         #endif
     #endif
-#elif defined(_SHARED_)
-    #define CC_STUDIO_DLL     __attribute__((visibility("default")))
 #else
     #define CC_STUDIO_DLL
 #endif

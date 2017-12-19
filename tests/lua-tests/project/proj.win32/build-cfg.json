@@ -14,7 +14,7 @@
         },
         {
             "from": "../../../../cocos/scripting/lua-bindings/script",
-            "to": "src/cocos"
+            "to": ""
         },
         {
             "from": "../../../../external/lua/luasocket",

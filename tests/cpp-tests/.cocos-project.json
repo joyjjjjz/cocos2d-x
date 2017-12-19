@@ -1,10 +1,9 @@
 {
     "win32_cfg": {
         "project_path": "../../build",
-        "sln_file": "cocos2d-win32.sln",
+        "sln_file": "cocos2d-win32.vc2012.sln",
         "project_name": "cpp-tests",
-        "build_cfg_path": "proj.win32",
-        "exe_out_dir": "cpp-tests"
+        "build_cfg_path": "proj.win32"
     }, 
     "linux_cfg": {
         "project_path": "proj.linux",
@@ -25,8 +24,15 @@
         "target_name": "cpp-tests Mac"
     },
     "android_cfg": {
-        "project_path": "proj.android",
-        "studio_proj_path" : "proj.android-studio"
+        "project_path": "proj.android"
+    },
+    "wp8_cfg" : {
+        "project_path": "../../build",
+        "sln_file": "cocos2d-wp8.sln",
+        "project_name": "cpp-tests",
+        "wp8_proj_path" : "proj.wp8-xaml",
+        "build_folder_path": "cpp-tests/Bin/x86",
+        "manifest_path": "cpp-tests/Properties/WMAppManifest.xml"
     },
     "wp8_1_cfg" : {
         "project_path": "../../build",
@@ -37,9 +43,6 @@
         "project_path": "../../build",
         "sln_file": "cocos2d-win8.1-universal.sln",
         "project_name": "cpp-tests.Windows"
-    },
-    "tizen_cfg" : {
-        "project_path": "proj.tizen"
     },
     "engine_dir": "../../"
 }

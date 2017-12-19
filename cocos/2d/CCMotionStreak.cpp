@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2011      ForzeField Studios S.L.
 Copyright (c) 2010-2012 cocos2d-x.org
-Copyright (c) 2013-2017 Chukong Technologies Inc.
+Copyright (c) 2013-2014 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -102,7 +102,7 @@ bool MotionStreak::initWithFade(float fade, float minSeg, float stroke, const Co
 {
     Node::setPosition(Vec2::ZERO);
     setAnchorPoint(Vec2::ZERO);
-    setIgnoreAnchorPointForPosition(true);
+    ignoreAnchorPointForPosition(true);
     _startingPositionInitialized = false;
 
     _positionR.setZero();
@@ -112,10 +112,8 @@ bool MotionStreak::initWithFade(float fade, float minSeg, float stroke, const Co
 
     _stroke = stroke;
     _fadeDelta = 1.0f/fade;
-    
-    double fps = 1/Director::getInstance()->getAnimationInterval();
-    _maxPoints = (int)(fade*fps)+2;
-    
+
+    _maxPoints = (int)(fade*60.0f)+2;
     _nuPoints = 0;
     _pointState = (float *)malloc(sizeof(float) * _maxPoints);
     _pointVertexes = (Vec2*)malloc(sizeof(Vec2) * _maxPoints);
@@ -128,7 +126,7 @@ bool MotionStreak::initWithFade(float fade, float minSeg, float stroke, const Co
     _blendFunc = BlendFunc::ALPHA_NON_PREMULTIPLIED;
 
     // shader state
-    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR, texture));
+    setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR));
 
     setTexture(texture);
     setColor(color);
@@ -232,7 +230,7 @@ const BlendFunc& MotionStreak::getBlendFunc(void) const
     return _blendFunc;
 }
 
-void MotionStreak::setOpacity(GLubyte /*opacity*/)
+void MotionStreak::setOpacity(GLubyte opacity)
 {
     CCASSERT(false, "Set opacity no supported");
 }
@@ -243,8 +241,9 @@ GLubyte MotionStreak::getOpacity(void) const
     return 0;
 }
 
-void MotionStreak::setOpacityModifyRGB(bool /*bValue*/)
+void MotionStreak::setOpacityModifyRGB(bool bValue)
 {
+    CC_UNUSED_PARAM(bValue);
 }
 
 bool MotionStreak::isOpacityModifyRGB(void) const
@@ -377,7 +376,7 @@ void MotionStreak::reset()
     _nuPoints = 0;
 }
 
-void MotionStreak::onDraw(const Mat4 &transform, uint32_t /*flags*/)
+void MotionStreak::onDraw(const Mat4 &transform, uint32_t flags)
 {  
     getGLProgram()->use();
     getGLProgram()->setUniformsForBuiltins(transform);
@@ -385,11 +384,23 @@ void MotionStreak::onDraw(const Mat4 &transform, uint32_t /*flags*/)
     GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POS_COLOR_TEX );
     GL::blendFunc( _blendFunc.src, _blendFunc.dst );
 
-    GL::bindTexture2D( _texture );
+    GL::bindTexture2D( _texture->getName() );
 
+#ifdef EMSCRIPTEN
+    // Size calculations from ::initWithFade
+    setGLBufferData(_vertices, (sizeof(Vec2) * _maxPoints * 2), 0);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    setGLBufferData(_texCoords, (sizeof(Tex2F) * _maxPoints * 2), 1);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, 0);
+
+    setGLBufferData(_colorPointer, (sizeof(GLubyte) * _maxPoints * 2 * 4), 2);
+    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, 0);
+#else
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, _vertices);
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_TEX_COORD, 2, GL_FLOAT, GL_FALSE, 0, _texCoords);
     glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, _colorPointer);
+#endif // EMSCRIPTEN
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, (GLsizei)_nuPoints*2);
     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _nuPoints*2);

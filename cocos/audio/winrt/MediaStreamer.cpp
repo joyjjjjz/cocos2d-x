@@ -16,7 +16,7 @@
 * See the License for the specific language governing permissions and limitations under the License.
 */
 
-#include "audio/winrt/MediaStreamer.h"
+#include "MediaStreamer.h"
 
 #include <Mfidl.h>
 #include <Mfreadwrite.h>
@@ -39,8 +39,6 @@ using namespace Concurrency;
                 ((uint32)(byte)(ch2) << 16) | ((uint32)(byte)(ch3) << 24 ))
 #endif /* defined(MAKEFOURCC) */
 
-const int FMT_CHUNK_MAX = 256;
-
 inline void ThrowIfFailed(HRESULT hr)
 {
     if (FAILED(hr))
@@ -52,8 +50,6 @@ inline void ThrowIfFailed(HRESULT hr)
 
 MediaStreamer::MediaStreamer() :
     m_offset(0)
-    , m_dataLen(0)
-    , m_filename(nullptr)
 {
     ZeroMemory(&m_waveFormat, sizeof(m_waveFormat));
     m_location = Package::Current->InstalledLocation;
@@ -63,33 +59,39 @@ MediaStreamer::MediaStreamer() :
 MediaStreamer::~MediaStreamer()
 {
 }
-
-Platform::Array<byte>^ MediaStreamer::ReadData(_In_ Platform::String^ filename)
-{
-    return ReadData(filename, 0, 0);
-}
-
-Platform::Array<byte>^ MediaStreamer::ReadData(_In_ Platform::String^ filename, uint32 from, uint32 length)
+Platform::Array<byte>^ MediaStreamer::ReadData(
+    _In_ Platform::String^ filename
+    )
 {
     CREATEFILE2_EXTENDED_PARAMETERS extendedParams = {0};
     extendedParams.dwSize = sizeof(CREATEFILE2_EXTENDED_PARAMETERS);
     extendedParams.dwFileAttributes = FILE_ATTRIBUTE_NORMAL;
-    extendedParams.dwFileFlags = from ? FILE_FLAG_RANDOM_ACCESS : FILE_FLAG_SEQUENTIAL_SCAN;
+    extendedParams.dwFileFlags = FILE_FLAG_SEQUENTIAL_SCAN;
     extendedParams.dwSecurityQosFlags = SECURITY_ANONYMOUS;
     extendedParams.lpSecurityAttributes = nullptr;
     extendedParams.hTemplateFile = nullptr;
 
     Wrappers::FileHandle file(
-        CreateFile2(filename->Data(), GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, &extendedParams)
+        CreateFile2(
+            filename->Data(),
+            GENERIC_READ,
+            FILE_SHARE_READ,
+            OPEN_EXISTING,
+            &extendedParams
+            )
         );
-
     if (file.Get()==INVALID_HANDLE_VALUE)
     {
         throw ref new Platform::FailureException();
     }
 
-    FILE_STANDARD_INFO fileInfo = { 0 };
-    if (!GetFileInformationByHandleEx(file.Get(), FileStandardInfo, &fileInfo, sizeof(fileInfo)))
+    FILE_STANDARD_INFO fileInfo = {0};
+    if (!GetFileInformationByHandleEx(
+        file.Get(),
+        FileStandardInfo,
+        &fileInfo,
+        sizeof(fileInfo)
+        ))
     {
         throw ref new Platform::FailureException();
     }
@@ -99,21 +101,15 @@ Platform::Array<byte>^ MediaStreamer::ReadData(_In_ Platform::String^ filename, 
         throw ref new Platform::OutOfMemoryException();
     }
 
-    from += static_cast<unsigned int>(m_offset);
-    length = (length == 0 || from + length > fileInfo.EndOfFile.LowPart) ? fileInfo.EndOfFile.LowPart - from : length;
-    Platform::Array<byte>^ fileData = ref new Platform::Array<byte>(length);
+    Platform::Array<byte>^ fileData = ref new Platform::Array<byte>(fileInfo.EndOfFile.LowPart);
 
-    if (from)
-    {
-        LARGE_INTEGER pos = { 0 };
-        pos.QuadPart = from;
-        if (!SetFilePointerEx(file.Get(), pos, nullptr, FILE_BEGIN))
-        {
-            throw ref new Platform::FailureException();
-        }
-    }
-
-    if (!ReadFile(file.Get(), fileData->Data, fileData->Length, nullptr, nullptr))
+    if (!ReadFile(
+        file.Get(),
+        fileData->Data,
+        fileData->Length,
+        nullptr,
+        nullptr
+        ) )
     {
         throw ref new Platform::FailureException();
     }
@@ -121,9 +117,9 @@ Platform::Array<byte>^ MediaStreamer::ReadData(_In_ Platform::String^ filename, 
     return fileData;
 }
 
-void MediaStreamer::Initialize(__in const WCHAR* url, bool lazy)
+void MediaStreamer::Initialize(__in const WCHAR* url)
 {
-    m_filename = ref new Platform::String(url);
+
     WCHAR filePath[MAX_PATH] = {0};
 	if ((wcslen(url) > 1 && url[1] == ':'))
 	{
@@ -143,7 +139,8 @@ void MediaStreamer::Initialize(__in const WCHAR* url, bool lazy)
 		wcscat_s(filePath, url);
 	}
 
-    Platform::Array<byte>^ data = lazy ? ReadData(ref new Platform::String(filePath), 0, FMT_CHUNK_MAX) : ReadData(ref new Platform::String(filePath));
+
+	Platform::Array<byte>^ data = ReadData(ref new Platform::String(filePath));
 	UINT32 length = data->Length;
 	const byte * dataPtr = data->Data;
 	UINT32 offset = 0;
@@ -200,45 +197,22 @@ void MediaStreamer::Initialize(__in const WCHAR* url, bool lazy)
 
 	// Locate the 'data' chunk and copy its contents to a buffer.
 	ThrowIfFailed(ReadChunk(MAKEFOURCC('d', 'a', 't', 'a'), chunkSize, chunkPos));
-    m_dataLen = chunkSize;
-    m_offset = chunkPos;
+	m_data.resize(chunkSize);
+	CopyMemory(m_data.data(), &dataPtr[chunkPos], chunkSize);
 
-    if (!lazy)
-    {
-        m_data.resize(chunkSize);
-        CopyMemory(m_data.data(), &dataPtr[chunkPos], chunkSize);
-        m_offset = 0;
-    }
+	m_offset = 0;
 }
 
 void MediaStreamer::ReadAll(uint8* buffer, uint32 maxBufferSize, uint32* bufferLength)
 {
-    if (!m_data.size())
-    {
-        ReadChunk(buffer, 0, static_cast<unsigned int>(m_dataLen), bufferLength);
-    }
-    else
-    {
-        UINT32 toCopy = static_cast<UINT32>(m_data.size() - m_offset);
-        if (toCopy > maxBufferSize) toCopy = maxBufferSize;
+	UINT32 toCopy = m_data.size() - m_offset;
+	if (toCopy > maxBufferSize) toCopy = maxBufferSize;
 
-        CopyMemory(buffer, m_data.data(), toCopy);
-        *bufferLength = toCopy;
+	CopyMemory(buffer, m_data.data(), toCopy);
+	*bufferLength = toCopy;
 
-        m_offset += toCopy;
-        if (m_offset > m_data.size()) m_offset = m_data.size();
-    }
-}
-
-void MediaStreamer::ReadChunk(uint8* buffer, uint32 from, uint32 length, uint32* bytesRead)
-{
-    Platform::Array<byte>^ data = ReadData(m_filename, from, length);
-    *bytesRead = data->Length;
-
-    if (*bytesRead > 0)
-    {
-        CopyMemory(buffer, (byte*)data->Data, data->Length);
-    }
+	m_offset += toCopy;
+	if (m_offset > m_data.size()) m_offset = m_data.size();
 }
 
 void MediaStreamer::Restart()

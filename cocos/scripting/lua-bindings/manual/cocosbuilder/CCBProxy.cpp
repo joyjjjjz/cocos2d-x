@@ -22,9 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "scripting/lua-bindings/manual/cocosbuilder/CCBProxy.h"
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
-#include "deprecated/CCString.h"
+#include "CCBProxy.h"
+#include "LuaScriptHandlerMgr.h"
 
 CCBReader* CCBProxy::createCCBReader()
 {
@@ -79,7 +78,7 @@ const char* CCBProxy::getNodeTypeName(Node* pNode)
     }
     
     if (NULL != dynamic_cast<ui::Scale9Sprite*>(pNode)) {
-        return "ccui.Scale9Sprite";
+        return "cc.LayerGradient";
     }
     
     if (NULL != dynamic_cast<Menu*>(pNode)) {
