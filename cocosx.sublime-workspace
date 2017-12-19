@@ -1,0 +1,1703 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Tou",
+				"TouchWorldPos"
+			],
+			[
+				"pos",
+				"Pos"
+			],
+			[
+				"ar",
+				"arguments"
+			],
+			[
+				"arg",
+				"arguments"
+			],
+			[
+				"func",
+				"function"
+			],
+			[
+				"type",
+				"typeof"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"ha",
+				"hasOwnProperty"
+			],
+			[
+				"me",
+				"method"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"mem",
+				"memoizer"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"get",
+				"get_status"
+			],
+			[
+				"pro",
+				"prototype"
+			],
+			[
+				"t",
+				"tKey"
+			],
+			[
+				"test",
+				"test_util"
+			],
+			[
+				"g_",
+				"g_ConnID"
+			],
+			[
+				"bIs",
+				"bIsSelf"
+			],
+			[
+				"Sho",
+				"ShowMemberTips"
+			],
+			[
+				"Ctem",
+				"CTeamWnd"
+			],
+			[
+				"nc",
+				"nCharID"
+			],
+			[
+				"b",
+				"bKickOut"
+			],
+			[
+				"ga",
+				"gas2gac"
+			],
+			[
+				"Item",
+				"ItemCount"
+			],
+			[
+				"te",
+				"testTable"
+			],
+			[
+				"pri",
+				"print"
+			],
+			[
+				"tab",
+				"table.sort\ttable.sort"
+			],
+			[
+				"nC",
+				"nCharID"
+			],
+			[
+				"p",
+				"print_table"
+			],
+			[
+				"prin",
+				"print_table"
+			],
+			[
+				"test_u",
+				"test_unit"
+			],
+			[
+				"Te",
+				"TestVarags"
+			],
+			[
+				"n",
+				"nIndex"
+			],
+			[
+				"up",
+				"OnUpdateTeamInfo"
+			],
+			[
+				"T",
+				"Team"
+			],
+			[
+				"m",
+				"m_nMpPercent"
+			],
+			[
+				"gas",
+				"gas_team_util"
+			],
+			[
+				"nT",
+				"nTeammateID"
+			],
+			[
+				"sz",
+				"szJingJie"
+			],
+			[
+				"ShowT",
+				"ShowMemberTips"
+			],
+			[
+				"GetT",
+				"GetTeammateInfo"
+			],
+			[
+				"gac",
+				"gac_team_util"
+			],
+			[
+				"ta",
+				"table"
+			],
+			[
+				"set",
+				"setString"
+			],
+			[
+				"ETeam",
+				"ETeammateProp"
+			],
+			[
+				"ShowM",
+				"ShowMemberTouchArea"
+			],
+			[
+				"M",
+				"MemberInfo"
+			],
+			[
+				"A",
+				"AllArea"
+			],
+			[
+				"m_in",
+				"m_InviteListScrollView"
+			],
+			[
+				"bSho",
+				"bShowWnd"
+			],
+			[
+				"Cre",
+				"CreateMemberSprite"
+			],
+			[
+				"m_X",
+				"m_XianMengSel"
+			],
+			[
+				"m_Fri",
+				"m_FriendBtnSel"
+			],
+			[
+				"EIn",
+				"EInviteBtn"
+			],
+			[
+				"tm",
+				"tMateInfo"
+			],
+			[
+				"Make",
+				"MakeOfflineTeamateInfo"
+			],
+			[
+				"gam",
+				"gas_team_util"
+			],
+			[
+				"gas_t",
+				"gas_team_util"
+			],
+			[
+				"ng",
+				"nGridIndex"
+			],
+			[
+				"se",
+				"self"
+			],
+			[
+				"m_Tail",
+				"m_TaskListArea"
+			],
+			[
+				"Show",
+				"ShowTaskBtn"
+			],
+			[
+				"m_TaskBtn",
+				"m_TaskBtnNor"
+			],
+			[
+				"Ct",
+				"CTaskMiniWnd"
+			],
+			[
+				"s",
+				"system_tips"
+			],
+			[
+				"GEt",
+				"GetTeamID"
+			],
+			[
+				"GetOn",
+				"GetOnlineTeammateCount"
+			],
+			[
+				"e",
+				"ETeamErrorCode"
+			],
+			[
+				"Is",
+				"IsSameShili"
+			],
+			[
+				"nS",
+				"nShiliB"
+			],
+			[
+				"nshili",
+				"nShiliB"
+			],
+			[
+				"ns",
+				"nShiliA"
+			],
+			[
+				"Pl",
+				"PlayerB"
+			],
+			[
+				"P",
+				"PlayerA"
+			],
+			[
+				"f",
+				"false"
+			],
+			[
+				"As",
+				"AssertGasPlayer"
+			],
+			[
+				"on",
+				"OnTouchEnded"
+			],
+			[
+				"GetTe",
+				"GetTeamID"
+			],
+			[
+				"lc",
+				"local\tlocal x = 1"
+			],
+			[
+				"CT",
+				"CTestBase"
+			],
+			[
+				"C",
+				"CTestCls"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "build/Debug.win32/lua-tests/src/controller.lua",
+			"settings":
+			{
+				"buffer_size": 7975,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build/Debug.win32/lua-empty-test/src/hello.lua",
+			"settings":
+			{
+				"buffer_size": 7951,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tests/lua-empty-test/src/hello.lua",
+			"settings":
+			{
+				"buffer_size": 7951,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/tolua/genbindings.py",
+			"settings":
+			{
+				"buffer_size": 7013,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build/Debug.win32/lua-empty-test/src/cocos/cocos2d/functions.lua",
+			"settings":
+			{
+				"buffer_size": 17161,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/bindings-generator/generator.py",
+			"settings":
+			{
+				"buffer_size": 60118,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/tolua/cocos2dx.ini",
+			"settings":
+			{
+				"buffer_size": 9861,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/tolua/cocos2dx_audioengine.ini",
+			"settings":
+			{
+				"buffer_size": 2869,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/tolua/cocos2dx_ui.ini",
+			"settings":
+			{
+				"buffer_size": 3328,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tools/tolua/cocos2dx_cocosbuilder.ini",
+			"settings":
+			{
+				"buffer_size": 3508,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"lua",
+				"Set Syntax: Lua"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 278.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'df21e130d211cfc94d9b0905775a7c0f' + '1e3d39e33b79698005270310898eea76'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/E/te/cocos2d-x-3.6",
+		"/E/te/cocos2d-x-3.6/tests"
+	],
+	"file_history":
+	[
+		"/E/te/cocos2d-x-3.6/plugin/samples/HelloPlugins/proj.android/build_native.py",
+		"/E/te/cocos2d-x-3.6/plugin/tools/setup.py",
+		"/E/te/cocos2d-x-3.6/tools/bindings-generator/test/test.sh",
+		"/E/te/cocos2d-x-3.6/tools/tolua/README.mdown",
+		"/E/te/cocos2d-x-3.6/tools/bindings-generator/libclang/VERSION.txt",
+		"/E/te/cocos2d-x-3.6/tools/release/generate_docs.sh",
+		"/E/te/cocos2d-x-3.6/tools/fbx-conv/README.md",
+		"/E/te/cocos2d-x-3.6/tests/lua-empty-test/src/hello.lua",
+		"/E/xiuxian/develop/trunk/game/gac/char/FolIntObj.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_friend/ChatFriendItem.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_friend/FriendChatWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/ui_creator.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/base/BaseWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/base/BaseWndInc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/render/fx/FxMgrNew.lua",
+		"/E/xiuxian/develop/trunk/game/common/type_check.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/TeamMemberItem.lua",
+		"/E/xiuxian/develop/trunk/game/gac/cocos/ui/GuiConstants.lua",
+		"/E/xiuxian/develop/trunk/game/jz_test/test_lua.lua",
+		"/E/xiuxian/develop/trunk/game/gac/cocos/cocos2d/functions.lua",
+		"/E/xiuxian/develop/trunk/game/gac/cocos/cocos2d/Cocos2dConstants.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/TeamWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_package/game_keymove.lua",
+		"/E/xiuxian/develop/trunk/game/gac/scene_mgr/gac_scene_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_jump_animation/GacJumpRunMgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_guide/guide_ui_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemBagGrid.lua",
+		"/E/xiuxian/develop/trunk/game/common/game_event_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/common/table_ext.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/role_attribute/RoleAttrBaseWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/MainWndInc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/cocos/extend/Node.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/MainWnd.lua",
+		"/E/git/test/testSublime/test.htm",
+		"/E/git/test/testSublime/testJs.js",
+		"/E/git/test/testSublime/program.js",
+		"/E/git/test/testSublime/program.html",
+		"/E/testSumlime/testPy.py",
+		"/E/testSumlime/testJs.js",
+		"/E/testSumlime/test.htm",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/spell/SpellWnd.lua",
+		"/E/xiuxian/develop/trunk/game/common/class.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/base/CycleGridScrollView.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemBagWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/base/GridScrollView.lua",
+		"/E/xiuxian/develop/trunk/game/gac/char/CharMove.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemDescUtil.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/chat/ChatWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_ranklist/RankListWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemDescWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_ranklist/RankRewardItemWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/Test_Tools.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/gac_item_factory.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_item/gas_item_factory.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemBagWndBag.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/CompareWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/NumberBoard/NumberBoardWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/player/PlayerOptWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/common/GacEnumDef.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacStaticEquip.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacFirstGetEquipWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacEquipRpc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacEquipMgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacEquipInc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/equip/GacEquip.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemGrid.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_item/ItemBagWndInc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/GacTeamMgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/GacTeamRpc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/task/TaskMiniUI.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/team/TeamMiniUI.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/team/TeamMiniUIItem.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_team/team_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/head_wnd/HeadWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/GameMain.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/enter_group/EnterGroupWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_team/Team.lua",
+		"/E/xiuxian/develop/trunk/game/common/assert.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_item/servant/servant_work_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/jz_test/test_package.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_noticepoint/notice_point_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gas/login/gbs_verify.lua",
+		"/E/xiuxian/develop/trunk/game/gac/char/main_char/TouchMove.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/main_ui/MainUIWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_package/patch_download.lua",
+		"/E/xiuxian/develop/trunk/game/gac/HeadRequire.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_package/gac2gas_hotfix.lua",
+		"/E/xiuxian/develop/trunk/game/ais/ai_state/common_state/MoveToFocusState.lua",
+		"/E/xiuxian/develop/trunk/game/ais/ai_state/common_state/AIStateInc.lua",
+		"/E/xiuxian/develop/trunk/game/ais/ai_state/common_state/AIState.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gm_command/gm_command_list.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gm_command/gm_command.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/package/gmc_console.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/GmcMain.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/GmcLuaErrorHandler.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/GmcLoadProtocol.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/GmcHeadRequire.lua",
+		"/E/xiuxian/develop/trunk/game/common/base_func.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/package/game_server_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/package/gmc2gas_connection.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/package/gmc_account_verify.lua",
+		"/E/xiuxian/develop/trunk/game/gmc/package/gmc_commandqueue.lua",
+		"/E/xiuxian/develop/trunk/game/common/random.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gm_command/common_cmd.lua",
+		"/E/xiuxian/develop/trunk/etc/gac/GacConfig.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_package/gas2gac_connection.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/TeamWndInc.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_battle/gac_battle_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_collect_lingshi/CollectLingShiGameWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_dailyreward/DailyRewardMainWnd.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_daluandou/DaLuanDouWndAccount.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_family/ui/FamilyNoteInfoItem.lua",
+		"/E/xiuxian/develop/trunk/game/gas/scene_mgr/battle_scene/teamfight/team_fight_mgr.lua",
+		"/E/xiuxian/develop/trunk/game/gac/game_ui/ui_widget/TriggerButton.lua",
+		"/E/xiuxian/develop/trunk/game/gac/gac_team/gac_team_util.lua",
+		"/E/xiuxian/develop/trunk/game/common/string_ext.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_team/GasTeamRpc.lua",
+		"/E/xiuxian/develop/trunk/game/gac_gas/team/team_define.lua",
+		"/E/xiuxian/develop/trunk/game/gas/gas_team/gas_team_util.lua",
+		"/E/xiuxian/develop/trunk/game/gac_gas/rpc/Gas2GacRpcList.lua",
+		"/E/xiuxian/develop/trunk/game/common/reload.lua",
+		"/E/xiuxian/develop/trunk/game/gas/GasMain.lua",
+		"/E/xiuxian/develop/trunk/game/gac_gas/task/XianMengYunShuTask.lua",
+		"/C/Users/Administrator/Desktop/luaStudy/src/serialtable.lua",
+		"/C/Users/Administrator/Desktop/luaStudy/src/test.lua",
+		"/E/xiuxian/develop/trunk/game/maintain_scripts/script/Util.py",
+		"/E/xiuxian/develop/trunk/game/jz_test/test_util.lua",
+		"/C/Users/Administrator/Desktop/luaStudy/src/luaUtil.lua"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"ndk_root",
+			"_check_ndk_root_env",
+			"NDK_ROOT",
+			"cocos2dx.ini",
+			"class(",
+			"class",
+			"cocos2dx",
+			"tolua_function",
+			"tolua",
+			"tolua++",
+			"ShowUIPerformance",
+			"CreateGuideFx",
+			"GetUI",
+			"RemoveInovke",
+			"InvokeDelay",
+			"PerformWithDelay",
+			"HitTest",
+			"m_FriendListScrollView:SetTouchEnabled",
+			"m_FriendListScrollView",
+			"CChatFriendItem",
+			"SetTouchEnabled",
+			"UnRegOneByOneListener",
+			"RegOneByOneListener",
+			"SetTouchRect",
+			"RemoveWndUsePlist",
+			"OnNodeEvent",
+			"RegNodeEvent",
+			"EVENT_KEYBOARD_PRESSED",
+			"registerScriptHandler",
+			"RegNodeEvent",
+			"ccui",
+			"ccui =",
+			"ccui",
+			"RegNodeEvent",
+			"registerScriptHandler",
+			"unregisterScriptHandler",
+			"g_FxMgr =",
+			"g_FxMgr",
+			"g_FxMgr =",
+			"CreateUIFx",
+			"getRefID",
+			"RegNodeEvent",
+			"OnNodeEvent",
+			"NODE_ON_CLEAN_UP",
+			"RemoveAllInvisibleWnd",
+			"eBeforeChangeScene",
+			"OnBeforeChangeScene",
+			"RemoveAllInvisibleWnd",
+			"pause",
+			"_DelWndFx",
+			"GetUI",
+			"RemoveSceneWndForGuide",
+			"CreateRichTextFromLabel",
+			"GetCacheWnd",
+			"RemoveAllWnd",
+			"setmetatable",
+			"RemoveAllInvisibleWnd",
+			"CRoleAttrInfoWnd",
+			"CreateSubTab",
+			"CRoleAttrInfoWnd",
+			"CRoleAttrInfoWnd\"",
+			"GetChengHaoWnd",
+			"GetRoleInfoWnd",
+			"m_tTabWnd",
+			"CreateSubTab",
+			"RegUIMeta",
+			"m_Level1Root",
+			"GetSceneWnd",
+			"GetTopSceneWnd",
+			"m_TopSceneWnd",
+			"GetTopSceneWnd",
+			"setLocalZOrder",
+			"GetUIRoot",
+			"m_szCsbFileName",
+			"SetCsbFileName",
+			"doLayoutForUIRoot",
+			"fade",
+			"beget",
+			"\n    ",
+			"CTaskWnd",
+			"CSpellWnd",
+			"tSZUIName",
+			"addTouchEventListener",
+			"CheckScroll",
+			"RegScrollViewEvent",
+			"GetGridPos",
+			"CreateGrid",
+			"m_RoundScrollView",
+			"ScrollView",
+			"CClimbTowerWnd",
+			"CZongMenBattleWnd",
+			"SetGridIndex",
+			"SetTouchCallback",
+			"PreviewLayer",
+			"CRankListWnd",
+			"PreviewLayer",
+			"SetTouchCallback",
+			"m_tItemData",
+			"SetItemInfos",
+			"m_EvenItemLayers",
+			"m_ItemLayers",
+			"CRankListWnd",
+			"SendRewardTipLabel",
+			"SetTouchCallback",
+			"CRankRewardItemWnd",
+			"ShowRewardView",
+			"OnSelectFaction",
+			"function CRankListWnd",
+			"ShowRewardView",
+			"RankListType",
+			"_GetScrollView",
+			"RankListType.eZhanLi",
+			"InitShowPlayerWnd",
+			"MinusListHeight",
+			"CreateGrid",
+			"_CreateRichTxt",
+			"nContentSizeHeight",
+			"CreateScrollAttrNode",
+			"gac_item",
+			"nContentSizeHeight",
+			"CItemDesWnd:CreateScrollAttrNode",
+			"CreateScrollAttrNode",
+			"self.m_CompareItem and self:CompareVal(nAttrVal1, tCompareBaseAttr[\"Attr1Value\"]) or 0,",
+			":EquipDesc",
+			"EquipDesc",
+			"GoodDesc",
+			"UpdateUIPos",
+			"InitStartUI"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"team test:",
+			"m_MemberInfoWidgets",
+			"m_BtnBack",
+			"m_BtnExit",
+			"m_LayBriefInfoArea",
+			"Teammate",
+			"MakeInviteInfo",
+			"m_tMemberInfo",
+			"ETeammateProp",
+			"ETeamateProp",
+			"MakeInviteInfo",
+			"MakePlayerInviteInfo",
+			"m_MembersListArea",
+			"IsSameShiLi",
+			"m_nXianMengShiLi",
+			"ETeamErrorCode"
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": false,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 3,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "build/Debug.win32/lua-tests/src/controller.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7975,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "build/Debug.win32/lua-empty-test/src/hello.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7951,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3200.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "tests/lua-empty-test/src/hello.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7951,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7951,
+								7951
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3352.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "tools/tolua/genbindings.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7013,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6157,
+								6157
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2602.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "build/Debug.win32/lua-empty-test/src/cocos/cocos2d/functions.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 17161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11085,
+								11085
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6821.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "tools/bindings-generator/generator.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 60118,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "tools/tolua/cocos2dx.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9861,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								130,
+								138
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2508.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "tools/tolua/cocos2dx_audioengine.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2869,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "tools/tolua/cocos2dx_ui.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3328,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 684.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "tools/tolua/cocos2dx_cocosbuilder.ini",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3508,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 286.0
+	},
+	"output.find_results":
+	{
+		"height": 237.0
+	},
+	"pinned_build_system": "",
+	"project": "cocosx.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"genbindings",
+				"tools\\tolua\\genbindings.py"
+			],
+			[
+				"generate.py",
+				"tools\\bindings-generator\\generator.py"
+			],
+			[
+				"hell",
+				"tests\\lua-empty-test\\src\\hello.lua"
+			],
+			[
+				"hello.lua",
+				"tests\\lua-empty-test\\src\\hello.lua"
+			],
+			[
+				"controller.lua",
+				"build\\Debug.win32\\lua-tests\\src\\controller.lua"
+			],
+			[
+				"testlua",
+				"jz_test\\test_lua.lua"
+			],
+			[
+				"basewndin",
+				"gac\\game_ui\\base\\BaseWndInc.lua"
+			],
+			[
+				"basewnd",
+				"gac\\game_ui\\base\\BaseWnd.lua"
+			],
+			[
+				"cocoscons",
+				"gac\\cocos\\cocos2d\\Cocos2dConstants.lua"
+			],
+			[
+				"testlu",
+				"jz_test\\test_lua.lua"
+			],
+			[
+				"node",
+				"gac\\cocos\\extend\\Node.lua"
+			],
+			[
+				"teamwnd",
+				"gac\\gac_team\\TeamWnd.lua"
+			],
+			[
+				"mainwndinc",
+				"gac\\game_ui\\MainWndInc.lua"
+			],
+			[
+				"cnode",
+				"gac\\cocos\\extend\\Node.lua"
+			],
+			[
+				"taskwnd",
+				"gac\\game_ui\\task\\TaskWnd.lua"
+			],
+			[
+				"spellwnd",
+				"gac\\gac_item\\spell\\SpellWnd.lua"
+			],
+			[
+				"testutil",
+				"jz_test\\test_util.lua"
+			],
+			[
+				"clas",
+				"common\\class.lua"
+			],
+			[
+				"teammem",
+				"gac\\gac_team\\TeamMemberItem.lua"
+			],
+			[
+				"scroll",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"grid",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"clibtowerwnd",
+				"gac\\game_ui\\climb_tower\\ClimbTowerWnd.lua"
+			],
+			[
+				"zongmenwnd",
+				"gac\\game_ui\\battle\\ZongMenBattleWnd.lua"
+			],
+			[
+				"zongm",
+				"gac\\game_ui\\battle\\ZongMenBattleWnd.lua"
+			],
+			[
+				"crankrewarditemwnd",
+				"gac\\gac_ranklist\\RankRewardItemWnd.lua"
+			],
+			[
+				"rank",
+				"gac\\gac_ranklist\\RankListWnd.lua"
+			],
+			[
+				"gridsc",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"testtool",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"gacequip",
+				"gac\\gac_item\\equip\\GacEquip.lua"
+			],
+			[
+				"itembagic",
+				"gac\\gac_item\\ItemBagWndInc.lua"
+			],
+			[
+				"citemgrid",
+				"gac\\gac_item\\ItemGrid.lua"
+			],
+			[
+				"table",
+				"common\\table_ext.lua"
+			],
+			[
+				"assert",
+				"common\\assert.lua"
+			],
+			[
+				"servantworkmg",
+				"gas\\gas_item\\servant\\servant_work_mgr.lua"
+			],
+			[
+				"temmgr",
+				"gas\\gas_team\\team_mgr.lua"
+			],
+			[
+				"team",
+				"gas\\gas_team\\Team.lua"
+			],
+			[
+				"entergrou",
+				"gac\\game_ui\\enter_group\\EnterGroupWnd.lua"
+			],
+			[
+				"entergroupwnd",
+				"gac\\game_ui\\enter_group\\EnterGroupWnd.lua"
+			],
+			[
+				"caistate",
+				"ais\\ai_state\\common_state\\AIState.lua"
+			],
+			[
+				"aistateinc",
+				"ais\\ai_state\\common_state\\AIStateInc.lua"
+			],
+			[
+				"moveto",
+				"ais\\ai_state\\common_state\\MoveToFocusState.lua"
+			],
+			[
+				"basefucn",
+				"common\\base_func.lua"
+			],
+			[
+				"random",
+				"common\\random.lua"
+			],
+			[
+				"commoncmd",
+				"gas\\gm_command\\common_cmd.lua"
+			],
+			[
+				"gm_command_list",
+				"gas\\gm_command\\gm_command_list.lua"
+			],
+			[
+				"testt",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"uic",
+				"gac\\game_ui\\ui_creator.lua"
+			],
+			[
+				"grids",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"teammin",
+				"gac\\game_ui\\team\\TeamMiniUI.lua"
+			],
+			[
+				"testto",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"taskmini",
+				"gac\\game_ui\\task\\TaskMiniUI.lua"
+			],
+			[
+				"ctriggerbutton",
+				"gac\\game_ui\\ui_widget\\TriggerButton.lua"
+			],
+			[
+				"testl",
+				"jz_test\\test_lua.lua"
+			],
+			[
+				"string",
+				"common\\string_ext.lua"
+			],
+			[
+				"teamdef",
+				"gac_gas\\team\\team_define.lua"
+			],
+			[
+				"gasteamu",
+				"gas\\gas_team\\gas_team_util.lua"
+			],
+			[
+				"gac_temmgr",
+				"gac\\gac_team\\GacTeamMgr.lua"
+			],
+			[
+				"team.l",
+				"gas\\gas_team\\Team.lua"
+			],
+			[
+				"xianmengyunshu.lua",
+				"gac_gas\\task\\XianMengYunShuTask.lua"
+			],
+			[
+				"gasmain",
+				"gas\\GasMain.lua"
+			],
+			[
+				"gridscrollview",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"table_ext",
+				"common\\table_ext.lua"
+			],
+			[
+				"teammgr.lua",
+				"gas\\gas_team\\team_mgr.lua"
+			],
+			[
+				"taskminiui",
+				"gac\\game_ui\\task\\TaskMiniUI.lua"
+			],
+			[
+				"teamminui",
+				"gac\\game_ui\\team\\TeamMiniUI.lua"
+			],
+			[
+				"class",
+				"common\\class.lua"
+			],
+			[
+				"teammini",
+				"gac\\game_ui\\team\\TeamMiniUI.lua"
+			],
+			[
+				"teaminc",
+				"gac\\gac_team\\GacTeamMgrInc.lua"
+			],
+			[
+				"testuti",
+				"jz_test\\test_util.lua"
+			],
+			[
+				"testunit",
+				"jz_test\\test_unit.lua"
+			],
+			[
+				"testu",
+				"gac\\game_ui\\testui\\TestUIWnd.lua"
+			],
+			[
+				"testtol",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"test",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"gridscrovie",
+				"gac\\game_ui\\base\\GridScrollView.lua"
+			],
+			[
+				"teammgr",
+				"gac\\gac_team\\GacTeamMgr.lua"
+			],
+			[
+				"gacteammgr",
+				"gac\\gac_team\\GacTeamMgr.lua"
+			],
+			[
+				"gasplayer",
+				"gas\\gas_player\\GasPlayer.lua"
+			],
+			[
+				"gasgolde",
+				"gas\\gas_castellan_golden_model\\gas_golden_model_mgr.lua"
+			],
+			[
+				"teamfightscene",
+				"gas\\scene_mgr\\battle_scene\\teamfight\\TeamFightScene.lua"
+			],
+			[
+				"gasteamuti",
+				"gas\\gas_team\\gas_team_util.lua"
+			],
+			[
+				"playerattrsho",
+				"gac_gas\\player\\player_attr_show_mgr.lua"
+			],
+			[
+				"mainplayerrpc",
+				"gac\\gac_player\\MainPlayerRpc.lua"
+			],
+			[
+				"gacbmfa",
+				"gac\\gac_item\\fabao\\GacBMFabao.lua"
+			],
+			[
+				"fabaoc",
+				"gac_gas\\item\\fabao\\fabao_cfg_mgr.lua"
+			],
+			[
+				"gacbmfabao",
+				"gac\\gac_item\\fabao\\GacBMFabao.lua"
+			],
+			[
+				"fabaocfg",
+				"gac_gas\\item\\fabao\\fabao_cfg_mgr.lua"
+			],
+			[
+				"mainplayerp",
+				"gac\\gac_player\\MainPlayerRpc.lua"
+			],
+			[
+				"gasteamprc",
+				"gas\\gas_team\\GasTeamRpc.lua"
+			],
+			[
+				"gactemprc",
+				"gac\\gac_team\\GacTeamRpc.lua"
+			],
+			[
+				"testtoo",
+				"gac\\Test_Tools.lua"
+			],
+			[
+				"teammemui",
+				"gac\\gac_team\\TeamMemberItem.lua"
+			],
+			[
+				"teammemi",
+				"gac\\gac_team\\TeamMemberItem.lua"
+			],
+			[
+				"teammenite",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"gasxianmrpc",
+				"gas\\gas_xian_meng\\GasXianMengRpc.lua"
+			],
+			[
+				"taskminiu",
+				"gac\\game_ui\\task\\TaskMiniUI.lua"
+			],
+			[
+				"gasxianmeng",
+				"gas\\gas_xian_meng\\GasXianMeng.lua"
+			],
+			[
+				"gaspl",
+				"gas\\gas_player\\GasPlayer.lua"
+			],
+			[
+				"gas_xianmeng_mgr",
+				"gas\\gas_xian_meng\\gas_xian_meng_mgr.lua"
+			],
+			[
+				"gasxianmen",
+				"gas\\gas_xian_meng\\GasXianMeng.lua"
+			],
+			[
+				"gacteamu",
+				"gac\\gac_team\\gac_team_util.lua"
+			],
+			[
+				"basewn",
+				"gac\\game_ui\\base\\BaseWnd.lua"
+			],
+			[
+				"gastema",
+				"gas\\gas_team\\GasTeamRpc.lua"
+			],
+			[
+				"cteammemberitem",
+				"gac\\gac_team\\TeamMemberItem.lua"
+			],
+			[
+				"teammen",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"gacteamm",
+				"gac\\gac_team\\GacTeamMgr.lua"
+			],
+			[
+				"gascommon",
+				"gas\\gas_package\\gas_common.lua"
+			],
+			[
+				"renderobject",
+				"gac\\render\\render_object\\RenderObjectInc.lua"
+			],
+			[
+				"teamwdn",
+				"gac\\gac_team\\TeamWnd.lua"
+			],
+			[
+				"gasutil",
+				"gas\\gas_team\\gas_team_util.lua"
+			],
+			[
+				"renderobjectinc",
+				"gac\\render\\render_object\\RenderObjectInc.lua"
+			],
+			[
+				"crenderobject",
+				"gac\\render\\render_object\\RenderObject.lua"
+			],
+			[
+				"teammi",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"gasteamutil",
+				"gas\\gas_team\\gas_team_util.lua"
+			],
+			[
+				"teammiite",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"gaccommon",
+				"gac\\common\\gac_common.lua"
+			],
+			[
+				"taskmin",
+				"gac\\game_ui\\task\\TaskMiniUI.lua"
+			],
+			[
+				"cteamitem",
+				"gac\\gac_team\\TeamItem.lua"
+			],
+			[
+				"teamitem",
+				"gac\\gac_team\\TeamItem.lua"
+			],
+			[
+				"teamminiui",
+				"gac\\game_ui\\team\\TeamMiniUI.lua"
+			],
+			[
+				"cteamminiuiitem",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"cgridscrollviewitem",
+				"gac\\game_ui\\base\\GridScrollViewItem.lua"
+			],
+			[
+				"testuiiteminc",
+				"gac\\game_ui\\testui\\TestUIItemInc.lua"
+			],
+			[
+				"teamminiite",
+				"gac\\game_ui\\team\\TeamMiniUIItem.lua"
+			],
+			[
+				"cbasewnd",
+				"gac\\game_ui\\base\\BaseWnd.lua"
+			],
+			[
+				"gridscrollviewiteminc",
+				"gac\\game_ui\\base\\GridScrollViewItemInc.lua"
+			],
+			[
+				"teamin",
+				"gac\\gac_team\\TeamWndInc.lua"
+			],
+			[
+				"taskwndinc",
+				"gac\\game_ui\\task\\TaskWndInc.lua"
+			],
+			[
+				"itemb",
+				"gac\\gac_item\\ItemBagGrid.lua"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"E:\\xiuxian\\develop\\trunk\\game\\game.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 265.0,
+		"last_filter": "richtext",
+		"selected_items":
+		[
+			[
+				"richtext",
+				"GetRichTextColor"
+			],
+			[
+				"GetJingJieNum",
+				"CChar:GetJingJieNum"
+			],
+			[
+				"",
+				"AccountDiZi"
+			],
+			[
+				"gacequi",
+				"CGacEquip:ctor"
+			],
+			[
+				"d",
+				"Decode"
+			]
+		],
+		"width": 488.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 283.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
